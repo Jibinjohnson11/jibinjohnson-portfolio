@@ -10,7 +10,7 @@
 :root{
   --ivory:#F7F1ED; --charcoal:#1C2322; --black:#111616;
   --emerald:#428564; --emerald-deep:#2F6B4F; --emerald-soft:#5A9E7C;
-  --stone:#D7D5CF; --sage:#89968E;
+  --stone:#D7D5CF; --sage:#89968E; --sage-deep:#7E8C84;
   --ink:var(--charcoal); --ink-soft:rgba(28,35,34,.72); --line:rgba(28,35,34,.16);
   --serif:"Fraunces",Georgia,"Times New Roman",serif;
   --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -133,7 +133,7 @@ h1{font-size:clamp(2.5rem,6.8vw,6.25rem);line-height:.95;letter-spacing:-.015em}
 .marq{overflow:hidden;padding-block:clamp(2.5rem,5vw,4rem);white-space:nowrap}
 .marq-in{display:inline-flex;animation:marq 38s linear infinite}
 .marq span{font:italic 400 clamp(2rem,5vw,4.25rem)/1.1 var(--serif);letter-spacing:-.02em;padding-right:.9em;color:var(--charcoal)}
-.marq span:nth-child(even){color:var(--sage)}
+.marq span:nth-child(even){color:var(--sage-deep)}
 @keyframes marq{to{transform:translateX(-50%)}}
 
 /* ---------- section head + reveal ---------- */
@@ -148,7 +148,7 @@ h1{font-size:clamp(2.5rem,6.8vw,6.25rem);line-height:.95;letter-spacing:-.015em}
 .about-grid h2{position:sticky;top:7rem;align-self:start}
 .scrub{font-size:clamp(1.3rem,2.3vw,2.05rem);line-height:1.38;letter-spacing:-.015em}
 .scrub+.scrub{margin-top:1.2em}
-.js .scrub .w{opacity:.2;transition:opacity .35s}
+.js .scrub .w{opacity:.63;transition:opacity .35s}
 .js .scrub .w.on{opacity:1}
 .bio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem 2rem;margin-top:clamp(2.5rem,5vw,4rem);padding-top:1.75rem;border-top:1px solid var(--line)}
 .bio dt{font-size:.875rem;color:var(--ink-soft);margin-bottom:.35rem}
