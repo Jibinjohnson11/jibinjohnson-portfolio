@@ -41,7 +41,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .dark{background:var(--black);color:var(--ivory);border-radius:var(--r);margin-inline:var(--inset);--ink-soft:rgba(247,241,237,.7);--line:rgba(247,241,237,.16)}
 
 /* ---------- type ---------- */
-h1,h2{font-family:var(--serif);font-weight:500;letter-spacing:-.025em;line-height:1;font-optical-sizing:auto;text-wrap:balance}
+h1,h2{font-family:var(--serif);font-weight:500;letter-spacing:-.012em;line-height:1;font-optical-sizing:auto;text-wrap:balance}
 h2{font-size:clamp(2.25rem,5.2vw,4.75rem)}
 h3{font:600 1.125rem/1.3 var(--sans);letter-spacing:-.01em}
 .lede{font-size:clamp(1.0625rem,1.35vw,1.25rem);color:var(--ink-soft);max-width:38em}
@@ -64,7 +64,7 @@ h3{font:600 1.125rem/1.3 var(--sans);letter-spacing:-.01em}
 .head{position:fixed;inset:calc(var(--inset) + .6rem) 0 auto;z-index:50;pointer-events:none;transition:transform .5s var(--ease)}
 .head.hide{transform:translateY(-140%)}
 .head-in{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:1180px;margin-inline:auto;width:calc(100% - 2*var(--gut));padding:.5rem .5rem .5rem 1.4rem;border-radius:99px;background:rgba(17,22,22,.82);color:var(--ivory);border:1px solid rgba(247,241,237,.14);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.brand{font:italic 500 1.6rem/1 var(--serif);letter-spacing:-.02em}
+.brand{font:italic 500 1.6rem/1 var(--serif)}
 .nav{display:flex;gap:clamp(1rem,2.2vw,2rem);font-size:.9375rem}
 .nav a{opacity:.78;transition:opacity .25s}
 .nav a:hover,.nav a[aria-current]{opacity:1}
@@ -93,7 +93,7 @@ h3{font:600 1.125rem/1.3 var(--sans);letter-spacing:-.01em}
 @keyframes pulse{70%{box-shadow:0 0 0 .6rem rgba(90,158,124,0)}100%{box-shadow:0 0 0 0 rgba(90,158,124,0)}}
 /* heading scale: home H1 is the largest title; inner-page H1 = 90% of it (.hero.sub h1);
    contact-panel H2 is capped at ~85% of the inner-page H1 (.contact-grid h2) */
-h1{font-size:clamp(2.5rem,6.8vw,6.25rem);line-height:.95;letter-spacing:-.035em}
+h1{font-size:clamp(2.5rem,6.8vw,6.25rem);line-height:.95;letter-spacing:-.015em}
 .ln{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
 .ln>span{display:block}
 .ln.it>span{font-style:italic;font-weight:400;color:var(--emerald-soft)}
@@ -160,7 +160,7 @@ h1{font-size:clamp(2.5rem,6.8vw,6.25rem);line-height:.95;letter-spacing:-.035em}
 .svc li{border-bottom:1px solid var(--line)}
 .svc a{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr) auto;gap:1rem 3rem;align-items:center;padding:clamp(1.4rem,2.6vw,2.2rem) clamp(.5rem,1.5vw,1.5rem);background:linear-gradient(var(--black),var(--black)) 0 100%/100% 0 no-repeat;transition:background-size .5s var(--ease),color .35s var(--ease)}
 .svc a:hover,.svc a:focus-visible{background-size:100% 100%;color:var(--ivory)}
-.svc h3{font:500 clamp(1.6rem,3vw,2.6rem)/1.05 var(--serif);letter-spacing:-.02em;text-wrap:balance}
+.svc h3{font:500 clamp(1.6rem,3vw,2.6rem)/1.05 var(--serif);text-wrap:balance}
 .svc p{color:var(--ink-soft);transition:color .35s}
 .svc a:hover p,.svc a:focus-visible p{color:rgba(247,241,237,.75)}
 .go{width:3rem;height:3rem;border-radius:50%;border:1px solid currentColor;display:grid;place-items:center;transition:transform .5s var(--ease),background .35s}
@@ -172,7 +172,7 @@ a:hover>.go{transform:rotate(-45deg);background:var(--emerald);border-color:var(
 .case{position:sticky;top:calc(6rem + var(--i)*.9rem);display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);background:var(--charcoal);border:1px solid var(--line);border-radius:calc(var(--r)*.8);overflow:hidden;min-height:26rem}
 .case-body{padding:clamp(1.5rem,3vw,2.75rem);display:flex;flex-direction:column;gap:1.25rem}
 .case-meta{display:flex;flex-wrap:wrap;gap:.5rem}
-.case h3{font:500 clamp(1.9rem,3.4vw,3rem)/1 var(--serif);letter-spacing:-.02em}
+.case h3{font:500 clamp(1.9rem,3.4vw,3rem)/1 var(--serif)}
 .case dl{display:grid;grid-template-columns:5.5rem 1fr;gap:.6rem 1rem;font-size:.9688rem}
 .case dt{color:var(--ink-soft)}
 .case-foot{margin-top:auto;display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;align-items:center;justify-content:space-between;font-size:.9375rem}
@@ -270,7 +270,7 @@ a:hover>.go{transform:rotate(-45deg);background:var(--emerald);border-color:var(
 .foot li{margin-bottom:.5rem}
 .foot a:hover{color:var(--emerald-soft)}
 .foot p{color:var(--ink-soft);max-width:22em;margin-top:.75rem}
-.foot-word{font:italic 400 clamp(6rem,27vw,26rem)/.8 var(--serif);letter-spacing:-.04em;text-align:center;color:var(--charcoal);margin-top:clamp(2rem,5vw,4rem);user-select:none;overflow:hidden;padding-bottom:.08em}
+.foot-word{font:italic 400 clamp(6rem,27vw,26rem)/.8 var(--serif);text-align:center;color:var(--charcoal);margin-top:clamp(2rem,5vw,4rem);user-select:none;overflow:hidden;padding-bottom:.08em}
 .legal{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;padding:1.25rem 0 1.5rem;font-size:.8125rem;color:var(--ink-soft)}
 .legal nav{display:flex;gap:1.25rem}
 .wa{display:none}
@@ -339,6 +339,9 @@ a:hover>.go{transform:rotate(-45deg);background:var(--emerald);border-color:var(
   /* inner-page H1: let the three lines flow and balance so none leaves a word alone */
   .hero.sub .ln,.hero.sub .ln>span{display:inline}
   .hero.sub .ln{padding:0;margin:0}
+  /* fluid phone H1s: unchanged at 390px, shrink on narrower phones (fixed 56px side margins, hence the offset) */
+  h1{font-size:clamp(2rem,calc(13vw - .65rem),2.5rem)}
+  .hero.sub h1{font-size:clamp(1.75rem,calc(13vw - .975rem),2.1875rem);letter-spacing:-.025em}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -373,7 +376,6 @@ a:hover>.go{transform:rotate(-45deg);background:var(--emerald);border-color:var(
 @media (max-width:600px){.proj dl{grid-template-columns:minmax(0,1fr);gap:.15rem}.proj dd{margin-bottom:.6rem}}
 
 /* ================= v2: texture, transitions, storytelling ================= */
-h2{letter-spacing:-.03em}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
@@ -443,5 +445,5 @@ html.lenis,html.lenis body{height:auto}
 .foot-word{will-change:transform}
 @media (prefers-reduced-motion:reduce){.veil,.cur{display:none}.js .grow{clip-path:none}.js .proj img,.js .portrait{clip-path:none}.hero.pin{position:relative;top:0;transform:none;filter:none}}
 .why li.rv.in:hover{transform:translateY(-6px);transition:transform .5s var(--ease)}
-.ghost{position:absolute;right:-1%;bottom:-.2em;z-index:-1;font:italic 400 clamp(7rem,21vw,19rem)/1 var(--serif);letter-spacing:-.04em;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(247,241,237,.13);pointer-events:none;user-select:none}
+.ghost{position:absolute;top:5.5rem;right:var(--gut);z-index:-1;font:italic 400 clamp(4.5rem,8vw,10rem)/1 var(--serif);letter-spacing:-.04em;white-space:nowrap;color:transparent;-webkit-text-stroke:1px rgba(247,241,237,.13);pointer-events:none;user-select:none}
 @media (max-width:900px){.ghost{display:none}}
