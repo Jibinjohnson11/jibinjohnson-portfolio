@@ -1,0 +1,38 @@
+# Jibin Johnson
+
+> Freelance web developer and SEO specialist in Trivandrum (Thiruvananthapuram), Kerala, India. Builds SEO-first websites and web applications, runs SEO campaigns, and adds AI features to websites and business tools.
+
+## Pages
+
+- [About](https://jibinjohnson.in/about/): background, education and tools
+- [Services](https://jibinjohnson.in/services/): all services, process and pricing
+- [Projects](https://jibinjohnson.in/projects/): websites built and SEO results
+- [Contact](https://jibinjohnson.in/contact/): WhatsApp, call booking and contact form
+
+## Services
+
+- [Website design and development](https://jibinjohnson.in/website-development-kerala/): Website development services in Kerala from a freelance website developer in Trivandrum. Custom, fast, SEO-ready business websites from ₹12,000.
+- [SEO services](https://jibinjohnson.in/seo-services-kerala/): Freelance SEO specialist in Kerala offering technical, on-page and local SEO services in Trivandrum. Position-one rankings for clients. From ₹8,000 a month.
+- [Full-stack and software development](https://jibinjohnson.in/full-stack-developer-kerala/): Full stack developer in Kerala building web applications, dashboards and business software with Python, Django and JavaScript. Based in Trivandrum.
+- [Python and Django development](https://jibinjohnson.in/python-django-developer-kerala/): Python Django developer in Kerala for web apps, REST APIs, admin panels and database-backed websites. Freelance, based in Trivandrum.
+- [AI development](https://jibinjohnson.in/ai-developer-kerala/): AI developer in Kerala adding chatbots, automation and data features to websites and web apps. AI full stack developer based in Trivandrum.
+
+## Work
+
+- AQ Air: Product website for an indoor air-quality startup, designed and built end to end.
+- Blackbox Learning: SEO for an AI training academy. Seven keywords at position one on Google, with more on page one.
+- Serene Derma: SEO team lead for a dermatology clinic group. Two target keywords at the top of Google.
+- Prception Medialab: Ongoing technical and on-page SEO for a branding and digital marketing agency.
+
+## Pricing
+
+- Landing page: from ₹6,000
+- Business website: from ₹12,000
+- Web application: from ₹30,000
+- SEO: from ₹8,000 a month
+
+## Contact
+
+- Email: jibinjohnsoninfo@gmail.com
+- Phone and WhatsApp: +91 77362 08172
+- LinkedIn: https://www.linkedin.com/in/jibinjohnson/
