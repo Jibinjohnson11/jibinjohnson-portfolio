@@ -408,6 +408,15 @@ html.lenis,html.lenis body{height:auto}
 .serp .res:nth-child(3){transform:translate3d(0,calc((var(--c,1) - 1)*var(--step,4.4rem)),40px)}
 .serp .res:nth-child(4){transform:translate3d(0,calc((var(--c,1) - 1)*var(--step,4.4rem)),5px)}
 .serp .res:nth-child(5){transform:translate3d(0,calc((var(--c,1) - 1)*var(--step,4.4rem)),-30px)}
+/* 900px and below: fixed, gentler tilt (no scroll/pointer tilt) and shallow depth, so the climbing row isn't enlarged and stays clear of the stats */
+@media (max-width:900px){
+  .serp{transform:rotateX(6deg) rotateY(-10deg) rotateZ(1.5deg)}
+  .serp-bar{transform:translateZ(24px)}
+  .serp .res.first{transform:translate3d(0,calc((1 - var(--c,1))*var(--down,13.2rem)),16px)}
+  .serp .res:nth-child(3){transform:translate3d(0,calc((var(--c,1) - 1)*var(--step,4.4rem)),8px)}
+  .serp .res:nth-child(4){transform:translate3d(0,calc((var(--c,1) - 1)*var(--step,4.4rem)),4px)}
+  .serp .res:nth-child(5){transform:translate3d(0,calc((var(--c,1) - 1)*var(--step,4.4rem)),0)}
+}
 
 /* process: horizontal scroll story on desktop */
 .proc-pin{padding-block:var(--sec)}

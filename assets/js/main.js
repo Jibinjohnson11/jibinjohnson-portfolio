@@ -6,6 +6,7 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
   var wide = matchMedia('(min-width: 901px) and (min-height: 640px)');
+  var desk = matchMedia('(min-width: 901px)'); /* search-stack tilt is desktop only */
   var $ = function (s, c) { return (c || doc).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); };
   var clamp = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
@@ -118,7 +119,7 @@
         hero.style.setProperty('--hp', hp.toFixed(3));
         hero.style.visibility = heroLive ? '' : 'hidden';
       }
-      if (serp && !reduce && heroLive) {
+      if (serp && !reduce && heroLive && desk.matches) {
         serp.style.setProperty('--ry', (mx * 10 + hp * 26).toFixed(2) + 'deg');
         serp.style.setProperty('--rx', (-my * 8 - hp * 8).toFixed(2) + 'deg');
       }
@@ -172,7 +173,13 @@
         for (var i = 1; i < nums.length; i++) nums[i].textContent = top ? i + 1 : i;
       }, 420);
     };
-    var measure = function () { serp.style.setProperty('--step', (rows[0].offsetHeight + parseFloat(getComputedStyle(rows[0]).marginBottom)) + 'px'); };
+    var measure = function () {
+      var gap = parseFloat(getComputedStyle(rows[0]).marginBottom), down = 0;
+      serp.style.setProperty('--step', (rows[0].offsetHeight + gap) + 'px');
+      /* --down: real height of the rows below the green one, so on phones it lands exactly in the bottom slot */
+      for (var i = 1; i < rows.length; i++) down += rows[i].offsetHeight + gap;
+      serp.style.setProperty('--down', down + 'px');
+    };
     measure(); win.addEventListener('resize', measure, { passive: true });
     var qs = typed.getAttribute('data-type').split('|'), qi = 0, ci = qs[0].length, del = true;
     setTimeout(function type() {
