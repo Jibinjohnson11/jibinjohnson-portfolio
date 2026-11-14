@@ -90,7 +90,7 @@
   var head = $('.head'), hero = $('.hero:not(.sub)'), serp = $('.serp');
   var proc = $('.proc'), steps = $('.steps'), stepItems = steps ? $$('li', steps) : [], bar = $('.proc-bar i');
   var grow = reduce ? [] : $$('.dark:not(.hero):not(.proc-pin)');
-  var footWord = $('.foot-word');
+  var footWord = $('.foot-word'), wa = $('.wa');
   grow.forEach(function (g) { g.classList.add('grow'); });
   var lastY = 0, ticking = false, mx = 0, my = 0, heroLive = true;
 
@@ -108,6 +108,7 @@
     var y = win.scrollY, vh = win.innerHeight;
     if (head && !body.classList.contains('menu-open')) head.classList.toggle('hide', y > lastY && y > 500);
     lastY = y;
+    if (wa) wa.classList.toggle('show', y > vh); /* floating WhatsApp button appears after the first screen */
 
     if (hero) {
       var pinned = hero.classList.contains('pin');

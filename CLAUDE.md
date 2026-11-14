@@ -17,9 +17,10 @@ Personal website of a web developer and SEO specialist in Trivandrum (Thiruvanan
 - Exactly one H1 per page. Keep each page's primary keyword in its title, H1 and meta description.
 - New colours must come from the palette. Transparent rgba versions of palette colours are allowed, and theme-color stays as a hex value.
 - Fonts are Fraunces (headings) and DM Sans (text), self-hosted as woff2 in `assets/fonts/` with `@font-face` at the top of `main.css`. Every page preloads `dm-sans-latin.woff2` and `fraunces-latin.woff2`. No Google Fonts links.
-- `/assets/*` is cached as immutable (`netlify.toml`). Every page loads `main.css?v=N` and `main.js?v=N` (currently `v=2`). Whenever either file changes, bump its `?v=` number on every page, including `404.html`.
+- `/assets/*` is cached as immutable (`netlify.toml`). Every page loads `main.css?v=N` and `main.js?v=N` (currently `v=5`). Whenever either file changes, bump its `?v=` number on every page, including `404.html`.
 - Font preloads must keep `as="font"`, `type="font/woff2"` and `crossorigin`. Without `crossorigin` the browser downloads the font twice.
-- The header, footer and contact panel are repeated on every page. Any change to them must be applied to every HTML file (including `404.html`, which uses absolute paths; `contact/` has the footer but no contact panel).
+- The header, footer and contact panel are repeated on every page. Any change to them must be applied to every HTML file (including `404.html`, which uses absolute paths; `contact/` has the footer but no contact panel and no floating WhatsApp button). The floating button appears only after the first screen of scrolling (`main.js`).
+- Heading scale: the home H1 is the largest title at every width; inner-page H1s (`.hero.sub h1`) are 90% of it; the contact-panel H2 is capped at ~85% of the inner-page H1. Below 600px, inner-page H1 lines flow inline and balance. The home H1's three lines must stay unbroken at 390, 1024 and 1440.
 - Keep these numbers the same everywhere: 4 client projects, 9 keywords at position one (7 Blackbox Learning, 2 Serene Derma), 30 days of free fixes, prices ₹6,000 / ₹12,000 / ₹30,000 / ₹8,000 a month.
 - Do not mention Floating City. Do not add testimonials.
 - Keep the JSON-LD schema, canonical tags, sitemap.xml and llms.txt in sync with any page or content change. Visible FAQ text must match the FAQPage schema on the same page; title/description must match og: tags and the WebPage/Service schema.
