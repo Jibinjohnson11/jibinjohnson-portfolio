@@ -1,0 +1,156 @@
+/* jibinjohnson.in — About page only (loaded after main.css on about/index.html).
+   Uses the palette, type and card styles of main.css; nothing here sets a new colour. */
+
+/* ---------- layout: sticky section index (desktop) + content column ---------- */
+.ab{max-width:calc(var(--wrap) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.ab .wrap{max-width:none;padding-inline:0}
+.ab-index{display:none}
+@media (min-width:1024px){
+  .ab{display:grid;grid-template-columns:7.5rem minmax(0,1fr);column-gap:2.5rem}
+  .ab-index{display:block;position:sticky;top:6rem;align-self:start;margin-top:clamp(3rem,1.5rem + 4.5vw,6rem)}
+}
+.ab-index ol{border-left:1px solid var(--line)}
+.ab-index a{position:relative;display:flex;align-items:baseline;gap:.6rem;padding:.4rem 0 .4rem 1rem;font-size:.8125rem;font-weight:600;line-height:1.3;color:var(--muted);white-space:nowrap;transition:color .25s}
+.ab-index a::before{content:"";position:absolute;left:-1px;top:.3rem;bottom:.3rem;width:2px;border-radius:2px;background:var(--accent-btn);transform:scaleY(0);transition:transform .3s var(--ease)}
+.ab-index .n{font-variant-numeric:tabular-nums}
+/* the section name shows for the active section only (and on keyboard focus); it stays in the link's accessible name */
+.ab-index .t{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.ab-index a:hover{color:var(--ink)}
+.ab-index a[aria-current]{color:var(--ink)}
+.ab-index a[aria-current] .n{color:var(--accent)}
+.ab-index a[aria-current]::before{transform:none}
+.ab-index a[aria-current] .t,.ab-index a:focus-visible .t{position:static;width:auto;height:auto;overflow:visible;clip-path:none;animation:ab-fade .3s var(--ease)}
+@keyframes ab-fade{from{opacity:0}}
+
+/* ---------- headings ---------- */
+.ab h2{max-width:20em}
+.ab h2 .it{font-style:italic;font-weight:500;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ab-note{margin-top:1rem}
+.ab-intro .eyebrow,.ab .sec .eyebrow{margin-bottom:1.25rem}
+
+/* ---------- 01 intro ---------- */
+.ab-intro .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:2.5rem}
+.ab-intro h1{margin-bottom:1.5rem}
+.ab-intro .lede{max-width:34em}
+.ab-facts{margin-top:2rem;border-top:1px solid var(--line)}
+.ab-facts>div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:.25rem 1.5rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
+.ab-facts dt{font-size:.875rem;color:var(--muted);padding-top:.1em}
+.ab-facts dd{font-weight:500}
+.ab-status{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;margin-top:1.5rem;font-size:.9375rem;font-weight:500}
+.ab-dot{position:relative;flex:none;width:.5rem;height:.5rem;border-radius:50%;background:var(--accent-btn)}
+.ab-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent-btn);animation:ab-pulse 2.2s var(--ease) infinite}
+@keyframes ab-pulse{from{transform:scale(1);opacity:.55}to{transform:scale(3.2);opacity:0}}
+.ab-sep{width:1px;height:1em;background:var(--line-strong)}
+.ab-time{color:var(--muted);font-variant-numeric:tabular-nums}
+.ab-photo{margin:0;order:-1;width:min(100%,20rem)}
+.ab-frame{aspect-ratio:4/5;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:radial-gradient(120% 90% at 70% 15%,var(--surface) 0%,var(--tint) 75%)}
+.ab-frame img{width:100%;height:100%;object-fit:cover}
+.ab-photo figcaption{margin-top:.85rem;font-size:.875rem;color:var(--muted)}
+@media (min-width:1024px){
+  .ab-intro .wrap{grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(2.5rem,1rem + 3vw,4rem);align-items:start}
+  .ab-photo{order:0;width:auto;margin-top:2.25rem}
+}
+
+/* ---------- 02 story ---------- */
+.ab-story{display:grid;grid-template-columns:minmax(0,1fr);gap:1.5rem 4rem;margin-top:clamp(2rem,1.5rem + 1.5vw,3rem)}
+.ab-lead{font-size:clamp(1.25rem,1.05rem + .8vw,1.625rem);line-height:1.45;font-weight:500;letter-spacing:-.01em}
+.ab-story-more p{max-width:36em;color:var(--muted)}
+.ab-story-more p+p{margin-top:1.1em}
+.ab mark{padding:.05em .3em;border-radius:5px;background:var(--tint);color:var(--ink);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@media (min-width:1024px){.ab-story{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}.ab-story-more{padding-top:.4rem}}
+
+/* ---------- 03 what I do: bento of four (wide, narrow / narrow, wide) ---------- */
+.ab-bento{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;margin-top:clamp(2.5rem,2rem + 2vw,3.5rem)}
+.ab-bento a{display:flex;flex-direction:column;gap:.6rem;height:100%;padding:clamp(1.5rem,1rem + 1.5vw,2rem);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .25s var(--ease),border-color .25s}
+.ab-bento a:hover{transform:translateY(-4px);border-color:var(--line-strong)}
+.ab-ic{display:grid;place-items:center;width:2.75rem;height:2.75rem;margin-bottom:.6rem;border-radius:12px;background:var(--tint);color:var(--accent)}
+.ab-ic svg{width:1.375rem;height:1.375rem}
+.ab-bento h3{font-size:1.375rem;letter-spacing:-.02em;text-wrap:balance}
+.ab-bento p{max-width:34em;color:var(--muted);font-size:.9688rem}
+.ab-bento .ab-tags{font-size:.8125rem;font-weight:600;letter-spacing:.02em;color:var(--accent)}
+.ab-go{display:inline-flex;align-items:center;gap:.4rem;margin-top:auto;padding-top:.9rem;font-size:.9375rem;font-weight:600;color:var(--accent-btn)}
+.ab-go svg{width:1rem;height:1rem;transition:transform .25s var(--ease)}
+.ab-bento a:hover .ab-go svg{transform:translateX(4px)}
+@media (min-width:1024px){
+  .ab-bento{grid-template-columns:repeat(12,minmax(0,1fr));gap:1.25rem}
+  .ab-bento li:nth-child(1),.ab-bento li:nth-child(4){grid-column:span 7}
+  .ab-bento li:nth-child(2),.ab-bento li:nth-child(3){grid-column:span 5}
+  .ab-bento li:nth-child(1) a,.ab-bento li:nth-child(4) a{background:linear-gradient(160deg,rgba(234,240,234,.6),var(--surface) 65%)}
+}
+
+/* ---------- heading left, content right (principles, journey) ---------- */
+.ab-split{display:grid;grid-template-columns:minmax(0,1fr);gap:2.25rem 4rem;align-items:start}
+@media (min-width:1024px){
+  .ab-split{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .ab-split-head{position:sticky;top:6.5rem}
+}
+
+/* ---------- 04 principles: accordion ---------- */
+.ab-acc{border-top:1px solid var(--line)}
+.ab-acc>li{border-bottom:1px solid var(--line)}
+.ab-acc h3{font-size:inherit}
+.ab-acc button{display:flex;align-items:center;gap:1rem;width:100%;padding:1.4rem 0;border:0;background:none;text-align:left;font-size:1.125rem;font-weight:600;line-height:1.35;letter-spacing:-.01em;color:var(--ink);cursor:pointer}
+.ab-acc button::after{content:"";flex:none;margin-left:auto;width:2.25rem;height:2.25rem;border:1px solid var(--line);border-radius:50%;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/.75rem 1.5px no-repeat,linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/1.5px .75rem no-repeat;transition:transform .3s var(--ease),border-color .3s}
+.ab-acc button:hover::after{border-color:var(--line-strong)}
+.ab-acc button[aria-expanded="true"]::after{transform:rotate(45deg);border-color:var(--accent-btn)}
+.ab-rn{flex:none;min-width:2.25rem;font-family:var(--display);font-style:italic;font-weight:500;font-size:1.25rem;color:var(--accent)}
+.ab-panel{display:grid;grid-template-rows:1fr}
+.ab-panel>div{min-height:0;overflow:hidden}
+.ab-panel p{max-width:34em;padding:0 3.25rem 1.4rem 3.25rem;color:var(--muted)}
+/* with JS the closed panels collapse (height animates; hidden from assistive tech once closed) */
+.js .ab-acc li:has(button[aria-expanded="false"]) .ab-panel{grid-template-rows:0fr;visibility:hidden}
+.js .ab-panel{transition:grid-template-rows .35s var(--ease),visibility 0s .35s}
+.js .ab-acc li:has(button[aria-expanded="true"]) .ab-panel{transition:grid-template-rows .35s var(--ease),visibility 0s}
+
+/* ---------- 05 toolkit: group cards with tool chips that highlight what they work with ---------- */
+.ab-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;margin-top:clamp(2.5rem,2rem + 2vw,3.5rem)}
+.ab-group{padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.ab-group h3{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;font-size:1.0625rem}
+.ab-group h3 svg{flex:none;width:1.25rem;height:1.25rem;color:var(--accent)}
+.ab-group ul{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{min-height:2.25rem;padding:.3rem .9rem;border:1px solid var(--line);border-radius:99px;background:var(--surface);font-size:.875rem;font-weight:500;line-height:1.3;color:var(--ink);cursor:pointer;transition:background-color .2s,border-color .2s,color .2s}
+.chip:hover{border-color:var(--line-strong)}
+/* a tool is active: it fills sage, the tools it works with turn tint, the rest fade back to muted text (still 6:1) */
+.ab-tools.linking .chip{border-color:rgba(11,14,20,.06);color:var(--muted)}
+.ab-tools.linking .chip.rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
+.ab-tools.linking .chip.on{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
+@media (min-width:1024px){
+  .ab-tools{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .ab-group{grid-column:span 3}
+  .ab-group.g-ai{grid-column:1/-1}
+}
+
+/* ---------- 06 experience ---------- */
+.ab-jobs{margin-top:clamp(2.5rem,2rem + 2vw,3.5rem);border-top:1px solid var(--line)}
+.ab-jobs>li{display:grid;grid-template-columns:minmax(0,1fr);gap:.75rem 4rem;padding:2rem 0;border-bottom:1px solid var(--line)}
+.ab-job-meta{display:flex;flex-wrap:wrap;gap:.25rem 1rem;font-size:.9375rem;color:var(--muted)}
+.ab-when{font-size:.875rem;font-weight:600;letter-spacing:.02em;color:var(--accent)}
+.ab-job-meta .ab-when{font-size:.9375rem}
+.ab-jobs h3{font-size:1.375rem;letter-spacing:-.02em;text-wrap:balance}
+.ab-co{margin-top:.2rem;font-weight:500;color:var(--muted)}
+.ab-bul{margin-top:1.1rem;color:var(--muted)}
+.ab-bul li{position:relative;max-width:40em;padding-left:1.25rem}
+.ab-bul li+li{margin-top:.5rem}
+.ab-bul li::before{content:"";position:absolute;left:0;top:.68em;width:.375rem;height:.375rem;border-radius:50%;background:var(--accent)}
+@media (min-width:768px){
+  .ab-jobs>li{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+  .ab-job-meta{flex-direction:column;padding-top:.3rem}
+}
+
+/* ---------- 07 journey: vertical timeline; the sage line fills as items come into view (about.js) ---------- */
+.ab-line{--x:.4375rem;position:relative;padding-left:2.5rem}
+.ab-line::before,.ab-line::after{content:"";position:absolute;top:.75rem;left:var(--x);width:1px;transform:translateX(-50%)}
+.ab-line::before{bottom:.75rem;background:var(--line-strong)}
+.ab-line::after{width:2px;height:var(--fill,calc(100% - 1.5rem));background:var(--accent-btn);transition:height .6s var(--ease)}
+.ab-line>li{position:relative;z-index:1;padding-bottom:2.25rem}
+.ab-line>li:last-child{padding-bottom:0}
+.ab-line>li::before{content:"";position:absolute;left:calc(var(--x) - 2.5rem);top:.75rem;width:.875rem;height:.875rem;border:2px solid var(--accent-btn);border-radius:50%;background:var(--accent-btn);box-shadow:0 0 0 4px var(--surface);transform:translate(-50%,-50%);transition:background-color .3s,border-color .3s}
+.ab-line.track>li:not(.lit)::before{border-color:var(--line-strong);background:var(--surface)}
+.ab-line h3{margin:.2rem 0 .3rem;font-size:1.1875rem;text-wrap:balance}
+.ab-line p:not(.ab-when){max-width:34em;font-size:.9688rem;color:var(--muted)}
+.ab-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.15rem .65rem;border-radius:99px;background:var(--accent-btn);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--surface)}
+.ab-badge::before{content:"";width:.375rem;height:.375rem;border-radius:50%;background:var(--surface)}
+
+@media (prefers-reduced-motion:reduce){
+  .ab-bento a:hover,.ab-bento a:hover .ab-go svg{transform:none}
+}

@@ -1,0 +1,250 @@
+/* jibinjohnson.in — Services page only (loaded after main.css on services/index.html).
+   Uses the palette, type, buttons and card styles of main.css; transparent versions of palette colours only. */
+
+/* ---------- headings ---------- */
+.sv h2 .it{font-style:italic;font-weight:500;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sv .sec-head .lede{justify-self:end;max-width:26em}
+
+/* ---------- hero: numbered chips that jump to each service ---------- */
+.sv-jump{margin-top:1.75rem}
+.sv-jump ol{display:flex;flex-wrap:wrap;gap:.5rem}
+.sv-jump a{display:inline-flex;align-items:center;gap:.55rem;min-height:2.75rem;padding:.35rem 1rem .35rem .4rem;border:1px solid var(--line);border-radius:99px;background:var(--surface);font-size:.9375rem;font-weight:600;line-height:1.2;transition:border-color .25s,background-color .25s}
+.sv-jump a span{display:grid;place-items:center;min-width:2rem;height:2rem;padding:0 .4rem;border-radius:99px;background:var(--tint);color:var(--accent);font-size:.75rem;font-weight:700;font-variant-numeric:tabular-nums;transition:background-color .25s,color .25s}
+.sv-jump a:hover{border-color:rgba(99,118,101,.45)}
+.sv-jump a:hover span{background:var(--accent-btn);color:var(--surface)}
+.sv-hero .hero-sub .cta-row{margin-top:1.75rem}
+
+/* ---------- what I do: one sticky screen (desktop) beside five service blocks ----------
+   Each block carries its own illustration (shown above its text below 1024px and without JS).
+   With JS at 1024px+ services.js copies the five illustrations into the sticky screen and cross-fades to the block
+   crossing the middle of the viewport; the in-block copies are hidden. */
+.ss{display:grid;grid-template-columns:minmax(0,1fr)}
+.ss-aside{display:none}
+.ss-block{padding-block:clamp(2.5rem,2rem + 2vw,3.5rem)}
+.ss-block:first-child{padding-top:0}
+.ss-block+.ss-block{border-top:1px solid var(--line)}
+.ss-block:focus{outline:none}
+.ss-copy h3{margin-bottom:.75rem;font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.ss-copy .eyebrow{margin-bottom:1rem}
+.ss-desc{max-width:34em;color:var(--muted)}
+.ss-list{display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem 1.5rem;margin-top:1.5rem;font-size:.9688rem}
+.ss-list li{position:relative;padding-left:1.5rem}
+.ss-list li::before{content:"";position:absolute;left:.1rem;top:.55em;width:.65rem;height:.35rem;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+.ss-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
+.ss-tools li{padding:.25rem .75rem;border:1px solid var(--line);border-radius:99px;font-size:.8125rem;font-weight:600;line-height:1.5;color:var(--muted)}
+.ss-links{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;margin-top:1.75rem}
+.ss-more{margin-top:clamp(1.5rem,1rem + 1.5vw,2.5rem);padding-top:1.5rem;border-top:1px solid var(--line)}
+@media (min-width:600px){.ss-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* glass screen (sticky, desktop) and the per-block frames (phones, tablets, no JS): the home hero's glass card style
+   over a soft sage glow */
+.ss-screen,.ss-vis{position:relative;isolation:isolate;padding:clamp(.5rem,2.5%,1rem);border:1.5px solid rgba(255,255,255,.75);border-radius:24px;background:linear-gradient(140deg,rgba(255,255,255,.82),rgba(234,240,234,.55) 55%,rgba(255,255,255,.7));-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(11,14,20,.06),0 30px 60px -36px rgba(36,46,38,.45)}
+.ss-stage,.ss-vis{position:relative}
+.ss-stage::before,.ss-vis::before{content:"";position:absolute;z-index:-1;inset:6% -4% -6% 8%;border-radius:50%;background:radial-gradient(closest-side,rgba(169,196,171,.55),rgba(169,196,171,0));pointer-events:none}
+.ss-stage{max-width:520px}
+.ss-vis{max-width:34rem;margin-bottom:1.75rem}
+.ss-frame{position:relative;container-type:inline-size;aspect-ratio:13/10;overflow:hidden;border-radius:16px}
+.ss-count{display:flex;align-items:center;gap:.4rem;max-width:520px;margin-top:1.25rem;font-size:.875rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.ss-n{color:var(--ink)}
+.ss-bars{display:flex;gap:.3rem;margin-left:auto}
+.ss-bars i{width:1.5rem;height:2px;border-radius:2px;background:var(--line-strong);transition:background-color .3s}
+.ss-bars i.on{background:var(--accent-btn)}
+@media (min-width:1024px){
+  .js .ss{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(3rem,1rem + 4vw,6rem);align-items:start}
+  .js .ss-aside{display:block;position:sticky;top:max(1.5rem,calc(50vh - 15rem))}
+  .js .ss-block .ss-vis{display:none}
+  .js .ss-block{display:flex;align-items:center;min-height:min(78vh,44rem);padding-block:3rem}
+  .js .ss-block:first-child{min-height:min(60vh,36rem);align-items:flex-start;padding-top:0}
+  /* without JS: illustration and text side by side in each block */
+  html:not(.js) .ss-block{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4rem;align-items:center}
+  html:not(.js) .ss-vis{margin:0}
+}
+/* the screen shows one scene at a time; the change is a cross-fade (instant under reduced motion) */
+.ss-screen .scene{opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}
+.ss-screen .scene.on{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
+/* the active scene assembles: its parts fade up in order (services.js sets .motion and each part's --d) */
+.ss-screen.motion .as{transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.ss-screen.motion .scene.on .as{transition-delay:var(--d,0s)}
+.ss-screen.motion .scene:not(.on) .as{opacity:0;transform:translateY(16px)}
+.ss-screen.motion .seo-line{transition:stroke-dashoffset 1.2s var(--ease) .45s}
+.ss-screen.motion .scene:not(.on) .seo-line{stroke-dashoffset:1}
+
+/* ---------- the five illustrations (HTML/CSS/SVG, decorative). Sizes are in em on a canvas whose font size follows
+   the frame width (2.5cqi: 13px in the 520px screen), so each scene scales as one picture ---------- */
+.scene{position:absolute;inset:0;font-size:13px;font-size:2.5cqi;line-height:1.35;color:var(--ink);text-align:left}
+.scene svg{display:block}
+.win{background:var(--surface);border:1px solid var(--line);border-radius:1em;box-shadow:0 1.2em 2.4em -1.6em rgba(36,46,38,.35);overflow:hidden}
+.bar{display:flex;align-items:center;gap:.4em;height:2.4em;padding:0 .9em;border-bottom:1px solid var(--line);background:rgba(234,240,234,.55)}
+.bar i,.code-bar i{flex:none;width:.6em;height:.6em;border-radius:50%;background:rgba(11,14,20,.14)}
+.url{flex:1;max-width:16em;margin-left:.6em;padding:.15em .9em;border:1px solid var(--line);border-radius:99px;background:var(--surface);font-size:.85em;color:var(--muted);white-space:nowrap;overflow:hidden}
+.sk{display:block;height:.6em;border-radius:99px;background:rgba(11,14,20,.1)}
+.sk-s{width:60%}
+
+/* 01 websites: a browser window with a header, hero block, buttons and three cards */
+.sc-web .win{position:absolute;inset:0;display:flex;flex-direction:column}
+.web{flex:1;display:flex;flex-direction:column;gap:1em;padding:1.2em}
+.web-nav{display:flex;align-items:center;gap:1.2em}
+.web-nav b{width:1.6em;height:1.6em;margin-right:auto;border-radius:.45em;background:var(--grad)}
+.web-nav span{width:2.6em;height:.5em;border-radius:99px;background:rgba(11,14,20,.14)}
+.web-nav em{width:4.6em;height:1.7em;border-radius:99px;background:var(--accent-btn)}
+.web-hero{display:flex;flex-direction:column;align-items:flex-start;gap:.55em;padding:1.5em 1.4em;border-radius:.8em;background:linear-gradient(140deg,var(--tint),rgba(234,240,234,.35))}
+.web-hero .sk-h{width:62%;height:1.1em;background:rgba(11,14,20,.78)}
+.web-hero .sk-h.sk-s{width:42%;background:var(--accent)}
+.web-hero .sk-t{width:55%;margin-top:.35em;background:rgba(11,14,20,.14)}
+.web-btns{display:flex;gap:.6em;margin-top:.7em}
+.web-btns em{width:5.4em;height:1.8em;border-radius:99px;border:1px solid rgba(11,14,20,.18);background:var(--surface)}
+.web-btns em.fill{border-color:var(--accent-btn);background:var(--accent-btn)}
+.web-cards{flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8em}
+.web-cards span{display:flex;flex-direction:column;gap:.5em;padding:.9em;border:1px solid var(--line);border-radius:.7em;background:var(--surface)}
+.web-cards i{flex:1;min-height:2em;margin-bottom:.3em;border-radius:.45em;background:linear-gradient(150deg,var(--tint),rgba(169,196,171,.45))}
+.web-cards b{width:85%}
+
+/* 02 SEO: a search results list with one sage result at position 1, a rising clicks chart */
+.sc-seo{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:1em}
+.seo-win{display:flex;flex-direction:column;gap:.8em;padding:1.2em}
+.seo-q{display:flex;align-items:center;gap:.6em;height:2.5em;padding:0 1em;border:1px solid var(--line);border-radius:99px;font-size:.95em;color:var(--muted);white-space:nowrap;overflow:hidden}
+.seo-q svg{flex:none;width:1.05em;height:1.05em}
+.seo-r{display:grid;grid-template-columns:1.9em minmax(0,1fr);gap:.7em;align-items:start;padding:.75em .8em;border:1px solid transparent;border-radius:.8em}
+.seo-pos{display:grid;place-items:center;width:1.9em;height:1.9em;border:1px solid var(--line);border-radius:50%;font-size:.85em;font-weight:700;color:var(--muted)}
+.seo-txt{display:flex;flex-direction:column;gap:.4em;min-width:0}
+.seo-top{border-color:rgba(86,104,90,.35);background:var(--tint)}
+.seo-top .seo-pos{border-color:var(--accent-btn);background:var(--accent-btn);color:var(--surface)}
+.seo-url{font-size:.8em;color:var(--muted)}
+.seo-t{font-weight:700;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seo-r .sk-u{width:40%;height:.5em}
+.seo-r .sk-h{width:75%;height:.8em;background:rgba(86,104,90,.3)}
+.seo-top .sk{background:rgba(11,14,20,.12)}
+.seo-side{display:flex;flex-direction:column;gap:1em}
+.seo-chart{flex:1.5;display:flex;flex-direction:column;gap:.6em;padding:1em}
+.seo-chart svg{flex:1;width:100%;height:auto;min-height:0;overflow:visible}
+.seo-area{fill:rgba(169,196,171,.4)}
+.seo-line{fill:none;stroke:var(--accent-btn);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1}
+.seo-lbl{font-size:.8em;font-weight:600;color:var(--muted)}
+.seo-rank{flex:1;display:grid;grid-template-columns:auto auto;grid-template-rows:auto 1fr;align-content:start;justify-content:space-between;align-items:end;padding:1em}
+.seo-rank .seo-lbl{grid-column:1/-1}
+.seo-big{font-size:3em;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--accent)}
+.seo-rank svg{width:1.6em;height:1.6em;margin-bottom:.4em;padding:.25em;border-radius:50%;background:var(--tint);color:var(--accent)}
+
+/* 03 full-stack: a dashboard with a sidebar, three stat tiles and a table */
+.dash{position:absolute;inset:0;display:grid;grid-template-columns:6.5em minmax(0,1fr)}
+.dash-side{display:flex;flex-direction:column;gap:1em;padding:1.2em .9em;border-right:1px solid var(--line);background:rgba(234,240,234,.6)}
+.dash-side b{width:1.6em;height:1.6em;margin-bottom:.6em;border-radius:.45em;background:var(--grad)}
+.dash-side span{width:80%;height:.55em;border-radius:99px;background:rgba(11,14,20,.13)}
+.dash-side span.on{background:var(--accent-btn)}
+.dash-main{display:flex;flex-direction:column;gap:1em;min-width:0;padding:1.2em}
+.dash-top{display:flex;align-items:center;justify-content:space-between}
+.dash-top .sk-h{width:38%;height:1em;background:rgba(11,14,20,.75)}
+.dash-top em{width:1.9em;height:1.9em;border-radius:50%;background:var(--tint)}
+.dash-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8em}
+.dash-stats>span{display:flex;flex-direction:column;gap:.55em;padding:.85em;border:1px solid var(--line);border-radius:.7em}
+.dash-stats b{width:55%;height:.5em}
+.dash-stats .sk-n{width:68%;height:1.1em;background:rgba(11,14,20,.75)}
+.dash-stats svg{width:100%;height:1.6em;fill:none;stroke:var(--accent-btn);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.dash-stats svg path{vector-effect:non-scaling-stroke}
+.dash-table{flex:1;border:1px solid var(--line);border-radius:.7em;overflow:hidden}
+.dash-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 4.4em;gap:1em;align-items:center;padding:.75em 1em;border-bottom:1px solid var(--line)}
+.dash-row:last-child{border-bottom:0}
+.dash-head{background:rgba(234,240,234,.55)}
+.dash-head .sk{width:50%;height:.5em;background:rgba(11,14,20,.2)}
+.dash-row em{justify-self:start;padding:.15em .65em;border-radius:99px;background:var(--tint);font-size:.75em;font-style:normal;font-weight:700;color:var(--accent)}
+.dash-row em.wait{background:rgba(11,14,20,.06);color:var(--muted)}
+
+/* 04 Python and Django: a model in a code window, and the admin panel it gives you */
+.sc-dj{display:grid;grid-template-columns:minmax(0,1fr) 11em;gap:1em;align-items:center}
+.code{overflow:hidden;border-radius:1em;background:var(--ink);color:rgba(255,255,255,.88);box-shadow:0 1.2em 2.4em -1.4em rgba(11,14,20,.55)}
+.code-bar{display:flex;align-items:center;gap:.4em;height:2.4em;padding:0 .9em;border-bottom:1px solid rgba(255,255,255,.1)}
+.code-bar i{background:rgba(255,255,255,.2)}
+.code-bar span{margin-left:.6em;font-size:.8em;color:rgba(255,255,255,.72)}
+.code pre{margin:0;padding:1em 1.1em 1.2em;overflow:hidden;font:400 .78em/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.code .k{color:var(--glow)}
+.code .c{color:var(--surface);font-weight:700}
+.code .f{color:var(--accent-on-dark)}
+.code .s{color:var(--tint)}
+.adm{align-self:center;margin-top:5em}
+.adm-head{padding:.6em .9em;background:var(--accent-btn);font-size:.85em;font-weight:700;color:var(--surface)}
+.adm-body{display:flex;flex-direction:column;gap:.65em;padding:.9em}
+.adm-t{font-size:.95em;font-weight:700}
+.adm-body em{align-self:flex-start;margin-bottom:.2em;padding:.25em .7em;border-radius:99px;background:var(--tint);font-size:.75em;font-style:normal;font-weight:700;color:var(--accent);white-space:nowrap}
+.adm-row{display:flex;align-items:center;gap:.55em;padding-top:.6em;border-top:1px solid var(--line)}
+.adm-row i{flex:none;width:.8em;height:.8em;border:1.5px solid rgba(11,14,20,.25);border-radius:.2em}
+.adm-row .sk{flex:1}
+.adm-row .sk-s{flex:0 0 60%}
+
+/* 05 AI: a chat assistant answering from the site's own content, the answer checked by a person */
+.chat{position:absolute;inset:0 4.5em;display:flex;flex-direction:column}
+.chat-head{display:flex;align-items:center;gap:.7em;padding:.9em 1.1em;border-bottom:1px solid var(--line)}
+.chat-av{display:grid;place-items:center;flex:none;width:2.2em;height:2.2em;border-radius:50%;background:var(--grad);color:var(--surface)}
+.chat-av svg{width:1.1em;height:1.1em}
+.chat-id{display:flex;flex-direction:column;line-height:1.25}
+.chat-id b{font-size:.95em}
+.chat-id span{font-size:.75em;color:var(--muted)}
+.chat-log{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:.8em;padding:1.2em 1.1em}
+.msg{max-width:80%;padding:.65em .9em;font-size:.9em;line-height:1.4}
+.msg.me{align-self:flex-end;border-radius:1em 1em .3em 1em;background:var(--accent-btn);color:var(--surface)}
+.msg.bot{align-self:flex-start;border-radius:1em 1em 1em .3em;background:var(--tint)}
+.chat-src{display:block;margin-top:.45em;font-size:.8em;font-weight:600;color:var(--accent)}
+.chat-ok{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;font-size:.8em;font-weight:700;color:var(--accent)}
+.chat-ok svg{width:1.4em;height:1.4em;padding:.2em;border-radius:50%;background:var(--tint)}
+.chat-in{display:flex;align-items:center;gap:.8em;margin:0 1.1em 1.1em;padding:.35em .35em .35em 1em;border:1px solid var(--line);border-radius:99px}
+.chat-in .sk{flex:1;max-width:55%}
+.chat-in em{display:grid;place-items:center;flex:none;width:1.9em;height:1.9em;margin-left:auto;border-radius:50%;background:var(--accent-btn);color:var(--surface)}
+.chat-in svg{width:.95em;height:.95em}
+
+/* ---------- process: five numbered circles joined by a line that fills with sage, step by step, as the section comes
+   into view (horizontal above 1100px, vertical below). Each step draws the segment to the next circle (li::after: sage
+   fill over the grey track). services.js adds .track and then .lit; without it (or under reduced motion) all is filled ---------- */
+.sv-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2rem;counter-reset:s}
+.sv-steps li{position:relative;z-index:1;counter-increment:s;display:flex;flex-direction:column;gap:.5rem}
+.sv-steps li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-bottom:1.25rem;border:1px solid var(--accent-btn);border-radius:50%;background:var(--accent-btn);box-shadow:0 0 0 8px var(--surface);font-family:var(--display);font-size:1.1875rem;font-weight:700;line-height:1;color:var(--surface);font-variant-numeric:lining-nums;transition:background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
+.sv-steps li:not(:last-child)::after{content:"";position:absolute;z-index:-1;top:calc(1.75rem - 1px);left:1.75rem;width:calc(100% + 2rem);height:2px;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 0 0/100% 100% no-repeat,var(--line);transition:background-size .3s linear}
+.sv-steps h3{font-size:1.1875rem}
+.sv-steps p{color:var(--muted);font-size:.9688rem}
+.sv-steps.track:not(.lit) li::before{border-color:rgba(99,118,101,.35);background:var(--surface);color:var(--accent)}
+.sv-steps.track:not(.lit) li::after{background-size:0 100%}
+.sv-steps.lit li:nth-child(1)::after{transition-delay:.15s}
+.sv-steps.lit li:nth-child(2)::before{transition-delay:.45s}
+.sv-steps.lit li:nth-child(2)::after{transition-delay:.6s}
+.sv-steps.lit li:nth-child(3)::before{transition-delay:.9s}
+.sv-steps.lit li:nth-child(3)::after{transition-delay:1.05s}
+.sv-steps.lit li:nth-child(4)::before{transition-delay:1.35s}
+.sv-steps.lit li:nth-child(4)::after{transition-delay:1.5s}
+.sv-steps.lit li:nth-child(5)::before{transition-delay:1.8s}
+@media (max-width:1100px){
+  .sv-steps{grid-template-columns:minmax(0,1fr);gap:0}
+  .sv-steps li{display:grid;grid-template-columns:3.5rem minmax(0,1fr);column-gap:1.5rem;row-gap:.35rem;padding-bottom:2rem}
+  .sv-steps li:last-child{padding-bottom:0}
+  .sv-steps li::before{grid-row:1/span 2;margin:0}
+  .sv-steps li:not(:last-child)::after{top:1.75rem;left:calc(1.75rem - 1px);width:2px;height:100%}
+  .sv-steps.track:not(.lit) li::after{background-size:100% 0}
+  .sv-steps h3,.sv-steps p{grid-column:2}
+  .sv-steps h3{padding-top:1rem}
+  .sv-steps p{max-width:36em}
+}
+
+/* ---------- ways to work ---------- */
+.sv-ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.sv-ways li{display:flex;flex-direction:column;gap:.6rem;padding:clamp(1.5rem,1rem + 1.5vw,2rem);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .25s var(--ease),border-color .25s}
+.sv-ways li:hover{transform:translateY(-4px);border-color:var(--line-strong)}
+.sv-ic{display:grid;place-items:center;width:2.75rem;height:2.75rem;margin-bottom:.6rem;border-radius:12px;background:var(--grad);color:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 12px -6px rgba(99,118,101,.6)}
+.sv-ic svg{width:1.25rem;height:1.25rem}
+.sv-ways h3{font-size:1.375rem;letter-spacing:-.02em}
+.sv-ways p{color:var(--muted);font-size:.9688rem}
+.sv-ways .btn{align-self:flex-start;margin-top:auto}
+.sv-ways p{margin-bottom:1rem}
+
+/* ---------- FAQ: heading column held in view on desktop; the plus sits in a ring that turns sage when open ---------- */
+.sv .faq-grid h2{position:static}
+.sv-split-head{position:sticky;top:6.5rem}
+.sv .faq summary{padding:1.5rem 0;font-size:1.125rem}
+.sv .faq summary::after{width:2.25rem;height:2.25rem;border:1px solid var(--line);border-radius:50%;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/.75rem 1.5px no-repeat,linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/1.5px .75rem no-repeat;transition:transform .3s var(--ease),border-color .3s}
+.sv .faq details[open] summary::after{border-color:var(--accent-btn)}
+.sv .faq summary:hover::after{border-color:var(--line-strong)}
+
+@media (max-width:900px){
+  .sv .sec-head .lede{justify-self:start}
+  .sv-ways{grid-template-columns:minmax(0,1fr)}
+  .sv-split-head{position:static}
+}
+@media (prefers-reduced-motion:reduce){
+  .sv-ways li:hover,.btn:hover .arrow{transform:none}
+}

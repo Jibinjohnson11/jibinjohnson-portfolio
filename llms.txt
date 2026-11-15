@@ -4,8 +4,8 @@
 
 ## Pages
 
-- [About](https://jibinjohnson.in/about/): background, education and tools
-- [Services](https://jibinjohnson.in/services/): all services, process and pricing
+- [About](https://jibinjohnson.in/about/): story, services, working principles, tools, experience and education
+- [Services](https://jibinjohnson.in/services/): all five services, process, ways to work, pricing and FAQ
 - [Projects](https://jibinjohnson.in/projects/): websites built and SEO results
 - [Contact](https://jibinjohnson.in/contact/): WhatsApp, call booking and contact form
 
