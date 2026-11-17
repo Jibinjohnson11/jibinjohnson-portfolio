@@ -450,12 +450,14 @@ html:not(.is-signing) .sign:not(.out){display:none}
 #services .sec-link{background:transparent;font-weight:500;font-size:.875rem;letter-spacing:.01em;transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
 #services .sec-link:hover{background:var(--ink);border-color:var(--ink);color:#fff}
 /* cards: image (the Verdant screenshot or a flat illustration, all in the same window frame on a sage tile, at the
-   screenshot's 800:447), H3, description, tool chips, then the footer: "01 / 05" and the round arrow link. The arrow is
+   screenshot's 800:447), H3, description, tool chips, then the footer: "01 / 06" and the round arrow link. The arrow is
    the card's only link (aria-label names the service); its ::after stretches over the whole card as the click area. */
 .bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1.5rem}
 .bento>li{grid-column:span 4}
-.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:10px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 1px 2px rgba(32,34,31,.04),0 12px 32px -18px rgba(32,34,31,.16);transition:transform .7s var(--sv-ease),box-shadow .7s var(--sv-ease),border-color .7s var(--sv-ease)}
-.svc-card:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:0 2px 4px rgba(32,34,31,.04),0 26px 50px -24px rgba(32,34,31,.24)}
+/* glass: 80% white with a top-left sheen, backdrop blur, a light rim and an inner top highlight; opaque enough that
+   the muted text keeps 4.5:1 when a card or a dark photo sits behind it */
+.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:10px;border:1px solid rgba(255,255,255,.75);border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%),rgba(255,255,255,.8);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 1px rgba(32,34,31,.05),0 1px 2px rgba(32,34,31,.04),0 12px 32px -18px rgba(32,34,31,.16);transition:transform .7s var(--sv-ease),box-shadow .7s var(--sv-ease),border-color .7s var(--sv-ease)}
+.svc-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.9);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 1px rgba(32,34,31,.08),0 2px 4px rgba(32,34,31,.04),0 26px 50px -24px rgba(32,34,31,.24)}
 .shot{position:relative;display:block;flex:none;aspect-ratio:800/447;overflow:hidden;border-radius:12px;background:var(--tint)}
 .shot .win{position:absolute;left:7%;right:7%;top:9%;bottom:0;overflow:hidden;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;background:#fff;box-shadow:0 12px 26px -16px rgba(32,34,31,.28)}
 .shot .win::before{content:"";position:absolute;inset:0 0 auto;height:14px;border-bottom:1px solid var(--line);background-color:var(--sv-bg);background-image:radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px);background-size:10px 10px;background-repeat:no-repeat;background-position:3px 50%,13px 50%,23px 50%}
@@ -465,7 +467,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .svc-card h3{font-size:1.25rem;font-weight:500;line-height:1.25;letter-spacing:-.02em;color:var(--ink);text-wrap:balance}
 .svc-card p{margin-top:.5rem;font-size:.8125rem;line-height:1.6;color:var(--muted)}
 .svc-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:.875rem}
-.svc-tools li{padding:.25rem .625rem;border:1px solid var(--line);border-radius:99px;background:var(--sv-bg);font-size:.6875rem;font-weight:500;line-height:1.4;color:var(--muted);white-space:nowrap}
+.svc-tools li{padding:.25rem .625rem;border:1px solid var(--line);border-radius:99px;background:rgba(245,244,239,.7);font-size:.6875rem;font-weight:500;line-height:1.4;color:var(--muted);white-space:nowrap}
 .svc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:1rem}
 .svc-no{font-size:.75rem;font-weight:500;letter-spacing:.14em;color:var(--muted);font-variant-numeric:tabular-nums}
 .svc-go{display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:50%;border:1px solid var(--line-strong);background:transparent;color:var(--ink);transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
@@ -490,9 +492,9 @@ html:not(.is-signing) .sign:not(.out){display:none}
 #services.svc-rot .bento{position:relative;display:block;grid-column:2;grid-row:1/-1;min-height:0}
 #services.svc-rot .svc-info{grid-column:1;grid-row:3}
 #services.svc-rot .svc-ctas{grid-column:1;grid-row:4;margin-top:clamp(1.25rem,3.5vh,2.25rem)}
-/* the active service's panel: all five panes stay in the HTML, stacked in one grid cell, so the panel is always as tall
+/* the active service's panel: all six panes stay in the HTML, stacked in one grid cell, so the panel is always as tall
    as the tallest (the buttons never move); the inactive ones are only transparent (opacity 0), so search engines and
-   screen readers read all five. services-rotate.js moves .is-on when the centre card changes: the new pane fades in
+   screen readers read all six. services-rotate.js moves .is-on when the centre card changes: the new pane fades in
    and rises 8px over 300ms while the old one fades out (instant under reduced motion). The counter is one live
    region whose text the script changes; it fades up with the pane. Without the rotation (no JS, reduced motion, short
    screens) the panel is hidden visually but stays readable, and the buttons sit above the grid. */
@@ -546,7 +548,11 @@ html:not(.is-signing) .sign:not(.out){display:none}
   /* phone cards are scaled to fit the stage height (about 0.75-0.85), so their text starts larger */
   #services.svc-rot .svc-card p{font-size:.9375rem;line-height:1.5}
 }
-#services.svc-rot .bento>li{position:absolute;left:50%;top:50%;width:var(--cw,25rem);will-change:transform,opacity;backface-visibility:hidden}
+/* will-change: transform only; will-change: opacity would make each card its own backdrop root and the glass blur
+   would see nothing behind it */
+#services.svc-rot .bento>li{position:absolute;left:50%;top:50%;width:var(--cw,25rem);will-change:transform;backface-visibility:hidden}
+/* a soft sage glow behind the stack, for the glass to blur */
+#services.svc-rot .bento::before{content:"";position:absolute;inset:6% 4%;background:radial-gradient(42% 40% at 72% 28%,rgba(169,196,171,.5),rgba(169,196,171,0) 70%),radial-gradient(40% 42% at 28% 74%,rgba(99,118,101,.2),rgba(99,118,101,0) 70%),radial-gradient(30% 30% at 50% 50%,rgba(234,240,234,.9),rgba(234,240,234,0) 70%);pointer-events:none}
 #services.svc-rot .bento>li::before{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:0 44px 80px -44px rgba(32,34,31,.3);opacity:var(--f,0);pointer-events:none}
 #services.svc-rot .svc-card{overflow:hidden}
 #services.svc-rot .svc-card p,#services.svc-rot .svc-tools,#services.svc-rot .svc-foot{opacity:var(--t,1)}

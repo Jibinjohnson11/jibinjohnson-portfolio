@@ -51,6 +51,7 @@
       ml: ['dl', 'data', 'nlp'], dl: ['nlp'], data: ['excel', 'tableau', 'powerbi'],
       tableau: ['powerbi', 'excel'], powerbi: ['excel'],
       prompt: ['chatgpt', 'claude'], chatgpt: ['claude'],
+      shopify: ['liquid', 'razorpay'], liquid: ['html', 'css', 'js'], razorpay: ['django', 'js'],
       gsc: ['ga'], git: ['github', 'vscode'], github: ['vscode'], docker: ['aws'], aws: ['django']
     };
     var map = {};

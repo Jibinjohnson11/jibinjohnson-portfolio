@@ -59,7 +59,7 @@
 .ab mark{padding:.05em .3em;border-radius:5px;background:var(--tint);color:var(--ink);-webkit-box-decoration-break:clone;box-decoration-break:clone}
 @media (min-width:1024px){.ab-story{grid-template-columns:minmax(0,6fr) minmax(0,5fr)}.ab-story-more{padding-top:.4rem}}
 
-/* ---------- 03 what I do: bento of four (wide, narrow / narrow, wide) ---------- */
+/* ---------- 03 what I do: six service cards in an even grid ---------- */
 .ab-bento{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;margin-top:clamp(2.5rem,2rem + 2vw,3.5rem)}
 .ab-bento a{display:flex;flex-direction:column;gap:.6rem;height:100%;padding:clamp(1.5rem,1rem + 1.5vw,2rem);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .25s var(--ease),border-color .25s}
 .ab-bento a:hover{transform:translateY(-4px);border-color:var(--line-strong)}
@@ -71,12 +71,9 @@
 .ab-go{display:inline-flex;align-items:center;gap:.4rem;margin-top:auto;padding-top:.9rem;font-size:.9375rem;font-weight:600;color:var(--accent-btn)}
 .ab-go svg{width:1rem;height:1rem;transition:transform .25s var(--ease)}
 .ab-bento a:hover .ab-go svg{transform:translateX(4px)}
-@media (min-width:1024px){
-  .ab-bento{grid-template-columns:repeat(12,minmax(0,1fr));gap:1.25rem}
-  .ab-bento li:nth-child(1),.ab-bento li:nth-child(4){grid-column:span 7}
-  .ab-bento li:nth-child(2),.ab-bento li:nth-child(3){grid-column:span 5}
-  .ab-bento li:nth-child(1) a,.ab-bento li:nth-child(4) a{background:linear-gradient(160deg,rgba(234,240,234,.6),var(--surface) 65%)}
-}
+/* six service cards, evenly: one column on phones, two from 640px, three from 1200px (the sticky index takes room from 1024px) */
+@media (min-width:640px){.ab-bento{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem}}
+@media (min-width:1200px){.ab-bento{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 /* ---------- heading left, content right (principles, journey) ---------- */
 .ab-split{display:grid;grid-template-columns:minmax(0,1fr);gap:2.25rem 4rem;align-items:start}

@@ -11,7 +11,7 @@
    the foot of the H3) and its full height (fits its content). Leaving the centre, the description, chips and footer
    fade out first (--t) and only then does the card shrink; arriving, it grows first and the text fades in after, so
    no text is ever cut at a card edge. The text stays in the HTML (opacity only).
-   The panel left of the cards (counter, one-liner, description, checklist; five panes in the HTML) follows the same
+   The panel left of the cards (counter, one-liner, description, checklist; six panes in the HTML) follows the same
    position: at the midpoint of a step, where the incoming card passes in front, the script moves .is-on to the new
    pane and updates the counter; CSS cross-fades them (300ms, 8px rise; instant under reduced motion).
    Without JS or GSAP, under reduced motion or on very short screens the grid stays (gsap.matchMedia reverts it). */

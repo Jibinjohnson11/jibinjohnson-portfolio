@@ -18,3 +18,16 @@
   to = "https://jibinjohnson.in/:splat"
   status = 301
   force = true
+
+# Python and Django is no longer a separate service; its old page goes to full-stack development
+[[redirects]]
+  from = "/python-django-developer-kerala"
+  to = "/full-stack-developer-kerala/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/python-django-developer-kerala/*"
+  to = "/full-stack-developer-kerala/"
+  status = 301
+  force = true
