@@ -7,11 +7,14 @@
 @font-face{font-family:"Switzer";font-style:italic;font-weight:100 900;font-display:swap;src:url("../fonts/Switzer-VariableItalic.woff2") format("woff2")}
 @font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/InstrumentSerif-Regular.woff2") format("woff2")}
 @font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/InstrumentSerif-Italic.woff2") format("woff2")}
+/* Montserrat (OFL, Latin variable subset from Fontsource): home Services section only */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:100 900;font-display:swap;src:url("../fonts/Montserrat-Variable.woff2") format("woff2")}
 /* Switzer has no ₹ (U+20B9): supplied from the Plus Jakarta Sans subset, loaded only on pages that show ₹ in Switzer text */
 @font-face{font-family:"Rupee Fallback";font-style:normal;font-weight:400 800;font-display:swap;src:url("../fonts/plus-jakarta-sans.woff2") format("woff2");unicode-range:U+20B9}
 /* metric-matched local fallbacks so text doesn't shift when the web fonts swap in */
 @font-face{font-family:"Switzer Fallback";font-weight:100 500;src:local("Arial"),local("ArialMT");size-adjust:97.8%;ascent-override:100.2%;descent-override:25.56%;line-gap-override:9.2%}
 @font-face{font-family:"Switzer Fallback";font-weight:600 900;src:local("Arial Bold"),local("Arial-BoldMT");size-adjust:97.8%;ascent-override:100.2%;descent-override:25.56%;line-gap-override:9.2%}
+@font-face{font-family:"Montserrat Fallback";src:local("Arial"),local("ArialMT");size-adjust:112.83%;ascent-override:85.79%;descent-override:22.25%;line-gap-override:0%}
 @font-face{font-family:"Instrument Serif Fallback";font-style:normal;font-weight:400;src:local("Times New Roman"),local("TimesNewRomanPSMT");size-adjust:82.61%;ascent-override:119.84%;descent-override:37.53%;line-gap-override:0%}
 @font-face{font-family:"Instrument Serif Fallback";font-style:italic;font-weight:400;src:local("Times New Roman Italic"),local("TimesNewRomanPS-ItalicMT");size-adjust:86.88%;ascent-override:113.95%;descent-override:35.68%;line-gap-override:0%}
 
@@ -432,26 +435,121 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .home .sec-head{margin-bottom:clamp(2.5rem,2rem + 2.5vw,4rem)}
 .home .sec-head .lede{justify-self:end;max-width:26em}
 .sec-link{justify-self:end}
-/* services: bento grid, two large cards then four small; the screenshot sits inset in the card */
-.bento{grid-template-columns:repeat(12,minmax(0,1fr));gap:1.25rem}
-.bento li{grid-column:span 3}
-.bento li:nth-child(-n+2){grid-column:span 6}
-.bento a{gap:0;padding:.75rem;border-radius:24px;background:linear-gradient(180deg,var(--surface),rgba(234,240,234,.45));border-color:rgba(99,118,101,.16);transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .45s}
-.bento a:hover{transform:translateY(-6px);border-color:rgba(99,118,101,.4);box-shadow:0 30px 60px -30px rgba(99,118,101,.35)}
-.bento .shot{position:relative;display:block;flex:none;aspect-ratio:4/3;overflow:hidden;border-radius:16px;background:var(--tint)}
-.bento li:nth-child(-n+2) .shot{aspect-ratio:16/9}
-.bento .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-.bento a:hover .shot img{transform:scale(1.04)}
-.svc-body{display:flex;flex-direction:column;flex:1;gap:.5rem;padding:1.25rem .75rem .75rem}
-.svc-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem}
-.svc-no{font-size:.8125rem;font-weight:600;letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums}
-.svc-go{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);transition:background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
-.svc-go svg{width:1rem;height:1rem;transition:transform .35s var(--ease)}
-.bento a:hover .svc-go{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
-.bento a:hover .svc-go svg{transform:rotate(45deg)}
-.bento h3{font-size:1.25rem;letter-spacing:-.02em}
-.bento li:nth-child(-n+2) h3{font-size:1.5rem}
-.bento p{font-size:.9688rem}
+/* ---------- home Services: editorial studio showcase ----------
+   Its own palette, set on #services only (the rest of the site keeps the white/sage system): warm ivory band
+   #F5F4EF, deep charcoal type #20221F, warm grey secondary text #5C5F58 (5.9:1 on the ivory, 6.4:1 on white),
+   neutral borders #E3E4DE and a muted sage #718477 for non-text accents only (3.6:1 on the ivory: arrow fill, focus
+   ring); text accents keep --accent. Labels, card text and navigation are Montserrat (self-hosted, OFL, this section
+   only); the H2, the value statement and nothing else use Instrument Serif. */
+#services{--ink:#20221F;--muted:#5C5F58;--line:#E3E4DE;--line-strong:#CFD0C8;--sv-bg:#F5F4EF;--sv-accent:#718477;--accent-btn:var(--sv-accent);--sv-ease:cubic-bezier(.22,1,.36,1);background:var(--sv-bg);color:var(--ink)}
+#services.sec{padding-block:var(--sec)}
+#services+.sec{padding-top:var(--sec)}
+#services .eyebrow,#services .sec-link,#services .bento{font-family:var(--sv-font)}
+:root{--sv-font:"Montserrat","Montserrat Fallback",system-ui,sans-serif}
+#services .eyebrow{font-weight:600;letter-spacing:.18em;font-size:.75rem}
+#services .sec-link{background:transparent;font-weight:500;font-size:.875rem;letter-spacing:.01em;transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
+#services .sec-link:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+/* cards: image (the Verdant screenshot or a flat illustration, all in the same window frame on a sage tile, at the
+   screenshot's 800:447), H3, description, tool chips, then the footer: "01 / 05" and the round arrow link. The arrow is
+   the card's only link (aria-label names the service); its ::after stretches over the whole card as the click area. */
+.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1.5rem}
+.bento>li{grid-column:span 4}
+.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:10px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 1px 2px rgba(32,34,31,.04),0 12px 32px -18px rgba(32,34,31,.16);transition:transform .7s var(--sv-ease),box-shadow .7s var(--sv-ease),border-color .7s var(--sv-ease)}
+.svc-card:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:0 2px 4px rgba(32,34,31,.04),0 26px 50px -24px rgba(32,34,31,.24)}
+.shot{position:relative;display:block;flex:none;aspect-ratio:800/447;overflow:hidden;border-radius:12px;background:var(--tint)}
+.shot .win{position:absolute;left:7%;right:7%;top:9%;bottom:0;overflow:hidden;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;background:#fff;box-shadow:0 12px 26px -16px rgba(32,34,31,.28)}
+.shot .win::before{content:"";position:absolute;inset:0 0 auto;height:14px;border-bottom:1px solid var(--line);background-color:var(--sv-bg);background-image:radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px);background-size:10px 10px;background-repeat:no-repeat;background-position:3px 50%,13px 50%,23px 50%}
+.shot img,.shot svg{position:absolute;left:0;top:14px;display:block;width:100%;height:calc(100% - 14px);object-fit:cover;object-position:50% 0;transition:transform 1s var(--sv-ease);transform-origin:50% 0}
+.svc-card:hover .shot img,.svc-card:hover .shot svg{transform:scale(1.03)}
+.svc-body{display:flex;flex-direction:column;flex:1 0 auto;padding:16px 8px 4px}
+.svc-card h3{font-size:1.25rem;font-weight:500;line-height:1.25;letter-spacing:-.02em;color:var(--ink);text-wrap:balance}
+.svc-card p{margin-top:.5rem;font-size:.8125rem;line-height:1.6;color:var(--muted)}
+.svc-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:.875rem}
+.svc-tools li{padding:.25rem .625rem;border:1px solid var(--line);border-radius:99px;background:var(--sv-bg);font-size:.6875rem;font-weight:500;line-height:1.4;color:var(--muted);white-space:nowrap}
+.svc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:1rem}
+.svc-no{font-size:.75rem;font-weight:500;letter-spacing:.14em;color:var(--muted);font-variant-numeric:tabular-nums}
+.svc-go{display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:50%;border:1px solid var(--line-strong);background:transparent;color:var(--ink);transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
+.svc-go::after{content:"";position:absolute;inset:0;border-radius:20px}
+.svc-go svg{width:.8125rem;height:.8125rem;stroke-width:1.5;transition:transform .5s var(--sv-ease)}
+.svc-card:hover .svc-go{background:var(--sv-accent);border-color:var(--sv-accent);color:#fff}
+.svc-card:hover .svc-go svg{transform:translate(1.5px,-1.5px)}
+/* services rotation (services-rotate.js adds .svc-rot; without it, or under reduced motion, the grid above stays):
+   the section pins for one screen and the cards turn through three places: top right (next), centre (current),
+   bottom left (previous). services-rotate.js sets each card's transform, opacity, z-index and height, plus --f
+   (1 in the centre, 0 at the sides) and --t (the back-card text: 0 at the sides, fades in over the last 40% of the
+   way to the centre, after the card has grown to fit it, so no text is ever cut at a card edge). */
+#services.svc-rot{height:100vh;height:100svh;padding-block:clamp(2rem,7vh,4.5rem) clamp(1.25rem,4vh,2.5rem);overflow:clip}
+/* the section head becomes a grid item (display:contents). Left column (40%), centred as one group between two equal
+   free rows: label + H2, the active service's panel (counter, one-liner, description, checklist), the two buttons.
+   Right column (60%): the cards, full height. .svc-stage (panel + cards) is display:contents here.
+   Below 900px the section is not one screen: label + H2 scroll past, then .svc-stage (panel above the cards) is what
+   pins, at one screen, and the buttons follow the cards; so the panel never squeezes the cards. */
+#services.svc-rot>.wrap{position:relative;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:minmax(0,1fr) auto auto auto minmax(0,1fr);column-gap:clamp(2rem,4vw,4rem);height:100%}
+#services.svc-rot .sec-head,.svc-stage{display:contents}
+#services.svc-rot .sec-head>div{grid-column:1;grid-row:2;margin-bottom:clamp(1.25rem,3.5vh,2.25rem)}
+#services.svc-rot .bento{position:relative;display:block;grid-column:2;grid-row:1/-1;min-height:0}
+#services.svc-rot .svc-info{grid-column:1;grid-row:3}
+#services.svc-rot .svc-ctas{grid-column:1;grid-row:4;margin-top:clamp(1.25rem,3.5vh,2.25rem)}
+/* the active service's panel: all five panes stay in the HTML, stacked in one grid cell, so the panel is always as tall
+   as the tallest (the buttons never move); the inactive ones are only transparent (opacity 0), so search engines and
+   screen readers read all five. services-rotate.js moves .is-on when the centre card changes: the new pane fades in
+   and rises 8px over 300ms while the old one fades out (instant under reduced motion). The counter is one live
+   region whose text the script changes; it fades up with the pane. Without the rotation (no JS, reduced motion, short
+   screens) the panel is hidden visually but stays readable, and the buttons sit above the grid. */
+.svc-info{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+#services.svc-rot .svc-info{position:static;width:auto;height:auto;overflow:visible;clip:auto;clip-path:none;white-space:normal}
+.svc-count{margin-bottom:.75rem;font-family:var(--sv-font);font-size:.75rem;font-weight:600;letter-spacing:.16em;line-height:1.2;color:var(--accent);font-variant-numeric:tabular-nums}
+.svc-count.is-new{animation:svc-in .3s ease-out}
+.svc-panes{display:grid}
+.svc-pane{grid-area:1/1;opacity:0;transform:translate3d(0,8px,0);pointer-events:none;transition:opacity .3s ease-out,transform .3s ease-out}
+.svc-pane.is-on{opacity:1;transform:none;pointer-events:auto}
+@keyframes svc-in{from{opacity:0;transform:translate3d(0,8px,0)}}
+@media (prefers-reduced-motion:reduce){.svc-pane{transition:none}.svc-count.is-new{animation:none}}
+.svc-line{max-width:17em;font-family:var(--display);font-size:clamp(1.5rem,1rem + 1.05vw,2rem);font-weight:400;line-height:1.15;letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
+.svc-desc{max-width:34em;margin-top:clamp(.625rem,1.6vh,1rem);font-family:var(--font);font-size:1rem;line-height:1.6;color:var(--muted)}
+.svc-get{margin-top:clamp(1rem,2.6vh,1.5rem);font-family:var(--sv-font);font-size:.6875rem;font-weight:600;letter-spacing:.16em;line-height:1.2;text-transform:uppercase;color:var(--ink)}
+.svc-gets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem 1.25rem;max-width:34em;margin-top:.75rem;font-family:var(--font);font-size:.9375rem;line-height:1.4;color:var(--ink)}
+.svc-gets li{position:relative;padding-left:1.5rem}
+.svc-gets li::before{content:"";position:absolute;left:0;top:.2em;width:1rem;height:1rem;background:var(--sv-accent);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 8.5 3 3 6-7' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 8.5 3 3 6-7' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.svc-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem}
+#services .svc-ctas .btn{font-family:var(--sv-font);font-size:.875rem;letter-spacing:.01em}
+/* the section's --accent-btn is the muted sage (3.6:1), too light under white text: the primary uses --accent */
+#services .svc-ctas .btn-fill{background:var(--accent);font-weight:600;transition:background-color .5s var(--sv-ease)}
+#services .svc-ctas .btn-fill:hover{background:var(--accent-btn-hover)}
+#services:not(.svc-rot) .sec-head{margin-bottom:1.75rem}
+#services:not(.svc-rot) .svc-ctas{margin-bottom:clamp(2.5rem,2rem + 2.5vw,4rem)}
+@media (max-width:899px){
+  #services.svc-rot{height:auto;padding-block:var(--sec)}
+  #services.svc-rot>.wrap{display:block;height:auto}
+  #services.svc-rot .sec-head>div{margin-bottom:0}
+  #services.svc-rot .svc-stage{display:grid;grid-template-rows:auto minmax(0,1fr);row-gap:clamp(.5rem,2vh,1.25rem);height:100vh;height:100svh;padding-block:clamp(1rem,3vh,2rem) clamp(.75rem,2vh,1.25rem)}
+  #services.svc-rot .svc-info,#services.svc-rot .bento{grid-column:1;grid-row:auto}
+  #services.svc-rot .svc-ctas{margin-top:0}
+  .svc-line{max-width:22em;font-size:clamp(1.25rem,.95rem + 1.4vw,1.625rem)}
+}
+@media (max-width:599px){
+  .svc-desc{margin-top:.5rem;font-size:.9375rem;line-height:1.55}
+  .svc-get{margin-top:.875rem}
+  .svc-gets{grid-template-columns:minmax(0,1fr);gap:.375rem;margin-top:.5rem;font-size:.875rem}
+  .svc-gets li::before{top:.15em}
+}
+/* phones (below 768px): a tighter gap between the panel and the cards; on narrow (under 400px) or short (under 760px)
+   phones the checklist is visually hidden inside the pinned view (still in the HTML for search and screen readers) */
+@media (max-width:767px){
+  #services.svc-rot .svc-stage{row-gap:16px}
+}
+@media (max-width:399px),(max-width:767px) and (max-height:759px){
+  #services.svc-rot .svc-get,#services.svc-rot .svc-gets{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+}
+@media (max-width:479px){
+  #services .svc-ctas .btn{min-height:2.5rem;padding:.5rem 1rem}
+  /* phone cards are scaled to fit the stage height (about 0.75-0.85), so their text starts larger */
+  #services.svc-rot .svc-card p{font-size:.9375rem;line-height:1.5}
+}
+#services.svc-rot .bento>li{position:absolute;left:50%;top:50%;width:var(--cw,25rem);will-change:transform,opacity;backface-visibility:hidden}
+#services.svc-rot .bento>li::before{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:0 44px 80px -44px rgba(32,34,31,.3);opacity:var(--f,0);pointer-events:none}
+#services.svc-rot .svc-card{overflow:hidden}
+#services.svc-rot .svc-card p,#services.svc-rot .svc-tools,#services.svc-rot .svc-foot{opacity:var(--t,1)}
 /* stack and FAQ: heading column on the left (held in view on desktop), content on the right */
 .split-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .home .split-head{position:sticky;top:6.5rem}
@@ -482,9 +580,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
   .home .steps p{max-width:36em}
 }
 @media (max-width:1000px){
-  .bento li,.bento li:nth-child(-n+2){grid-column:span 6}
-  .bento .shot,.bento li:nth-child(-n+2) .shot{aspect-ratio:16/10}
-  .bento li:nth-child(-n+2) h3{font-size:1.25rem}
+  .bento>li{grid-column:span 6}
 }
 @media (max-width:900px){
   .split-sec{grid-template-columns:minmax(0,1fr)}
@@ -502,12 +598,12 @@ html:not(.is-signing) .sign:not(.out){display:none}
   .ed-frame{max-width:min(100%,24rem);max-height:none;margin-inline:0}
   .ed-side{max-width:none}
   .ed-cta{margin-top:1.5rem}
-  .bento li,.bento li:nth-child(-n+2){grid-column:1/-1}
+  .bento>li{grid-column:1/-1}
   .home .stack>div{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
   .ed-cta:hover svg{transform:none}
-  .bento a:hover,.bento a:hover .shot img,.bento a:hover .svc-go svg{transform:none}
+  .svc-card:hover,.svc-card:hover .shot img,.svc-card:hover .shot svg,.svc-card:hover .svc-go svg{transform:none}
 }
 
 /* ---------- floating WhatsApp button (phones and tablets) ---------- */
