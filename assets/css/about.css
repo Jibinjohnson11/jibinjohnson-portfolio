@@ -24,7 +24,7 @@
 
 /* ---------- headings ---------- */
 .ab h2{max-width:20em}
-.ab h2 .it{font-style:italic;font-weight:500;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ab h2 .it{font-style:italic;font-weight:400;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ab-note{margin-top:1rem}
 .ab-intro .eyebrow,.ab .sec .eyebrow{margin-bottom:1.25rem}
 
@@ -93,7 +93,7 @@
 .ab-acc button::after{content:"";flex:none;margin-left:auto;width:2.25rem;height:2.25rem;border:1px solid var(--line);border-radius:50%;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/.75rem 1.5px no-repeat,linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/1.5px .75rem no-repeat;transition:transform .3s var(--ease),border-color .3s}
 .ab-acc button:hover::after{border-color:var(--line-strong)}
 .ab-acc button[aria-expanded="true"]::after{transform:rotate(45deg);border-color:var(--accent-btn)}
-.ab-rn{flex:none;min-width:2.25rem;font-family:var(--display);font-style:italic;font-weight:500;font-size:1.25rem;color:var(--accent)}
+.ab-rn{flex:none;min-width:2.25rem;font-family:var(--display);font-style:italic;font-weight:400;font-size:1.25rem;color:var(--accent)}
 .ab-panel{display:grid;grid-template-rows:1fr}
 .ab-panel>div{min-height:0;overflow:hidden}
 .ab-panel p{max-width:34em;padding:0 3.25rem 1.4rem 3.25rem;color:var(--muted)}
