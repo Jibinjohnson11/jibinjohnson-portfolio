@@ -59,10 +59,10 @@
        portrait (the portrait is 80vw there) reaches the tablet sizes at 767px instead of keeping phone-sized cards */
     var k = Math.min(1.5, Math.max(1, w / 430));
     return w < 768
-      ? { set: MOBILE_SET, fit: true, edge: 14, rMax: 230 * k, cardW: 150 * k, cardH: Math.round(48 * k), gap: 8, tilt: 14, roll: 7, cam: 1100 * k, period: 16, cx: 0.62 }
+      ? { set: MOBILE_SET, fit: true, edge: 14, rMax: 230 * k, cardW: 150 * k, cardH: Math.round(48 * k), gap: 8, tilt: 14, roll: 7, cam: 1100 * k, period: 16, cx: 0.53 }
       : w < 1024
-        ? { set: WIDE_SET, r: 0.43, rMax: 340, cardW: 224, cardH: 70, gap: 26, tilt: 13, roll: 7, cam: 1600, period: 18, cx: 0.6 }
-        : { set: WIDE_SET, r: 0.25, rMax: 420, cardW: 232, cardH: 78, gap: 28, tilt: 12, roll: 7, cam: 2000, period: 20, cx: 0.6 };
+        ? { set: WIDE_SET, r: 0.45, rMax: 355, cardW: 224, cardH: 70, gap: 26, tilt: 13, roll: 7, cam: 1600, period: 18, cx: 0.53 }
+        : { set: WIDE_SET, r: 0.27, rMax: 450, cardW: 232, cardH: 78, gap: 28, tilt: 12, roll: 7, cam: 2000, period: 20, cx: 0.53 };
   };
 
   /* Widest flat panel that still leaves `gap` between neighbours on a ring of radius R with n slots.
@@ -332,27 +332,28 @@
   }
 
   /* =====================================================================================
-     2. Push from the hero into Services (GSAP + ScrollTrigger)
+     2. Push from the hero into About (GSAP + ScrollTrigger)
      The hero pins and the camera moves forward into the scene, toward eye level: the stage (portrait + cards)
      scales 1 → 2.5 around the face. Timeline 0 → 1 over 100% of the viewport height:
        0   – 0.3   headline, intro, buttons and stats drift up and fade out
        0   – 0.6   cards fly ahead of the portrait (parallax), blur to 8px and fade (orbit frame loop above)
-       0.6 – 1     the portrait dissolves into the white (feathered mask + soft blur), its remainder fading from 0.85
-     Then the section after the hero ([data-arrive], Services) takes over: from 75% of the zoom its title card
-     emerges from behind the dissolving portrait, travelling toward the viewer in depth, held at the centre of the
-     screen until the section's own sticky screen takes over, TAIL screens after the zoom (details below).
+       0.55 →      the portrait is handed to one fixed layer (.travel) that carries it into the About frame (see the end)
+     Then the section after the hero ([data-arrive], About) arrives: from 90% of the zoom its content is drawn over the whitened hero and revealed
+     in sequence while it rises, at half the scroll speed, into place under the header, TAIL screens after the zoom.
+     The section is pulled up over the hero's (by then empty, white) last screen so no dead scroll is left between
+     the zoom and About. From the top of the page to About in place: 1.35 screens (it was ~2.4).
      Scrolling is smoothed by Lenis (smooth.js), which runs on GSAP's ticker and updates ScrollTrigger.
      ===================================================================================== */
   var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
   var hero = document.querySelector('.hero[data-push]');
-  var about = document.querySelector('[data-arrive]'); /* the section the hero hands over to (Services) */
+  var about = document.querySelector('[data-arrive]'); /* the section the hero hands over to (About) */
   if (!gsap || !ScrollTrigger || !hero || !about || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
 
   var stage = hero.querySelector('.hero-stage');
   var copy = hero.querySelector('.hero-copy');
   var portrait = hero.querySelector('.hero-img');
-  if (portrait) portrait.classList.add('dissolve'); /* feathered mask, main.css */
+  var header = document.querySelector('.head');
 
   /* phones: the address bar showing/hiding changes only the height; don't re-measure (and jump) for that */
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -370,11 +371,7 @@
   var tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
     .fromTo(stage, { scale: 1 }, { scale: ZOOM, duration: 1 }, 0)
     .to(copy, { yPercent: -20, autoAlpha: 0, duration: 0.3 }, 0)
-    .to(orbitExit, { v: 1, duration: 0.6 }, 0)
-    .fromTo(portrait,
-      { '--dissolve': 0, filter: 'blur(0px) saturate(1)' },
-      { '--dissolve': 1, filter: 'blur(6px) saturate(0.75)', duration: 0.4, ease: 'power1.in' }, 0.6)
-    .to(portrait, { autoAlpha: 0, duration: 0.15 }, 0.85);
+    .to(orbitExit, { v: 1, duration: 0.6 }, 0);
 
   /* On short screens (phones) the hero is taller than the viewport: it pins once its foot reaches the bottom.
      scrub: true ties the zoom to the scroll position directly. The scroll itself is already smoothed (Lenis on
@@ -389,54 +386,185 @@
     pinSpacing: true,
     scrub: true,
     invalidateOnRefresh: true,
-    onToggle: function (self) {
-      stage.style.willChange = self.isActive ? 'transform' : '';
-      /* past the pin the (transparent) hero still overlaps the top of the Services screen: let clicks through */
-      hero.style.pointerEvents = !self.isActive && self.progress >= 1 ? 'none' : '';
-    }
+    onToggle: function (self) { stage.style.willChange = self.isActive ? 'transform' : ''; }
   });
 
-  /* ---------- hand-off to the next section ([data-arrive]: Services, the pinned "What I do" sequence) ----------
-     The section gets a negative top margin so its top reaches the top of the screen TAIL screens after the zoom
-     ends; there its own sticky screen takes over (home-services.js). The hero is layered above it with a
-     transparent background (home-services.css; the page is white, so it looks the same), so the section's title
-     card shows only where the portrait has already dissolved: it comes out from behind the face.
-     From EMERGE of the zoom the section's track (.wrap) is held with its top at the top of the screen, exactly where
-     the sticky screen will be, so the hand-off has no jump. Meanwhile the title card ([data-arrive-depth]) travels
-     toward the viewer from deep behind (translateZ −DEPTH → 0 under its own 1000px perspective: ≈ 0.5× → 1×,
-     easing out as it settles) and fades in over the first part; [data-arrive-item] elements (the glow) fade in with
-     it. Everything is scrubbed, so it reverses on the way up. Positions are read from the section itself, which is
-     never transformed. */
+  /* ---------- arrival of the next section ([data-arrive]: About) ----------
+     Before: About followed the whole pinned hero, so after the zoom a full (white, empty) screen of hero scrolled
+     away while the About content was held frozen on screen: ~1 screen of scroll where nothing moved.
+     Now #about gets a negative top margin so it reaches its place under the header TAIL screens after the zoom
+     ends. The overlap is invisible: the About section has no background, so the pinned hero paints over its box,
+     and its content (a transformed .wrap, painted above the hero) stays hidden until the reveal.
+     From DARK_AT of the zoom to arrival the content is revealed in sequence and rises into place at HOLD of its
+     natural speed, so it keeps moving with the scroll instead of standing still.
+     Positions are read from the About section itself, which is never transformed. */
   var inner = about.querySelector('.wrap');
-  var EMERGE = 0.75; /* share of the zoom at which the title card starts to emerge (portrait ≈ 2.1×, dissolving) */
-  var TAIL = 0.35;   /* screens of scroll after the zoom until the section's sticky screen takes over */
-  var DEPTH = 900;   /* px behind the screen the title card starts from */
+  var DARK_AT = 0.9;
+  var TAIL = 0.35; /* screens of scroll after the zoom until About is in place: the reveal runs over 0.1 + 0.35 screens */
+  var HOLD = 0.5;  /* the content moves at half speed during the reveal (1 = frozen, as before; 0 = plain scroll) */
+  var headH = function () { return header ? header.offsetHeight : 0; };
   /* the part of the hero that is on screen when the pin starts: all of it, or one screen on phones (taller hero) */
   var overlap = function () {
     var vh = window.innerHeight, h = hero.offsetHeight;
-    return Math.max(0, Math.round((h > vh + 1 ? vh : h) - TAIL * vh));
+    return Math.max(0, Math.round((h > vh + 1 ? vh : h) - headH() - TAIL * vh));
   };
   var setOverlap = function () { about.style.marginTop = -overlap() + 'px'; };
   setOverlap();
   ScrollTrigger.addEventListener('refreshInit', setOverlap); /* before every re-measure (resize, load, fonts) */
 
-  var revealStart = function () { return heroTrigger.start + EMERGE * (heroTrigger.end - heroTrigger.start); };
+  var revealStart = function () { return heroTrigger.start + DARK_AT * (heroTrigger.end - heroTrigger.start); };
   var aboutTop = function () { return about.getBoundingClientRect().top + window.scrollY; };
-  var holdEnd = aboutTop; /* the section's top at the top of the screen: its sticky screen starts here */
-  var arrival = function () {
-    return { trigger: about, start: revealStart, end: holdEnd, scrub: true, invalidateOnRefresh: true };
+  var holdEnd = function () { return aboutTop() - headH(); };
+
+  gsap.fromTo(inner, { y: function () { return (revealStart() - holdEnd()) * HOLD; } }, {
+    y: 0,
+    ease: 'none',
+    scrollTrigger: { trigger: about, start: revealStart, end: holdEnd, scrub: true, invalidateOnRefresh: true }
+  });
+
+  /* reveal in order, scrubbed exactly: label, heading, intro, description and link (the portrait arrives with the journey below); all in by 70% of the arrival */
+  var seq = gsap.timeline({
+    defaults: { ease: 'power3.out' },
+    scrollTrigger: { trigger: about, start: revealStart, end: holdEnd, scrub: true, invalidateOnRefresh: true }
+  });
+  var items = Array.prototype.slice.call(about.querySelectorAll('.ed-head > *, .ed-intro, .ed-side > *'));
+  var step = items.length > 1 ? 0.24 / (items.length - 1) : 0;
+  items.forEach(function (item, i) {
+    seq.fromTo(item, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.34 }, 0.12 + i * step);
+    /* the counters (main.js) count up as they fade in here, not when they first enter the viewport hidden */
+    if (item.querySelector('[data-count]')) {
+      var fired = false;
+      seq.call(function () {
+        if (fired) return;
+        fired = true;
+        document.dispatchEvent(new CustomEvent('about:counters'));
+      }, null, 0.12 + i * step + 0.05);
+    }
+  });
+  seq.to({}, { duration: Math.max(0, 1 - seq.duration()) }); /* spans exactly 0 → 1 */
+  window.__aboutPushed = true; /* main.js: the About counters wait for the event above */
+
+  /* ---------- image flip: the hero portrait turns over like a card and becomes the About portrait ----------
+     One rotation about the vertical axis (rotateY 0 → 180°, with perspective) runs over the whole move, from the
+     first scroll out of the hero (heroTrigger.start) to About in place (holdEnd), and completes on landing.
+       - Until HANDOFF of the zoom the cards are still orbiting, so the portrait stays in the 3D scene (it hides the
+         cards behind the head): the hero image itself starts to turn (its own perspective). The stage still zooms
+         2.5× for the cards' push, but the portrait is counter-scaled about the same point, so it grows only to
+         1 + ZMAX of its size (eased in and out) and stays anchored on the face.
+       - At HANDOFF (the cards have flown out) one fixed two-sided card (.travel) takes over at the portrait's exact
+         zoomed box, angle and perspective. Front: the hero cut-out; back: the About photo in the frame's wash,
+         border, radius and shadow. Both faces hide their backs, so the image changes exactly at edge-on (90°),
+         which always falls inside the card's flight (EDGE). The card moves and resizes to
+         the About frame (.ed-frame), landing on its exact box at 180°, where the frame's own photo takes over.
+     Only one image is on screen at a time: the hero portrait, then the card, then the frame.
+     Everything is a pure function of the scroll position, so it reverses exactly. */
+  var edFrame = about.querySelector('.ed-frame'); /* not `frame`: that name is the orbit's draw loop above */
+  var photo = about.querySelector('.ed-photo');
+  var frameImg = edFrame && edFrame.querySelector('img');
+  if (!edFrame || !photo || !frameImg || !portrait) return;
+  frameImg.loading = 'eager'; /* decoded before the card lands on it */
+
+  var HANDOFF = 0.6;  /* share of the zoom at which the card takes over (the orbit has gone: orbitExit = 1) */
+  var EDGE = 0.3;     /* edge-on (90°) at this share of the card's flight */
+  var CAMERA = 3;     /* perspective distance in widths of the image (the same in the scene and on the card) */
+  var ZMAX = 0.1;     /* the portrait's whole zoom: 1 → 1.1 by the handoff (the card then resizes to the frame) */
+
+  var travel = document.createElement('div');
+  travel.className = 'travel';
+  travel.setAttribute('aria-hidden', 'true');
+  var front = document.createElement('div'); front.className = 't-face t-front';
+  var back = document.createElement('div'); back.className = 't-face t-back';
+  var tHero = portrait.cloneNode(false);
+  tHero.removeAttribute('class'); tHero.removeAttribute('fetchpriority'); tHero.alt = '';
+  var tAbout = frameImg.cloneNode(false);
+  tAbout.loading = 'eager'; tAbout.alt = '';
+  front.appendChild(tHero); back.appendChild(tAbout);
+  travel.appendChild(front); travel.appendChild(back);
+  document.body.appendChild(travel);
+
+  var from = null, to = null; /* viewport boxes at the handoff and at the landing */
+  var w0 = 0, h0 = 0, ox = 0, oy = 0; /* unzoomed portrait size; the stage's zoom origin in the portrait's own box */
+  portrait.style.transformOrigin = '0 0';
+  /* the portrait's transform: undo the stage zoom s down to T about the stage's zoom origin, then turn it about its
+     own centre line with perspective (in its own units, so CAMERA × its width on screen at any zoom) */
+  var portraitTransform = function (T, s, angle) {
+    var c = T / s, hx = w0 / 2, hy = h0 / 2;
+    return 'translate(' + ox.toFixed(2) + 'px,' + oy.toFixed(2) + 'px) scale(' + c.toFixed(5) + ') translate(' + (-ox).toFixed(2) + 'px,' + (-oy).toFixed(2) + 'px)' +
+      (angle ? ' translate(' + hx.toFixed(2) + 'px,' + hy.toFixed(2) + 'px) perspective(' + (CAMERA * w0).toFixed(1) + 'px) rotateY(' + angle.toFixed(2) + 'deg) translate(' + (-hx).toFixed(2) + 'px,' + (-hy).toFixed(2) + 'px)' : '');
+  };
+  var measure = function () {
+    var prev = tl.progress(), turn = portrait.style.transform;
+    portrait.style.transform = '';
+    w0 = portrait.offsetWidth; h0 = portrait.offsetHeight;
+    /* the stage zooms about 50% 45% of its box (gsap.set above): that point in the portrait's own box, unzoomed */
+    tl.progress(0);
+    var sr = stage.getBoundingClientRect(), pr = portrait.getBoundingClientRect();
+    ox = sr.left + 0.5 * sr.width - pr.left; oy = sr.top + 0.45 * sr.height - pr.top;
+    /* handoff: the portrait as the zoom leaves it at HANDOFF (at 1 + ZMAX, unturned), placed as while the hero is pinned */
+    tl.progress(HANDOFF);
+    portrait.style.transform = portraitTransform(1 + ZMAX, 1 + (ZOOM - 1) * HANDOFF, 0);
+    var r = portrait.getBoundingClientRect(), h = hero.getBoundingClientRect();
+    tl.progress(prev);
+    portrait.style.transform = turn;
+    var pinTop = hero.offsetHeight > window.innerHeight + 1 ? window.innerHeight - hero.offsetHeight : 0;
+    from = { x: r.left, y: r.top - h.top + pinTop, w: r.width, h: r.height };
+    /* landing: the frame once About is in place (its top under the header, its content not shifted) */
+    var f = edFrame.getBoundingClientRect(), a = about.getBoundingClientRect();
+    to = { x: f.left, y: f.top - a.top - (gsap.getProperty(inner, 'y') || 0) + headH(), w: edFrame.offsetWidth, h: edFrame.offsetHeight };
   };
 
-  /* the track rises with the page until EMERGE, then stays put until its sticky screen takes over */
-  gsap.fromTo(inner, { y: function () { return revealStart() - holdEnd(); } }, { y: 0, ease: 'none', scrollTrigger: arrival() });
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var ease = gsap.parseEase('sine.inOut');
+  /* the turn: speeds up from the first scroll to edge-on at gE, then slows into the landing (0 → 0.5 → 1) */
+  var turnAt = function (g, gE) {
+    return g < gE ? 0.5 * (1 - Math.cos((Math.PI / 2) * (g / gE))) : 0.5 + 0.5 * Math.sin((Math.PI / 2) * ((g - gE) / (1 - gE)));
+  };
+  var state = -1; /* 0 hero portrait, 1 card, 2 About frame: visibility is switched only when this changes */
+  var spin; /* the ScrollTrigger below */
+  var handoffAt = function () { return heroTrigger.start + HANDOFF * (heroTrigger.end - heroTrigger.start); };
 
-  var seq = gsap.timeline({ scrollTrigger: arrival() });
-  var card = about.querySelector('[data-arrive-depth]');
-  var items = Array.prototype.slice.call(about.querySelectorAll('[data-arrive-item]'));
-  if (card) {
-    seq.fromTo(card, { z: -DEPTH, transformPerspective: 1000 }, { z: 0, duration: 1, ease: 'power2.out' }, 0)
-       .fromTo(card, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45, ease: 'none' }, 0);
-  }
-  if (items.length) seq.fromTo(items, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: 'none' }, 0);
-  seq.to({}, { duration: Math.max(0, 1 - seq.duration()) }); /* spans exactly 0 → 1 */
+  var render = function (g) {
+    if (!from || !spin) return;
+    var span = spin.end - spin.start;
+    var gH = span > 0 ? Math.min(0.9, Math.max(0, (handoffAt() - spin.start) / span)) : 0;
+    var gE = gH + EDGE * (1 - gH);
+    g = Math.min(1, Math.max(0, g));
+    var next = g <= gH ? 0 : g >= 1 ? 2 : 1;
+    if (next !== state) {
+      state = next;
+      portrait.style.visibility = next === 0 ? '' : 'hidden';
+      travel.style.visibility = next === 1 ? 'visible' : '';
+      photo.style.visibility = next === 2 ? '' : 'hidden';
+      portrait.style.willChange = next === 0 && g > 0 ? 'transform' : '';
+    }
+    var angle = 180 * turnAt(g, gE);
+    if (next === 0) {
+      if (g <= 0) { portrait.style.transform = ''; return; }
+      /* the stage's zoom at this scroll position, read from the scroll itself (not from tl, which may update after) */
+      var hs = heroTrigger.end - heroTrigger.start;
+      var hp = hs > 0 ? Math.min(1, Math.max(0, (spin.start + g * span - heroTrigger.start) / hs)) : 0;
+      portrait.style.transform = portraitTransform(1 + ZMAX * ease(g / gH), 1 + (ZOOM - 1) * hp, angle);
+      return;
+    }
+    if (next === 2) return;
+    var p = (g - gH) / (1 - gH), e = ease(p);
+    var w = lerp(from.w, to.w, e), ht = lerp(from.h, to.h, e);
+    var cx = lerp(from.x + from.w / 2, to.x + to.w / 2, e), cy = lerp(from.y + from.h / 2, to.y + to.h / 2, e);
+    travel.style.width = w + 'px';
+    travel.style.height = ht + 'px';
+    travel.style.transform = 'translate3d(' + (cx - w / 2).toFixed(2) + 'px,' + (cy - ht / 2).toFixed(2) + 'px,0) perspective(' + (CAMERA * w).toFixed(1) + 'px) rotateY(' + angle.toFixed(2) + 'deg)';
+  };
+
+  spin = ScrollTrigger.create({
+    start: function () { return heroTrigger.start; },
+    end: holdEnd,
+    invalidateOnRefresh: true,
+    onUpdate: function (self) { render(self.progress); },
+    onRefresh: function (self) { measure(); state = -1; render(self.progress); }
+  });
+  var remeasure = function () { measure(); state = -1; render(spin.progress); };
+  remeasure();
+  /* the portrait's load-in (main.css portrait-in) moves it: measure again once it has settled */
+  var hp = hero.querySelector('.hero-portrait');
+  if (hp) hp.addEventListener('animationend', remeasure);
 })();

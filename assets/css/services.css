@@ -2,7 +2,7 @@
    Uses the palette, type, buttons and card styles of main.css; transparent versions of palette colours only. */
 
 /* ---------- headings ---------- */
-.sv h2 .it{font-style:italic;font-weight:500;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sv h2 .it{font-style:italic;font-weight:400;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sv .sec-head .lede{justify-self:end;max-width:26em}
 
 /* ---------- hero: numbered chips that jump to each service ---------- */
@@ -195,7 +195,7 @@
    fill over the grey track). services.js adds .track and then .lit; without it (or under reduced motion) all is filled ---------- */
 .sv-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2rem;counter-reset:s}
 .sv-steps li{position:relative;z-index:1;counter-increment:s;display:flex;flex-direction:column;gap:.5rem}
-.sv-steps li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-bottom:1.25rem;border:1px solid var(--accent-btn);border-radius:50%;background:var(--accent-btn);box-shadow:0 0 0 8px var(--surface);font-family:var(--display);font-size:1.1875rem;font-weight:700;line-height:1;color:var(--surface);font-variant-numeric:lining-nums;transition:background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
+.sv-steps li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-bottom:1.25rem;border:1px solid var(--accent-btn);border-radius:50%;background:var(--accent-btn);box-shadow:0 0 0 8px var(--surface);font-family:var(--display);font-size:1.1875rem;font-weight:400;line-height:1;color:var(--surface);font-variant-numeric:lining-nums;transition:background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
 .sv-steps li:not(:last-child)::after{content:"";position:absolute;z-index:-1;top:calc(1.75rem - 1px);left:1.75rem;width:calc(100% + 2rem);height:2px;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 0 0/100% 100% no-repeat,var(--line);transition:background-size .3s linear}
 .sv-steps h3{font-size:1.1875rem}
 .sv-steps p{color:var(--muted);font-size:.9688rem}
