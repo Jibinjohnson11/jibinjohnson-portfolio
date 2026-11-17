@@ -1,11 +1,11 @@
 # Jibin Johnson
 
-> Freelance web developer and SEO specialist in Trivandrum (Thiruvananthapuram), Kerala, India. Builds SEO-first websites and web applications, runs SEO campaigns, and adds AI features to websites and business tools.
+> Freelance web developer and SEO specialist in Trivandrum (Thiruvananthapuram), Kerala, India. Builds SEO-first websites and web applications, builds Shopify and custom e-commerce stores, runs SEO campaigns, and adds AI features to websites and business tools.
 
 ## Pages
 
 - [About](https://jibinjohnson.in/about/): story, services, working principles, tools, experience and education
-- [Services](https://jibinjohnson.in/services/): all five services, process, ways to work, pricing and FAQ
+- [Services](https://jibinjohnson.in/services/): all six services, process, ways to work, pricing and FAQ
 - [Projects](https://jibinjohnson.in/projects/): websites built and SEO results
 - [Contact](https://jibinjohnson.in/contact/): WhatsApp, call booking and contact form
 
@@ -13,8 +13,9 @@
 
 - [Website design and development](https://jibinjohnson.in/website-development-kerala/): Website development services in Kerala from a freelance website developer in Trivandrum. Custom, fast, SEO-ready business websites from ₹12,000.
 - [SEO services](https://jibinjohnson.in/seo-services-kerala/): Freelance SEO specialist in Kerala offering technical, on-page and local SEO services in Trivandrum. Position-one rankings for clients. From ₹8,000 a month.
+- [Shopify store development](https://jibinjohnson.in/shopify-developer-kerala/): Shopify developer in Kerala for Shopify store development in Trivandrum: store setup, theme customisation, Indian payments and SEO from launch.
+- [E-commerce website development](https://jibinjohnson.in/ecommerce-website-development-kerala/): E-commerce website development in Kerala: custom online stores with Razorpay and UPI payments, order management and SEO. Developer based in Trivandrum.
 - [Full-stack and software development](https://jibinjohnson.in/full-stack-developer-kerala/): Full stack developer in Kerala building web applications, dashboards and business software with Python, Django and JavaScript. Based in Trivandrum.
-- [Python and Django development](https://jibinjohnson.in/python-django-developer-kerala/): Python Django developer in Kerala for web apps, REST APIs, admin panels and database-backed websites. Freelance, based in Trivandrum.
 - [AI development](https://jibinjohnson.in/ai-developer-kerala/): AI developer in Kerala adding chatbots, automation and data features to websites and web apps. AI full stack developer based in Trivandrum.
 
 ## Work
@@ -28,7 +29,9 @@
 
 - Landing page: from ₹6,000
 - Business website: from ₹12,000
+- Shopify store: from ₹20,000
 - Web application: from ₹30,000
+- E-commerce website: from ₹35,000
 - SEO: from ₹8,000 a month
 
 ## Contact
