@@ -41,20 +41,18 @@
     });
   });
 
-  /* ---------- toolkit: a tool highlights the tools it works with (hover, focus or tap); the others fade back ---------- */
+  /* ---------- toolkit: a tool chip highlights the tools it works with (hover, focus or tap); the others fade back ---------- */
   var box = doc.querySelector('.ab-tools');
   if (box) {
+    /* tools only (skills are plain text); keys are each chip's data-t */
     var pairs = {
-      html: ['css', 'js', 'bootstrap'], css: ['bootstrap'], js: ['bootstrap', 'rest', 'mongo'],
-      python: ['django', 'postgres', 'data', 'ml', 'rest'], django: ['postgres', 'rest', 'docker', 'mysql'],
-      rest: ['postgres'], postgres: ['sql', 'docker'], mysql: ['sql'], sql: ['data'],
+      html: ['css', 'js', 'bootstrap'], css: ['bootstrap'], js: ['bootstrap', 'mongo'],
+      python: ['django', 'postgres'], django: ['postgres', 'mysql', 'docker'],
+      postgres: ['sql', 'docker'], mysql: ['sql'], sql: ['excel', 'tableau', 'powerbi'],
       shopify: ['liquid', 'razorpay'], liquid: ['html', 'css', 'js'], razorpay: ['django', 'js'],
-      kw: ['semrush', 'ahrefs', 'content', 'comp'], onpage: ['kw', 'content', 'html'],
-      tech: ['gsc', 'onpage', 'html'], offpage: ['ahrefs', 'semrush'], content: ['onpage'],
-      local: ['kw', 'gsc'], comp: ['semrush', 'ahrefs'], aeo: ['geo', 'content'], geo: ['content', 'chatgpt'],
-      report: ['ga', 'gsc', 'excel'], gsc: ['ga'], data: ['excel', 'tableau', 'powerbi', 'report'],
-      tableau: ['powerbi', 'excel'], powerbi: ['excel'],
-      ml: ['dl', 'data', 'nlp'], dl: ['nlp'], prompt: ['chatgpt', 'claude'], chatgpt: ['claude'],
+      semrush: ['ahrefs', 'gsc'], ahrefs: ['gsc'], gsc: ['ga'],
+      ga: ['excel'], tableau: ['powerbi', 'excel'], powerbi: ['excel'],
+      chatgpt: ['claude'], claude: ['python'],
       git: ['github', 'vscode'], github: ['vscode'], docker: ['aws'], aws: ['django']
     };
     var map = {};

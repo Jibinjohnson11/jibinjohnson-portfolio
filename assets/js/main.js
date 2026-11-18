@@ -187,7 +187,7 @@
         if (e.isIntersecting) { e.target.classList.add('st-in'); tio.unobserve(e.target); }
       });
     }, { rootMargin: '0px 0px -10% 0px' });
-    $$('.stack > div, .ab-group').forEach(function (g) {
+    $$('.stk-card, .ab-group').forEach(function (g) {
       g.classList.add('st');
       $$('.tk, .chip', g).forEach(function (c, i) { c.style.setProperty('--i', Math.min(i, 12)); });
       tio.observe(g);
@@ -198,15 +198,14 @@
      The text is always in the HTML and linked with aria-describedby. Kept inside the viewport on narrow screens. ---------- */
   var tips = $$('.tip-wrap');
   if (tips.length) {
+    /* measured and shifted in the same task it opens, so it never paints in the wrong place */
     var place = function (w) {
       var box = $('.tip-box', w);
-      requestAnimationFrame(function () {
-        box.style.setProperty('--dx', '0px');
-        var r = box.getBoundingClientRect(), vw = root.clientWidth, dx = 0;
-        if (!r.width) return;
-        if (r.left < 12) dx = 12 - r.left; else if (r.right > vw - 12) dx = vw - 12 - r.right;
-        box.style.setProperty('--dx', dx + 'px');
-      });
+      box.style.setProperty('--dx', '0px');
+      var r = box.getBoundingClientRect(), vw = root.clientWidth, dx = 0;
+      if (!r.width) return;
+      if (r.left < 12) dx = 12 - r.left; else if (r.right > vw - 12) dx = vw - 12 - r.right;
+      box.style.setProperty('--dx', dx + 'px');
     };
     tips.forEach(function (w) {
       var b = $('.tip', w);
@@ -216,8 +215,8 @@
       b.addEventListener('blur', function () { w.classList.remove('open', 'off'); });
       w.addEventListener('mouseleave', function () { w.classList.remove('off'); });
       b.addEventListener('click', function () {
-        /* the About chips are toggle buttons: their pressed state shows the tip; elsewhere a tap toggles it */
-        if (!b.hasAttribute('aria-pressed')) w.classList.toggle('open');
+        /* a tap toggles the tip */
+        w.classList.toggle('open');
         on();
       });
     });
