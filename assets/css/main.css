@@ -388,6 +388,11 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .incl li{padding:1.5rem}
 .incl h3{margin-bottom:.4rem}
 .incl p{color:var(--muted);font-size:.9688rem}
+/* a highlighted item (SEO page: AEO and GEO): the whole row at two and three columns, sage tint, a small "New" label */
+.incl li.incl-new{grid-column:1/-1;background:var(--tint);border-color:rgba(86,104,90,.3)}
+.incl li.incl-new:hover{border-color:rgba(86,104,90,.5)}
+.incl-new p{max-width:46em}
+.incl .incl-tag{display:inline-block;margin-bottom:.75rem;padding:.15rem .6rem;border:1px solid rgba(86,104,90,.35);border-radius:99px;background:var(--surface);font-size:.75rem;font-weight:700;letter-spacing:.06em;line-height:1.5;text-transform:uppercase;color:var(--accent)}
 .split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem}
 .prose p{max-width:38em;color:var(--muted)}
 .prose p+p{margin-top:1.1em}
@@ -420,6 +425,21 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .stack>div{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:1rem 3rem;padding:1.5rem 0;border-bottom:1px solid var(--line)}
 .stack dt{font-size:1.125rem;font-weight:700}
 .stack dd{display:flex;flex-wrap:wrap;gap:.5rem}
+/* tool chips (home Stack, About toolkit): a 16px monochrome logo (Simple Icons, sprite in assets/img/tools.svg) or a
+   sage dot for skills and for tools without a Simple Icons logo */
+.tk,.chip{display:inline-flex;align-items:center;gap:.45rem}
+.tk-i{flex:none;width:16px;height:16px;fill:currentColor}
+.tk-dot{flex:none;width:6px;height:6px;margin:0 .15rem;border-radius:50%;background:var(--accent-btn)}
+/* chips fade up in turn when their group enters view (main.js adds .st and each chip's --i; not under reduced motion) */
+.js .st .tk,.js .st .chip{opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease),background-color .2s,border-color .2s,color .2s;transition-delay:calc(var(--i,0)*40ms),calc(var(--i,0)*40ms),0s,0s,0s}
+.js .st.st-in .tk,.js .st.st-in .chip{opacity:1;transform:none}
+/* AEO / GEO: the explanation shows on hover, keyboard focus and tap; Escape hides it (main.js). Dotted underline = more info */
+.tip-wrap{position:relative;display:inline-flex}
+.tip{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.tip-box{display:none;position:absolute;z-index:20;top:calc(100% + 10px);left:50%;width:max-content;max-width:min(17rem,calc(100vw - 2rem));padding:.6rem .8rem;border-radius:10px;background:var(--ink);color:var(--surface);font-size:.8125rem;font-weight:500;line-height:1.45;letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 14px 30px -14px rgba(11,14,20,.55);transform:translateX(calc(-50% + var(--dx,0px)))}
+.tip-box::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}   /* bridge: the pointer can move onto the tip */
+.tip-wrap:hover>.tip-box,.tip:focus-visible+.tip-box,.tip-wrap.open>.tip-box,.tip[aria-pressed="true"]+.tip-box{display:block}
+.tip-wrap.off>.tip-box{display:none}
 .plain-page{padding-top:clamp(3rem,1.5rem + 4.5vw,6rem)}
 .plain{max-width:46rem}
 .plain h1{margin-bottom:1.5rem;font-size:clamp(2.25rem,1.6rem + 2vw,3.25rem)}
