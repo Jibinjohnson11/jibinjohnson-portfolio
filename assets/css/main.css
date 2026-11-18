@@ -443,7 +443,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .tip-wrap.off>.tip-box{display:none}
 /* the sections that hold tips clip sideways overflow: a tip near the edge, before main.js shifts it inside, would
    otherwise make mobile browsers widen the page (sideways scroll). clip keeps sticky working (no scroll container) */
-#stack,#toolkit{overflow-x:clip}
+#stack{overflow-x:clip}   /* About clips main.ab instead (about.css): #toolkit sits inside its gutter */
 .plain-page{padding-top:clamp(3rem,1.5rem + 4.5vw,6rem)}
 .plain{max-width:46rem}
 .plain h1{margin-bottom:1.5rem;font-size:clamp(2.25rem,1.6rem + 2vw,3.25rem)}
@@ -584,7 +584,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .split-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .home .split-head{position:sticky;top:6.5rem}
 .home .faq-grid h2{position:static}
-/* stack: group cards, two columns from 1024px (the last group spans both), equal height in a row */
+/* stack: group cards, one column; from 1024px a two-column masonry (CSS columns, no JS), each card only as tall as its content */
 .stk-note{margin-top:1.5rem;max-width:30em;color:var(--muted)}
 .stk-link{margin-top:1.75rem}
 .stk-link:hover svg{transform:translateX(3px)}
@@ -596,8 +596,9 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .stk-tools .tag{padding:.35rem .85rem;font-size:.875rem;font-weight:500;color:var(--ink)}
 @media (min-width:1024px){
   .stk-sec{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
-  .stk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stk-card:last-child{grid-column:1/-1}
+  .stk-grid{display:block;column-count:2;column-gap:1rem}
+  .stk-card{display:inline-block;width:100%;vertical-align:top;break-inside:avoid;margin-bottom:1rem}   /* inline-block: Chrome never splits it (or its AEO/GEO tip) across the columns */
+  .stk-card:last-child{margin-bottom:0}
 }
 /* process: numbered nodes on one line (horizontal on desktop, vertical from 1100px down) */
 .home .steps{position:relative;gap:2rem}

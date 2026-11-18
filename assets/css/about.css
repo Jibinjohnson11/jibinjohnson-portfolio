@@ -2,7 +2,7 @@
    Uses the palette, type and card styles of main.css; nothing here sets a new colour. */
 
 /* ---------- layout: sticky section index (desktop) + content column ---------- */
-.ab{max-width:calc(var(--wrap) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.ab{max-width:calc(var(--wrap) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut);overflow-x:clip}   /* the toolkit tips: see #stack in main.css; clipped here, at the full width, not at the toolkit inside the gutter */
 .ab .wrap{max-width:none;padding-inline:0}
 .ab-index{display:none}
 @media (min-width:1024px){
@@ -115,18 +115,12 @@
 .ab-tools.linking .chip.on .tk-dot{background:currentColor}
 /* phones: a little less padding, so short chips pair up instead of stacking one per row */
 @media (max-width:639px){.ab-group{padding:1.25rem 1rem}.chip{padding:.3rem .7rem;gap:.4rem}}
-/* seven groups: two columns from 640px; from 1200px (the sticky index takes room from 1024px) each card's width
-   follows how many tools it holds */
+/* seven groups: one column; from 640px a two-column masonry (CSS columns, DOM order runs down the first column
+   then the second), each card only as tall as its content */
 @media (min-width:640px){
-  .ab-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .ab-group.g-ops{grid-column:1/-1}
-}
-@media (min-width:1200px){
-  .ab-tools{grid-template-columns:repeat(6,minmax(0,1fr))}
-  .ab-group{grid-column:span 3}
-  .ab-group.g-dev,.ab-group.g-seo{grid-column:span 4}
-  .ab-group.g-ecom,.ab-group.g-db{grid-column:span 2}
-  .ab-group.g-ops{grid-column:1/-1}
+  .ab-tools{display:block;column-count:2;column-gap:1rem}
+  .ab-group{display:inline-block;width:100%;vertical-align:top;break-inside:avoid;margin-bottom:1rem}   /* inline-block: never split (nor its tips) across the columns */
+  .ab-group:last-child{margin-bottom:0}
 }
 
 /* ---------- 06 experience ---------- */
