@@ -53,6 +53,8 @@
       semrush: ['ahrefs', 'gsc'], ahrefs: ['gsc'], gsc: ['ga'],
       ga: ['excel'], tableau: ['powerbi', 'excel'], powerbi: ['excel'],
       chatgpt: ['claude'], claude: ['python'],
+      pandas: ['numpy', 'python', 'sql', 'excel'], numpy: ['python'], sklearn: ['pandas', 'numpy'],
+      tensorflow: ['keras', 'numpy', 'python'], keras: ['python'], opencv: ['numpy', 'python'],
       git: ['github', 'vscode'], github: ['vscode'], docker: ['aws'], aws: ['django']
     };
     var map = {};
