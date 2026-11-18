@@ -423,9 +423,15 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .bio-links{display:flex;gap:1.5rem;margin-top:2rem}
 /* tool groups (home Stack, About toolkit): a "What I do" line of skills as plain text with middots, then the tool chips */
 .tg-k{margin:1rem 0 .4rem;font-size:.75rem;font-weight:600;letter-spacing:.08em;line-height:1.3;text-transform:uppercase;color:var(--muted)}
-.skills{display:flex;flex-wrap:wrap;column-gap:.45em;font-size:.9375rem;line-height:1.6;color:var(--ink)}
-.skills>li:not(:last-child)::after{content:"\00b7";margin-left:.45em;color:var(--muted)}
+/* each separator belongs to the item after it (nowrap), sitting in the column gap (pulled in by a negative margin); one that starts a
+   wrapped line falls left of the list's content edge and is clipped, so no line starts or ends with a dot. The .25rem
+   padding (cancelled by the margin) leaves room for the AEO/GEO focus rings; the tips escape the clip (see .tip-anc). */
+.skills{display:flex;flex-wrap:wrap;column-gap:1.2em;overflow:hidden;margin:-.25rem;padding:.25rem;font-size:.9375rem;line-height:1.6;color:var(--ink)}
+.skills>li{white-space:nowrap}
+.skills>li+li{margin-left:-1.2em}
+.skills>li+li::before{content:"\00b7";content:"\00b7"/"";display:inline-block;width:1.2em;text-align:center;color:var(--muted)}
 .skills .tip{min-height:24px;padding:0;border:0;background:none;font:inherit;color:inherit}
+.skills .tip:focus-visible{outline-offset:1px}
 /* tool chips (home Stack, About toolkit): a 16px monochrome logo (Simple Icons, sprite in assets/img/tools.svg) or a
    sage dot for skills and for tools without a Simple Icons logo */
 .tk,.chip{display:inline-flex;align-items:center;gap:.45rem}
@@ -435,12 +441,15 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .js .st .tk,.js .st .chip{opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease),background-color .2s,border-color .2s,color .2s;transition-delay:calc(var(--i,0)*40ms),calc(var(--i,0)*40ms),0s,0s,0s}
 .js .st.st-in .tk,.js .st.st-in .chip{opacity:1;transform:none}
 /* AEO / GEO: the explanation shows on hover, keyboard focus and tap; Escape hides it (main.js). Dotted underline = more info */
-.tip-wrap{position:relative;display:inline-flex}
+.tip-wrap{display:inline-flex}
+/* the tip's containing block is the card (position:relative), outside the clipping list, so it is never cut; it keeps its
+   static place: as the only absolutely positioned item of this column flexbox it is centred under the button */
+.tip-anc{display:inline-flex;flex-direction:column;align-items:center}
 .tip{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px}
-.tip-box{display:none;position:absolute;z-index:20;top:calc(100% + 10px);left:50%;width:max-content;max-width:min(17rem,calc(100vw - 2rem));padding:.6rem .8rem;border-radius:10px;background:var(--ink);color:var(--surface);font-size:.8125rem;font-weight:500;line-height:1.45;letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 14px 30px -14px rgba(11,14,20,.55);transform:translateX(calc(-50% + var(--dx,0px)))}
+.tip-box{display:none;position:absolute;z-index:20;margin-top:calc(max(24px,1.5rem) + 10px);width:max-content;max-width:min(17rem,calc(100vw - 2rem));padding:.6rem .8rem;border-radius:10px;background:var(--ink);color:var(--surface);font-size:.8125rem;font-weight:500;line-height:1.45;letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 14px 30px -14px rgba(11,14,20,.55);transform:translateX(var(--dx,0px))}
 .tip-box::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}   /* bridge: the pointer can move onto the tip */
-.tip-wrap:hover>.tip-box,.tip:focus-visible+.tip-box,.tip-wrap.open>.tip-box{display:block}
-.tip-wrap.off>.tip-box{display:none}
+.tip-wrap:hover .tip-box,.tip:focus-visible+.tip-box,.tip-wrap.open .tip-box{display:block}
+.tip-wrap.off .tip-box{display:none}
 /* the sections that hold tips clip sideways overflow: a tip near the edge, before main.js shifts it inside, would
    otherwise make mobile browsers widen the page (sideways scroll). clip keeps sticky working (no scroll container) */
 #stack{overflow-x:clip}   /* About clips main.ab instead (about.css): #toolkit sits inside its gutter */
@@ -589,7 +598,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .stk-link{margin-top:1.75rem}
 .stk-link:hover svg{transform:translateX(3px)}
 .stk-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
-.stk-card{padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.stk-card{position:relative;padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .stk-card h3{font-size:1.0625rem}
 .stk-card .tg-k:first-of-type{margin-top:.75rem}
 .stk-tools{display:flex;flex-wrap:wrap;gap:.5rem}

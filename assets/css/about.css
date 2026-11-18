@@ -101,7 +101,7 @@
 
 /* ---------- 05 toolkit: seven group cards, skills as plain text, then tool chips that highlight the tools they work with ---------- */
 .ab-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;margin-top:clamp(2.5rem,2rem + 2vw,3.5rem)}
-.ab-group{padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.ab-group{position:relative;padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .ab-group h3{display:flex;align-items:center;gap:.6rem;font-size:1.0625rem}
 .ab-group .tg-k:first-of-type{margin-top:.85rem}
 .ab-group h3 svg{flex:none;width:1.25rem;height:1.25rem;color:var(--accent)}
