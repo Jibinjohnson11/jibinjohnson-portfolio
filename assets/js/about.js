@@ -50,7 +50,6 @@
       python: ['django', 'postgres'], django: ['postgres', 'mysql', 'docker'],
       postgres: ['sql', 'docker'], mysql: ['sql'], sql: ['excel', 'tableau', 'powerbi'],
       shopify: ['liquid', 'razorpay'], liquid: ['html', 'css', 'js'], razorpay: ['django', 'js'],
-      semrush: ['ahrefs', 'gsc'], ahrefs: ['gsc'], gsc: ['ga'],
       ga: ['excel'], tableau: ['powerbi', 'excel'], powerbi: ['excel'],
       chatgpt: ['claude'], claude: ['python'],
       pandas: ['numpy', 'python', 'sql', 'excel'], numpy: ['python'], sklearn: ['pandas', 'numpy'],
