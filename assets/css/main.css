@@ -421,38 +421,13 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .bio dt{margin-bottom:.25rem;font-size:.875rem;color:var(--muted)}
 .bio dd{font-weight:600;overflow-wrap:anywhere}
 .bio-links{display:flex;gap:1.5rem;margin-top:2rem}
-/* tool groups (home Stack, About toolkit): a "What I do" line of skills as plain text with middots, then the tool chips */
-.tg-k{margin:1rem 0 .4rem;font-size:.75rem;font-weight:600;letter-spacing:.08em;line-height:1.3;text-transform:uppercase;color:var(--muted)}
-/* each separator belongs to the item after it (nowrap), sitting in the column gap (pulled in by a negative margin); one that starts a
-   wrapped line falls left of the list's content edge and is clipped, so no line starts or ends with a dot. The .25rem
-   padding (cancelled by the margin) leaves room for the AEO/GEO focus rings; the tips escape the clip (see .tip-anc). */
-.skills{display:flex;flex-wrap:wrap;column-gap:1.2em;overflow:hidden;margin:-.25rem;padding:.25rem;font-size:.9375rem;line-height:1.6;color:var(--ink)}
-.skills>li{white-space:nowrap}
-.skills>li+li{margin-left:-1.2em}
-.skills>li+li::before{content:"\00b7";content:"\00b7"/"";display:inline-block;width:1.2em;text-align:center;color:var(--muted)}
-.skills .tip{min-height:24px;padding:0;border:0;background:none;font:inherit;color:inherit}
-.skills .tip:focus-visible{outline-offset:1px}
-/* tool chips (home Stack, About toolkit): a 16px monochrome logo (Simple Icons, sprite in assets/img/tools.svg) or a
-   sage dot for skills and for tools without a Simple Icons logo */
+/* tool chips (home Stack, About toolkit): a 16px monochrome icon from the sprite assets/img/tools.svg: a Simple Icons
+   logo (filled) or, for skills and tools without one, a Lucide icon (lu-*, stroked; its own fill="none" wins over the fill here) */
 .tk,.chip{display:inline-flex;align-items:center;gap:.45rem}
 .tk-i{flex:none;width:16px;height:16px;fill:currentColor}
-.tk-dot{flex:none;width:6px;height:6px;margin:0 .15rem;border-radius:50%;background:var(--accent-btn)}
 /* chips fade up in turn when their group enters view (main.js adds .st and each chip's --i; not under reduced motion) */
 .js .st .tk,.js .st .chip{opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease),background-color .2s,border-color .2s,color .2s;transition-delay:calc(var(--i,0)*40ms),calc(var(--i,0)*40ms),0s,0s,0s}
 .js .st.st-in .tk,.js .st.st-in .chip{opacity:1;transform:none}
-/* AEO / GEO: the explanation shows on hover, keyboard focus and tap; Escape hides it (main.js). Dotted underline = more info */
-.tip-wrap{display:inline-flex}
-/* the tip's containing block is the card (position:relative), outside the clipping list, so it is never cut; it keeps its
-   static place: as the only absolutely positioned item of this column flexbox it is centred under the button */
-.tip-anc{display:inline-flex;flex-direction:column;align-items:center}
-.tip{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px}
-.tip-box{display:none;position:absolute;z-index:20;margin-top:calc(max(24px,1.5rem) + 10px);width:max-content;max-width:min(17rem,calc(100vw - 2rem));padding:.6rem .8rem;border-radius:10px;background:var(--ink);color:var(--surface);font-size:.8125rem;font-weight:500;line-height:1.45;letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 14px 30px -14px rgba(11,14,20,.55);transform:translateX(var(--dx,0px))}
-.tip-box::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}   /* bridge: the pointer can move onto the tip */
-.tip-wrap:hover .tip-box,.tip:focus-visible+.tip-box,.tip-wrap.open .tip-box{display:block}
-.tip-wrap.off .tip-box{display:none}
-/* the sections that hold tips clip sideways overflow: a tip near the edge, before main.js shifts it inside, would
-   otherwise make mobile browsers widen the page (sideways scroll). clip keeps sticky working (no scroll container) */
-#stack{overflow-x:clip}   /* About clips main.ab instead (about.css): #toolkit sits inside its gutter */
 .plain-page{padding-top:clamp(3rem,1.5rem + 4.5vw,6rem)}
 .plain{max-width:46rem}
 .plain h1{margin-bottom:1.5rem;font-size:clamp(2.25rem,1.6rem + 2vw,3.25rem)}
@@ -589,26 +564,28 @@ html:not(.is-signing) .sign:not(.out){display:none}
 #services.svc-rot .bento>li::before{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:0 44px 80px -44px rgba(32,34,31,.3);opacity:var(--f,0);pointer-events:none}
 #services.svc-rot .svc-card{overflow:hidden}
 #services.svc-rot .svc-card p,#services.svc-rot .svc-tools,#services.svc-rot .svc-foot{opacity:var(--t,1)}
-/* stack and FAQ: heading column on the left (held in view on desktop), content on the right */
+/* FAQ: heading column on the left (held in view on desktop), content on the right */
 .split-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .home .split-head{position:sticky;top:6.5rem}
 .home .faq-grid h2{position:static}
-/* stack: group cards, one column; from 1024px a two-column masonry (CSS columns, no JS), each card only as tall as its content */
-.stk-note{margin-top:1.5rem;max-width:30em;color:var(--muted)}
-.stk-link{margin-top:1.75rem}
+/* tool groups (home Stack, About toolkit): a full-width header (label + H2 left, note right, on the H2's baseline line),
+   then six cards in an even grid: 1 column, 2 from 640px, 3 from 1100px; the cards in a row share its height */
+.tg-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:1.5rem 4rem;align-items:end;margin-bottom:clamp(2.5rem,2rem + 2vw,3.5rem)}
+.tg-aside>p{max-width:30em;color:var(--muted)}
+.tg-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
+.tg-card{padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.tg-top{display:flex;align-items:center;gap:.75rem}
+.tg-ic{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--tint);color:var(--accent)}
+.tg-ic svg{width:18px;height:18px}
+.tg-card h3{font-size:.8125rem;font-weight:600;letter-spacing:.1em;line-height:1.3;text-transform:uppercase;color:var(--muted)}
+@media (min-width:640px){.tg-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1100px){.tg-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:899px){.tg-head{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:639px){.tg-card{padding:1.25rem 1rem}}
+.stk-link{margin-top:1.25rem}
 .stk-link:hover svg{transform:translateX(3px)}
-.stk-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
-.stk-card{position:relative;padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
-.stk-card h3{font-size:1.0625rem}
-.stk-card .tg-k:first-of-type{margin-top:.75rem}
-.stk-tools{display:flex;flex-wrap:wrap;gap:.5rem}
+.stk-tools{display:flex;margin-top:1.25rem;flex-wrap:wrap;gap:.5rem}
 .stk-tools .tag{padding:.35rem .85rem;font-size:.875rem;font-weight:500;color:var(--ink)}
-@media (min-width:1024px){
-  .stk-sec{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
-  .stk-grid{display:block;column-count:2;column-gap:1rem}
-  .stk-card{display:inline-block;width:100%;vertical-align:top;break-inside:avoid;margin-bottom:1rem}   /* inline-block: Chrome never splits it (or its AEO/GEO tip) across the columns */
-  .stk-card:last-child{margin-bottom:0}
-}
 /* process: numbered nodes on one line (horizontal on desktop, vertical from 1100px down) */
 .home .steps{position:relative;gap:2rem}
 .home .steps::before{content:"";position:absolute;left:0;right:0;top:1.75rem;height:1px;background:linear-gradient(90deg,rgba(99,118,101,.45),var(--line) 70%,transparent)}

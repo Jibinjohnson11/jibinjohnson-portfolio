@@ -44,17 +44,19 @@
   /* ---------- toolkit: a tool chip highlights the tools it works with (hover, focus or tap); the others fade back ---------- */
   var box = doc.querySelector('.ab-tools');
   if (box) {
-    /* tools only (skills are plain text); keys are each chip's data-t */
+    /* keys are each chip's data-t */
     var pairs = {
       html: ['css', 'js', 'bootstrap'], css: ['bootstrap'], js: ['bootstrap', 'mongo'],
       python: ['django', 'postgres'], django: ['postgres', 'mysql', 'docker'],
       postgres: ['sql', 'docker'], mysql: ['sql'], sql: ['excel', 'tableau', 'powerbi'],
-      shopify: ['liquid', 'razorpay'], liquid: ['html', 'css', 'js'], razorpay: ['django', 'js'],
+      shopify: ['razorpay'], razorpay: ['django', 'js'],
+      kw: ['competitor', 'content', 'onpage'], onpage: ['techseo', 'content'], offpage: ['competitor', 'local'],
+      aeo: ['geo', 'content'], geo: ['content'], seoreport: ['ga'],
       ga: ['excel'], tableau: ['powerbi', 'excel'], powerbi: ['excel'],
       chatgpt: ['claude'], claude: ['python'],
       pandas: ['numpy', 'python', 'sql', 'excel'], numpy: ['python'], sklearn: ['pandas', 'numpy'],
       tensorflow: ['keras', 'numpy', 'python'], keras: ['python'], opencv: ['numpy', 'python'],
-      git: ['github', 'vscode'], github: ['vscode'], docker: ['aws'], aws: ['django']
+      git: ['github', 'vscode'], github: ['vscode'], claudecode: ['vscode', 'github', 'claude'], docker: ['aws'], aws: ['django']
     };
     var map = {};
     Object.keys(pairs).forEach(function (a) {

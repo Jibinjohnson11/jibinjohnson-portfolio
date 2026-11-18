@@ -1,5 +1,5 @@
 /* jibinjohnson.in — interactions: mobile menu, glass header, home hero load-in and pointer parallax,
-   heading and section reveals, tool chips and their tooltips, project filters, floating WhatsApp button, contact form.
+   heading and section reveals, tool chips, project filters, floating WhatsApp button, contact form.
    No libraries; everything works without it. */
 (function () {
   'use strict';
@@ -191,40 +191,6 @@
       g.classList.add('st');
       $$('.tk, .chip', g).forEach(function (c, i) { c.style.setProperty('--i', Math.min(i, 12)); });
       tio.observe(g);
-    });
-  }
-
-  /* ---------- AEO / GEO tooltips: shown on hover, keyboard focus and tap (CSS + .open); Escape hides them.
-     The text is always in the HTML and linked with aria-describedby. Kept inside the viewport on narrow screens. ---------- */
-  var tips = $$('.tip-wrap');
-  if (tips.length) {
-    /* measured and shifted in the same task it opens, so it never paints in the wrong place */
-    var place = function (w) {
-      var box = $('.tip-box', w);
-      box.style.setProperty('--dx', '0px');
-      var r = box.getBoundingClientRect(), vw = root.clientWidth, dx = 0;
-      if (!r.width) return;
-      if (r.left < 12) dx = 12 - r.left; else if (r.right > vw - 12) dx = vw - 12 - r.right;
-      box.style.setProperty('--dx', dx + 'px');
-    };
-    tips.forEach(function (w) {
-      var b = $('.tip', w);
-      var on = function () { w.classList.remove('off'); place(w); };
-      w.addEventListener('mouseenter', on);
-      b.addEventListener('focus', on);
-      b.addEventListener('blur', function () { w.classList.remove('open', 'off'); });
-      w.addEventListener('mouseleave', function () { w.classList.remove('off'); });
-      b.addEventListener('click', function () {
-        /* a tap toggles the tip */
-        w.classList.toggle('open');
-        on();
-      });
-    });
-    doc.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') tips.forEach(function (w) { w.classList.remove('open'); w.classList.add('off'); });
-    });
-    doc.addEventListener('click', function (e) {
-      tips.forEach(function (w) { if (!w.contains(e.target)) w.classList.remove('open'); });
     });
   }
 
