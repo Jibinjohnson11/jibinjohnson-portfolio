@@ -99,7 +99,7 @@
 .js .ab-panel{transition:grid-template-rows .35s var(--ease),visibility 0s .35s}
 .js .ab-acc li:has(button[aria-expanded="true"]) .ab-panel{transition:grid-template-rows .35s var(--ease),visibility 0s}
 
-/* ---------- 05 toolkit: group cards with tool chips that highlight what they work with ---------- */
+/* ---------- 05 toolkit: seven group cards with tool chips that highlight what they work with ---------- */
 .ab-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;margin-top:clamp(2.5rem,2rem + 2vw,3.5rem)}
 .ab-group{padding:1.5rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .ab-group h3{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;font-size:1.0625rem}
@@ -111,10 +111,21 @@
 .ab-tools.linking .chip{border-color:rgba(11,14,20,.06);color:var(--muted)}
 .ab-tools.linking .chip.rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
 .ab-tools.linking .chip.on{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
-@media (min-width:1024px){
+.ab-tools.linking .chip.on .tk-dot{background:currentColor}
+/* phones: a little less padding, so short chips pair up instead of stacking one per row */
+@media (max-width:639px){.ab-group{padding:1.25rem 1rem}.chip{padding:.3rem .7rem;gap:.4rem}}
+/* seven groups: two columns from 640px; from 1200px (the sticky index takes room from 1024px) each card's width
+   follows how many tools it holds */
+@media (min-width:640px){
+  .ab-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ab-group.g-ops{grid-column:1/-1}
+}
+@media (min-width:1200px){
   .ab-tools{grid-template-columns:repeat(6,minmax(0,1fr))}
   .ab-group{grid-column:span 3}
-  .ab-group.g-ai{grid-column:1/-1}
+  .ab-group.g-dev,.ab-group.g-seo{grid-column:span 4}
+  .ab-group.g-ecom,.ab-group.g-db{grid-column:span 2}
+  .ab-group.g-ops{grid-column:1/-1}
 }
 
 /* ---------- 06 experience ---------- */

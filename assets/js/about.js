@@ -48,11 +48,14 @@
       html: ['css', 'js', 'bootstrap'], css: ['bootstrap'], js: ['bootstrap', 'rest', 'mongo'],
       python: ['django', 'postgres', 'data', 'ml', 'rest'], django: ['postgres', 'rest', 'docker', 'mysql'],
       rest: ['postgres'], postgres: ['sql', 'docker'], mysql: ['sql'], sql: ['data'],
-      ml: ['dl', 'data', 'nlp'], dl: ['nlp'], data: ['excel', 'tableau', 'powerbi'],
-      tableau: ['powerbi', 'excel'], powerbi: ['excel'],
-      prompt: ['chatgpt', 'claude'], chatgpt: ['claude'],
       shopify: ['liquid', 'razorpay'], liquid: ['html', 'css', 'js'], razorpay: ['django', 'js'],
-      gsc: ['ga'], git: ['github', 'vscode'], github: ['vscode'], docker: ['aws'], aws: ['django']
+      kw: ['semrush', 'ahrefs', 'content', 'comp'], onpage: ['kw', 'content', 'html'],
+      tech: ['gsc', 'onpage', 'html'], offpage: ['ahrefs', 'semrush'], content: ['onpage'],
+      local: ['kw', 'gsc'], comp: ['semrush', 'ahrefs'], aeo: ['geo', 'content'], geo: ['content', 'chatgpt'],
+      report: ['ga', 'gsc', 'excel'], gsc: ['ga'], data: ['excel', 'tableau', 'powerbi', 'report'],
+      tableau: ['powerbi', 'excel'], powerbi: ['excel'],
+      ml: ['dl', 'data', 'nlp'], dl: ['nlp'], prompt: ['chatgpt', 'claude'], chatgpt: ['claude'],
+      git: ['github', 'vscode'], github: ['vscode'], docker: ['aws'], aws: ['django']
     };
     var map = {};
     Object.keys(pairs).forEach(function (a) {
