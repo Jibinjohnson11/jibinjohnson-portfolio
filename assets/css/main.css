@@ -592,28 +592,81 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .tg-grid.linking [data-t]{border-color:rgba(11,14,20,.06);color:var(--muted)}
 .tg-grid.linking [data-t].rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
 .tg-grid.linking [data-t].on{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
-/* process: numbered nodes on one line (horizontal on desktop, vertical from 1100px down) */
-.home .steps{position:relative;gap:2rem}
-.home .steps::before{content:"";position:absolute;left:0;right:0;top:1.75rem;height:1px;background:linear-gradient(90deg,rgba(99,118,101,.45),var(--line) 70%,transparent)}
-.home .steps li{position:relative;gap:.5rem;padding:0;background:none;border:0;border-radius:0}
-.home .steps li:hover{transform:none}
-.home .steps li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-bottom:1.25rem;border:1px solid rgba(99,118,101,.35);border-radius:50%;background:var(--surface);box-shadow:0 0 0 8px var(--surface);font-size:1.1875rem;font-variant-numeric:lining-nums}
-.home .steps h3{font-size:1.1875rem}
+/* process (#process): an editorial alternating timeline. Its own warm off-white band and palette (exception to the site
+   palette, scoped here like the Services studio band): background #F8F8F5, ink #252827, accent #086B5B (6.0:1),
+   secondary text #5C625D (5.9:1; the brief's #777D78 is 3.96:1, so it is used only for the markers), timeline and stems
+   #C9CEC7. Desktop (1024px+): five columns, one line across, steps above (01, 03, 05) and below
+   (02, 04) joined to it by thin stems with outlined markers; three photos sit opposite their step (subgrid rows).
+   700-1023px: a vertical line down the middle, steps alternating left and right. Below 700px: the line on the left.
+   process.js (GSAP) draws the line (--draw), then each marker, stem (--s), text and photo (clip-path) in turn. */
+#process{--ink:#252827;--muted:#5C625D;--accent:#086B5B;--line:#D9DED8;--line-strong:#C9CEC7;--pt-line:#C9CEC7;--pt-mark:#777D78;--pt-bg:#F8F8F5;background:var(--pt-bg);color:var(--ink)}
+#process.sec{padding-block:var(--sec)}
+#process+.sec{padding-top:var(--sec)}
+#process .sec-head{margin-bottom:clamp(3.5rem,2rem + 4vw,6rem)}
+#process h2{max-width:9.75em}
+#process h2 .it{font-style:italic;font-weight:400;padding-right:.06em;color:var(--accent)}
+.pt{--tw:min(100%,16rem);--stem:clamp(3.5rem,1rem + 4.5vw,6rem)}
+.pt-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto 0 auto;column-gap:clamp(1.25rem,2.4vw,2.5rem)}
+.pt-steps::before{content:"";grid-column:1/-1;grid-row:2;align-self:start;height:1px;background:var(--pt-line);transform:scaleX(var(--draw,1));transform-origin:left}
+.pt-s{grid-row:1/4;display:grid;grid-template-rows:subgrid;min-width:0}
+.pt-s:nth-child(1){grid-column:1}.pt-s:nth-child(2){grid-column:2}.pt-s:nth-child(3){grid-column:3}.pt-s:nth-child(4){grid-column:4}.pt-s:nth-child(5){grid-column:5}
+.pt-s>*{grid-column:1}   /* explicit, or auto-placement moves an item sharing a row into a new column */
+/* each text block is a column: heading, description, then its stem (above the line the block fills the top row, so
+   the 01/03/05 tops line up and each stem stretches down to the line; below the line the stem comes first) */
+.pt-txt{display:flex;flex-direction:column;width:var(--tw)}
+.up .pt-txt{grid-row:1;align-self:stretch}
+.down .pt-txt{grid-row:3;align-self:start}
+.pt-txt h3{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.8rem;font-size:.8125rem;font-weight:600;letter-spacing:.2em;line-height:1.35;text-transform:uppercase;white-space:nowrap;color:var(--ink);transition:color .3s var(--ease)}
+.pt-n{flex:none;font-family:var(--display);font-size:1.5rem;font-weight:400;letter-spacing:.02em;line-height:1;color:var(--accent);font-variant-numeric:lining-nums}
+.pt-txt p{font-size:.9375rem;line-height:1.65;color:var(--muted)}
+.pt-stem{display:block;flex:1 0 var(--stem);width:1px;margin-left:calc(50% - .5px);background:var(--pt-line);transform:scaleY(var(--s,1));transition:background-color .3s var(--ease)}
+.up .pt-stem{margin-top:1rem;transform-origin:bottom}
+.down .pt-stem{order:-1;flex:none;height:var(--stem);margin-bottom:1rem;transform-origin:top}
+.pt-dot{grid-row:2;align-self:start;justify-self:start;width:11px;height:11px;margin:-5px 0 0 calc(var(--tw) / 2 - 5px);border:1px solid var(--pt-mark);border-radius:50%;background:var(--pt-bg);transition:background-color .3s var(--ease),border-color .3s var(--ease)}
+/* photos: inset 1rem inside their column on both sides, so every photo keeps the same gap to the text beside it */
+.pt-pic{justify-self:center;width:calc(100% - 2rem);max-width:15rem;margin:0;overflow:hidden}
+.pt-pic img{display:block;width:100%;height:auto;filter:saturate(.8) sepia(.06) contrast(.97)}
+.up .pt-pic{grid-row:3;align-self:start;margin-top:calc(var(--stem) * .6)}
+.down .pt-pic{grid-row:1;align-self:start;margin-bottom:calc(var(--stem) * .6)}
+@media (hover:hover){
+  .pt-txt:hover h3{color:var(--accent)}
+  .pt-s:has(.pt-txt:hover) .pt-dot{background:var(--accent);border-color:var(--accent)}
+  .pt-s:has(.pt-txt:hover) .pt-stem{background:var(--pt-mark)}
+}
+@media (max-width:1023px){
+  .pt-steps{display:block;position:relative}
+  .pt-steps::before{position:absolute;top:.5rem;bottom:0;left:50%;align-self:auto;width:1px;height:auto;transform:scaleY(var(--draw,1));transform-origin:top}
+  .pt-s{display:grid;grid-template-columns:minmax(0,1fr) 4rem minmax(0,1fr);grid-template-rows:auto;align-items:start;padding-bottom:clamp(2.75rem,6vw,4rem)}
+  .pt-s:last-child{padding-bottom:0}
+  .pt-txt,.up .pt-txt,.down .pt-txt{position:relative;grid-row:1;align-self:start;width:auto;max-width:20rem;margin:0}
+  .up .pt-txt{grid-column:1;justify-self:end;text-align:right}
+  .up .pt-txt h3{justify-content:flex-end}
+  .down .pt-txt{grid-column:3;justify-self:start}
+  .pt-dot{grid-column:2;grid-row:1;justify-self:center;margin:7px 0 0}
+  /* the stem becomes a short horizontal tick from the text to its marker */
+  .pt-stem,.up .pt-stem,.down .pt-stem{position:absolute;top:12px;flex:none;width:calc(1.5rem - 5.5px);height:1px;margin:0;transform:scaleX(var(--s,1))}
+  .up .pt-stem{left:calc(100% + .5rem);transform-origin:right}
+  .down .pt-stem{right:calc(100% + .5rem);transform-origin:left}
+  .pt-pic,.up .pt-pic,.down .pt-pic{grid-row:1;align-self:start;width:min(100%,18rem);max-width:none;margin:0}
+  .up .pt-pic{grid-column:3;justify-self:start}
+  .down .pt-pic{grid-column:1;justify-self:end}
+}
+@media (max-width:699px){
+  /* phones: one line on the left, steps 01-05 in order, no photos (decorative; they doubled the column's length) */
+  .pt-steps::before{left:calc(var(--gut) + 5px)}
+  .pt-s{grid-template-columns:2.25rem minmax(0,1fr);padding-bottom:2.5rem}
+  .up .pt-txt,.down .pt-txt{grid-column:2;justify-self:start;max-width:32rem;text-align:left}
+  .up .pt-txt h3{justify-content:flex-start}
+  .pt-dot{grid-column:1;justify-self:start}
+  .up .pt-stem,.down .pt-stem{left:auto;right:calc(100% + 6px);width:14px;transform-origin:left}
+  .pt-pic{display:none}
+}
+@media (prefers-reduced-motion:reduce){.pt-txt h3,.pt-stem,.pt-dot{transition:none}}
 /* faq: larger questions, the plus in a ring that turns sage when open */
 .home .faq summary{padding:1.5rem 0;font-size:1.125rem}
 .home .faq summary::after{width:2.25rem;height:2.25rem;border:1px solid var(--line);border-radius:50%;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/.75rem 1.5px no-repeat,linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/1.5px .75rem no-repeat;transition:transform .3s var(--ease),border-color .3s}
 .home .faq details[open] summary::after{border-color:var(--accent-btn)}
 .home .faq summary:hover::after{border-color:var(--line-strong)}
-@media (max-width:1100px){
-  .home .steps{grid-template-columns:minmax(0,1fr);gap:0}
-  .home .steps::before{left:calc(1.75rem - .5px);right:auto;top:1.75rem;bottom:1.75rem;width:1px;height:auto;background:linear-gradient(180deg,rgba(99,118,101,.45),var(--line))}
-  .home .steps li{display:grid;grid-template-columns:3.5rem minmax(0,1fr);column-gap:1.5rem;row-gap:.35rem;padding-bottom:2rem}
-  .home .steps li:last-child{padding-bottom:0}
-  .home .steps li::before{grid-row:1/span 2;margin:0}
-  .home .steps h3,.home .steps p{grid-column:2}
-  .home .steps h3{padding-top:1rem}
-  .home .steps p{max-width:36em}
-}
 @media (max-width:1000px){
   .bento>li{grid-column:span 6}
 }
