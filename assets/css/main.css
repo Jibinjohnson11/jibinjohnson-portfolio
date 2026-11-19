@@ -253,9 +253,10 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .t-front img{object-position:50% 100%}
 .t-back{transform:rotateY(180deg);border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 70% 15%,var(--surface) 0%,var(--tint) 75%);border:1px solid rgba(99,118,101,.18);box-shadow:0 40px 80px -48px rgba(36,46,38,.45)}
 .t-back img{object-position:50% 20%;filter:grayscale(1)}
-.ed-intro{grid-area:intro;align-self:end;max-width:22em;font-size:var(--fs-lede);font-weight:var(--fw-medium);color:var(--ink)}
+/* the two About paragraphs share one style: body size, regular weight, body line-height, muted, 24em wide (full width from 680px) */
+.ed-intro,.ed-desc{max-width:24em;font-size:var(--fs-base);font-weight:var(--fw-regular);line-height:var(--lh-body);color:var(--muted)}
+.ed-intro{grid-area:intro;align-self:end}
 .ed-side{grid-area:side;align-self:center;max-width:24em;justify-self:end}
-.ed-desc{color:var(--muted)}
 .ed-cta{display:inline-flex;align-items:center;gap:.6rem;margin-top:2rem;padding-bottom:.4rem;border-bottom:1px solid var(--line-strong);font-weight:var(--fw-semibold);color:var(--ink);text-decoration:none;transition:border-color .3s var(--ease),color .3s var(--ease)}
 .ed-cta svg{width:1rem;height:1rem;color:var(--accent-btn);transition:transform .3s var(--ease)}
 .ed-cta:hover{color:var(--accent);border-color:var(--accent-btn)}
@@ -443,12 +444,12 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .home .sec-head .lede{justify-self:end;max-width:26em}
 .sec-link{justify-self:end}
 /* ---------- home Services: editorial studio showcase ----------
-   Its own palette, set on #services only (the rest of the site keeps the white/sage system): warm ivory band
-   #F5F4EF, deep charcoal type #20221F, warm grey secondary text #5C5F58 (5.9:1 on the ivory, 6.4:1 on white),
-   neutral borders #E3E4DE and a muted sage #718477 for non-text accents only (3.6:1 on the ivory: arrow fill, focus
-   ring); text accents keep --accent. Type follows the site system: Switzer for labels, cards and buttons; Instrument
+   Its own palette, set on #services only (the rest of the site keeps the white/sage system): the band is white like
+   About (the .alt --surface background; --sv-bg #F5F4EF is only the window bars), deep charcoal type #20221F, warm
+   grey secondary text #5C5F58 (6.4:1 on white), neutral borders #E3E4DE and a muted sage #718477 for non-text
+   accents only (4.0:1 on white: arrow fill, focus ring); text accents keep --accent. Type follows the site system: Switzer for labels, cards and buttons; Instrument
    Serif for the H2 and the one-liners. Scoped to .home: About's "What I do" section also has id="services". */
-.home #services{--ink:#20221F;--muted:#5C5F58;--line:#E3E4DE;--line-strong:#CFD0C8;--sv-bg:#F5F4EF;--sv-accent:#718477;--accent-btn:var(--sv-accent);--sv-ease:cubic-bezier(.22,1,.36,1);background:var(--sv-bg);color:var(--ink)}
+.home #services{--ink:#20221F;--muted:#5C5F58;--line:#E3E4DE;--line-strong:#CFD0C8;--sv-bg:#F5F4EF;--sv-accent:#718477;--accent-btn:var(--sv-accent);--sv-ease:cubic-bezier(.22,1,.36,1);color:var(--ink)}
 .home #services.sec{padding-block:var(--sec)}
 .home #services+.sec{padding-top:var(--sec)}
 .home #services .sec-link{background:transparent;transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
@@ -457,10 +458,11 @@ html:not(.is-signing) .sign:not(.out){display:none}
    the card's only link (aria-label names the service); its ::after stretches over the whole card as the click area. */
 .bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1.5rem}
 .bento>li{grid-column:span 4}
-/* glass: 80% white with a top-left sheen, backdrop blur, a light rim and an inner top highlight; opaque enough that
+/* glass: 80% white with a top-left sheen, backdrop blur, the Stack cards' hairline border (the global --line value,
+   rgba(11,14,20,.10); #services redefines --line) so the edge shows on the white band, and an inner top highlight; opaque enough that
    the muted text keeps 4.5:1 when a card or a dark photo sits behind it */
-.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:10px;border:1px solid rgba(255,255,255,.75);border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%),rgba(255,255,255,.8);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 1px rgba(32,34,31,.05),0 1px 2px rgba(32,34,31,.04),0 12px 32px -18px rgba(32,34,31,.16);transition:transform .7s var(--sv-ease),box-shadow .7s var(--sv-ease),border-color .7s var(--sv-ease)}
-.svc-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.9);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 1px rgba(32,34,31,.08),0 2px 4px rgba(32,34,31,.04),0 26px 50px -24px rgba(32,34,31,.24)}
+.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:10px;border:1px solid rgba(11,14,20,.10);border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%),rgba(255,255,255,.8);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(32,34,31,.04),0 12px 32px -18px rgba(32,34,31,.16);transition:transform .7s var(--sv-ease),box-shadow .7s var(--sv-ease),border-color .7s var(--sv-ease)}
+.svc-card:hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 2px 4px rgba(32,34,31,.04),0 26px 50px -24px rgba(32,34,31,.24)}
 .shot{position:relative;display:block;flex:none;aspect-ratio:800/447;overflow:hidden;border-radius:12px;background:var(--tint)}
 .shot .win{position:absolute;left:7%;right:7%;top:9%;bottom:0;overflow:hidden;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;background:#fff;box-shadow:0 12px 26px -16px rgba(32,34,31,.28)}
 .shot .win::before{content:"";position:absolute;inset:0 0 auto;height:14px;border-bottom:1px solid var(--line);background-color:var(--sv-bg);background-image:radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px);background-size:10px 10px;background-repeat:no-repeat;background-position:3px 50%,13px 50%,23px 50%}
@@ -584,19 +586,20 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .tg-grid.linking [data-t]{border-color:rgba(11,14,20,.06);color:var(--muted)}
 .tg-grid.linking [data-t].rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
 .tg-grid.linking [data-t].on{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
-/* process (#process): an editorial alternating timeline. Its own warm off-white band and palette (exception to the site
-   palette, scoped here like the Services studio band): background #F8F8F5, ink #252827, accent #086B5B (6.0:1),
-   secondary text #5C625D (5.9:1; the brief's #777D78 is 3.96:1, so it is used only for the markers), timeline and stems
-   #C9CEC7. Desktop (1024px+): five columns, one line across, steps above (01, 03, 05) and below
+/* process (#process): an editorial alternating timeline on the white page background like About and Services (no band
+   background; the markers are filled with --bg so the line stops at them). Its own palette (exception to the site
+   palette): ink #252827, a process accent --pt-accent #086B5B (6.4:1 on white: the H2's .it, step numbers, hover; the
+   eyebrow label keeps the site --accent like every other section label), secondary text #5C625D (6.3:1 on white;
+   #777D78, used only for the outlined markers, 4.2:1), timeline and stems #C9CEC7. Desktop (1024px+): five columns, one line across, steps above (01, 03, 05) and below
    (02, 04) joined to it by thin stems with outlined markers; three photos sit opposite their step (subgrid rows).
    700-1023px: a vertical line down the middle, steps alternating left and right. Below 700px: the line on the left.
    process.js (GSAP) draws the line (--draw), then each marker, stem (--s), text and photo (clip-path) in turn. */
-#process{--ink:#252827;--muted:#5C625D;--accent:#086B5B;--line:#D9DED8;--line-strong:#C9CEC7;--pt-line:#C9CEC7;--pt-mark:#777D78;--pt-bg:#F8F8F5;background:var(--pt-bg);color:var(--ink)}
+#process{--ink:#252827;--muted:#5C625D;--pt-accent:#086B5B;--line:#D9DED8;--line-strong:#C9CEC7;--pt-line:#C9CEC7;--pt-mark:#777D78;color:var(--ink)}
 #process.sec{padding-block:var(--sec)}
 #process+.sec{padding-top:var(--sec)}
 #process .sec-head{margin-bottom:clamp(3.5rem,2rem + 4vw,6rem)}
 #process h2{max-width:9.75em}
-#process h2 .it{background:none;color:var(--accent)}   /* solid accent here, not the gradient */
+#process h2 .it{background:none;color:var(--pt-accent)}   /* solid accent here, not the gradient */
 .pt{--tw:min(100%,16rem);--stem:clamp(3.5rem,1rem + 4.5vw,6rem)}
 .pt-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto 0 auto;column-gap:clamp(1.25rem,2.4vw,2.5rem)}
 .pt-steps::before{content:"";grid-column:1/-1;grid-row:2;align-self:start;height:1px;background:var(--pt-line);transform:scaleX(var(--draw,1));transform-origin:left}
@@ -609,19 +612,19 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .up .pt-txt{grid-row:1;align-self:stretch}
 .down .pt-txt{grid-row:3;align-self:start}
 .pt-txt h3{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.8rem;white-space:nowrap;color:var(--ink);transition:color .3s var(--ease)}
-.pt-n{flex:none;font-family:var(--display);font-size:var(--fs-lg);font-weight:var(--fw-regular);letter-spacing:0;line-height:var(--lh-display);color:var(--accent);font-variant-numeric:lining-nums}
+.pt-n{flex:none;font-family:var(--display);font-size:var(--fs-lg);font-weight:var(--fw-regular);letter-spacing:0;line-height:var(--lh-display);color:var(--pt-accent);font-variant-numeric:lining-nums}
 .pt-stem{display:block;flex:1 0 var(--stem);width:1px;margin-left:calc(50% - .5px);background:var(--pt-line);transform:scaleY(var(--s,1));transition:background-color .3s var(--ease)}
 .up .pt-stem{margin-top:1rem;transform-origin:bottom}
 .down .pt-stem{order:-1;flex:none;height:var(--stem);margin-bottom:1rem;transform-origin:top}
-.pt-dot{grid-row:2;align-self:start;justify-self:start;width:11px;height:11px;margin:-5px 0 0 calc(var(--tw) / 2 - 5px);border:1px solid var(--pt-mark);border-radius:50%;background:var(--pt-bg);transition:background-color .3s var(--ease),border-color .3s var(--ease)}
+.pt-dot{grid-row:2;align-self:start;justify-self:start;width:11px;height:11px;margin:-5px 0 0 calc(var(--tw) / 2 - 5px);border:1px solid var(--pt-mark);border-radius:50%;background:var(--bg);transition:background-color .3s var(--ease),border-color .3s var(--ease)}
 /* photos: inset 1rem inside their column on both sides, so every photo keeps the same gap to the text beside it */
 .pt-pic{justify-self:center;width:calc(100% - 2rem);max-width:15rem;margin:0;overflow:hidden}
 .pt-pic img{display:block;width:100%;height:auto;filter:saturate(.8) sepia(.06) contrast(.97)}
 .up .pt-pic{grid-row:3;align-self:start;margin-top:calc(var(--stem) * .6)}
 .down .pt-pic{grid-row:1;align-self:start;margin-bottom:calc(var(--stem) * .6)}
 @media (hover:hover){
-  .pt-txt:hover h3{color:var(--accent)}
-  .pt-s:has(.pt-txt:hover) .pt-dot{background:var(--accent);border-color:var(--accent)}
+  .pt-txt:hover h3{color:var(--pt-accent)}
+  .pt-s:has(.pt-txt:hover) .pt-dot{background:var(--pt-accent);border-color:var(--pt-accent)}
   .pt-s:has(.pt-txt:hover) .pt-stem{background:var(--pt-mark)}
 }
 @media (max-width:1023px){
@@ -653,9 +656,6 @@ html:not(.is-signing) .sign:not(.out){display:none}
   .pt-pic{display:none}
 }
 @media (prefers-reduced-motion:reduce){.pt-txt h3,.pt-stem,.pt-dot{transition:none}}
-@media (max-width:1000px){
-  .bento>li{grid-column:span 6}
-}
 /* selected work (#work, home): four tilted project cards (dark, the real screenshot on top) float over the giant H2
    "Projects" (Switzer at --fs-giant, its "o" Instrument Serif Italic). The H2 comes first in the HTML (heading order
    H2 -> H3s) and is placed under the cards by the grid (.wk-stage: cards row 1, word row 2, pulled up so the cards
@@ -709,6 +709,9 @@ html:not(.is-signing) .sign:not(.out){display:none}
   .wk-card,.wk-go{transition:none}
   .wk-card:hover,.wk-card:focus-visible{--lift:0px;--hk:1}
 }
+@media (max-width:1000px){
+  .bento>li{grid-column:span 6}
+}
 @media (max-width:900px){
   .split-sec{grid-template-columns:minmax(0,1fr)}
   .home .split-head{position:static}
@@ -723,7 +726,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
   /* one column: heading, portrait, intro, description, link */
   .ed{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"head" "photo" "intro" "side"}
   .ed-frame{max-width:min(100%,24rem);max-height:none;margin-inline:0}
-  .ed-side{max-width:none}
+  .ed-side,.ed-intro,.ed-desc{max-width:none}
   .ed-cta{margin-top:1.5rem}
   .bento>li{grid-column:1/-1}
 }
