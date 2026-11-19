@@ -2,14 +2,13 @@
    Uses the palette, type, buttons and card styles of main.css; transparent versions of palette colours only. */
 
 /* ---------- headings ---------- */
-.sv h2 .it{font-style:italic;font-weight:400;padding-right:.08em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sv .sec-head .lede{justify-self:end;max-width:26em}
 
 /* ---------- hero: numbered chips that jump to each service ---------- */
 .sv-jump{margin-top:1.75rem}
 .sv-jump ol{display:flex;flex-wrap:wrap;gap:.5rem}
-.sv-jump a{display:inline-flex;align-items:center;gap:.55rem;min-height:2.75rem;padding:.35rem 1rem .35rem .4rem;border:1px solid var(--line);border-radius:99px;background:var(--surface);font-size:.9375rem;font-weight:600;line-height:1.2;transition:border-color .25s,background-color .25s}
-.sv-jump a span{display:grid;place-items:center;min-width:2rem;height:2rem;padding:0 .4rem;border-radius:99px;background:var(--tint);color:var(--accent);font-size:.75rem;font-weight:700;font-variant-numeric:tabular-nums;transition:background-color .25s,color .25s}
+.sv-jump a{display:inline-flex;align-items:center;gap:.55rem;min-height:2.75rem;padding:.35rem 1rem .35rem .4rem;border:1px solid var(--line);border-radius:99px;background:var(--surface);font-size:var(--fs-sm);font-weight:var(--fw-semibold);line-height:var(--lh-title);transition:border-color .25s,background-color .25s}
+.sv-jump a span{display:grid;place-items:center;min-width:2rem;height:2rem;padding:0 .4rem;border-radius:99px;background:var(--tint);color:var(--accent);font-size:var(--fs-2xs);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums;transition:background-color .25s,color .25s}
 .sv-jump a:hover{border-color:rgba(99,118,101,.45)}
 .sv-jump a:hover span{background:var(--accent-btn);color:var(--surface)}
 .sv-hero .hero-sub .cta-row{margin-top:1.75rem}
@@ -24,14 +23,14 @@
 .ss-block:first-child{padding-top:0}
 .ss-block+.ss-block{border-top:1px solid var(--line)}
 .ss-block:focus{outline:none}
-.ss-copy h3{margin-bottom:.75rem;font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.2;letter-spacing:-.02em;text-wrap:balance}
+.ss-copy h3{margin-bottom:.75rem;font-size:var(--fs-xl);text-wrap:balance}
 .ss-copy .eyebrow{margin-bottom:1rem}
 .ss-desc{max-width:34em;color:var(--muted)}
-.ss-list{display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem 1.5rem;margin-top:1.5rem;font-size:.9688rem}
+.ss-list{display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem 1.5rem;margin-top:1.5rem;font-size:var(--fs-sm)}
 .ss-list li{position:relative;padding-left:1.5rem}
 .ss-list li::before{content:"";position:absolute;left:.1rem;top:.55em;width:.65rem;height:.35rem;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
 .ss-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
-.ss-tools li{padding:.25rem .75rem;border:1px solid var(--line);border-radius:99px;font-size:.8125rem;font-weight:600;line-height:1.5;color:var(--muted)}
+.ss-tools li{padding:.25rem .75rem;border:1px solid var(--line);border-radius:99px;font-size:var(--fs-xs);font-weight:var(--fw-medium);line-height:var(--lh-snug);color:var(--muted)}
 .ss-links{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;margin-top:1.75rem}
 .ss-more{margin-top:clamp(1.5rem,1rem + 1.5vw,2.5rem);padding-top:1.5rem;border-top:1px solid var(--line)}
 @media (min-width:600px){.ss-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -44,7 +43,7 @@
 .ss-stage{max-width:520px}
 .ss-vis{max-width:34rem;margin-bottom:1.75rem}
 .ss-frame{position:relative;container-type:inline-size;aspect-ratio:13/10;overflow:hidden;border-radius:16px}
-.ss-count{display:flex;align-items:center;gap:.4rem;max-width:520px;margin-top:1.25rem;font-size:.875rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.ss-count{display:flex;align-items:center;gap:.4rem;max-width:520px;margin-top:1.25rem;font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--muted);font-variant-numeric:tabular-nums}
 .ss-n{color:var(--ink)}
 .ss-bars{display:flex;gap:.3rem;margin-left:auto}
 .ss-bars i{width:1.5rem;height:2px;border-radius:2px;background:var(--line-strong);transition:background-color .3s}
@@ -60,7 +59,8 @@
   html:not(.js) .ss-vis{margin:0}
 }
 /* the screen shows one scene at a time; the change is a cross-fade (instant under reduced motion) */
-.ss-screen .scene{opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}
+.ss-screen .scene em,.scene i{font-style:normal}
+.scene{opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}
 .ss-screen .scene.on{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
 /* the active scene assembles: its parts fade up in order (services.js sets .motion and each part's --d) */
 .ss-screen.motion .as{transition:opacity .5s var(--ease),transform .5s var(--ease)}
@@ -71,7 +71,8 @@
 
 /* ---------- the six illustrations (HTML/CSS/SVG, decorative). Sizes are in em on a canvas whose font size follows
    the frame width (2.5cqi: 13px in the 520px screen), so each scene scales as one picture ---------- */
-.scene{position:absolute;inset:0;font-size:13px;font-size:2.5cqi;line-height:1.35;color:var(--ink);text-align:left}
+/* illustration text is sized in em on a 2.5cqi canvas so it scales with the frame (--fs-xs without container units) */
+.scene{position:absolute;inset:0;font-size:var(--fs-xs);font-size:2.5cqi;line-height:var(--lh-title);color:var(--ink);text-align:left}
 .scene svg{display:block}
 .win{background:var(--surface);border:1px solid var(--line);border-radius:1em;box-shadow:0 1.2em 2.4em -1.6em rgba(36,46,38,.35);overflow:hidden}
 .bar{display:flex;align-items:center;gap:.4em;height:2.4em;padding:0 .9em;border-bottom:1px solid var(--line);background:rgba(234,240,234,.55)}
@@ -105,12 +106,12 @@
 .seo-q{display:flex;align-items:center;gap:.6em;height:2.5em;padding:0 1em;border:1px solid var(--line);border-radius:99px;font-size:.95em;color:var(--muted);white-space:nowrap;overflow:hidden}
 .seo-q svg{flex:none;width:1.05em;height:1.05em}
 .seo-r{display:grid;grid-template-columns:1.9em minmax(0,1fr);gap:.7em;align-items:start;padding:.75em .8em;border:1px solid transparent;border-radius:.8em}
-.seo-pos{display:grid;place-items:center;width:1.9em;height:1.9em;border:1px solid var(--line);border-radius:50%;font-size:.85em;font-weight:700;color:var(--muted)}
+.seo-pos{display:grid;place-items:center;width:1.9em;height:1.9em;border:1px solid var(--line);border-radius:50%;font-size:.85em;font-weight:var(--fw-semibold);color:var(--muted)}
 .seo-txt{display:flex;flex-direction:column;gap:.4em;min-width:0}
 .seo-top{border-color:rgba(86,104,90,.35);background:var(--tint)}
 .seo-top .seo-pos{border-color:var(--accent-btn);background:var(--accent-btn);color:var(--surface)}
 .seo-url{font-size:.8em;color:var(--muted)}
-.seo-t{font-weight:700;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seo-t{font-weight:var(--fw-semibold);color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .seo-r .sk-u{width:40%;height:.5em}
 .seo-r .sk-h{width:75%;height:.8em;background:rgba(86,104,90,.3)}
 .seo-top .sk{background:rgba(11,14,20,.12)}
@@ -119,10 +120,10 @@
 .seo-chart svg{flex:1;width:100%;height:auto;min-height:0;overflow:visible}
 .seo-area{fill:rgba(169,196,171,.4)}
 .seo-line{fill:none;stroke:var(--accent-btn);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1}
-.seo-lbl{font-size:.8em;font-weight:600;color:var(--muted)}
+.seo-lbl{font-size:.8em;font-weight:var(--fw-semibold);color:var(--muted)}
 .seo-rank{flex:1;display:grid;grid-template-columns:auto auto;grid-template-rows:auto 1fr;align-content:start;justify-content:space-between;align-items:end;padding:1em}
 .seo-rank .seo-lbl{grid-column:1/-1}
-.seo-big{font-size:3em;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--accent)}
+.seo-big{font-size:3em;font-weight:var(--fw-semibold);letter-spacing:var(--ls-title);line-height:var(--lh-display);color:var(--accent)}
 .seo-rank svg{width:1.6em;height:1.6em;margin-bottom:.4em;padding:.25em;border-radius:50%;background:var(--tint);color:var(--accent)}
 
 /* 03 full-stack: a dashboard with a sidebar, three stat tiles and a table */
@@ -146,7 +147,7 @@
 .dash-row:last-child{border-bottom:0}
 .dash-head{background:rgba(234,240,234,.55)}
 .dash-head .sk{width:50%;height:.5em;background:rgba(11,14,20,.2)}
-.dash-row em{justify-self:start;padding:.15em .65em;border-radius:99px;background:var(--tint);font-size:.75em;font-style:normal;font-weight:700;color:var(--accent)}
+.dash-row em{justify-self:start;padding:.15em .65em;border-radius:99px;background:var(--tint);font-size:.75em;font-style:normal;font-weight:var(--fw-semibold);color:var(--accent)}
 .dash-row em.wait{background:rgba(11,14,20,.06);color:var(--muted)}
 
 /* 03 Shopify: a storefront with a cart holding two items and a product grid */
@@ -157,7 +158,7 @@
 .shop-head>span{width:2.6em;height:.5em;border-radius:99px;background:rgba(11,14,20,.14)}
 .shop-head em{position:relative;display:grid;place-items:center;width:2.2em;height:2.2em;margin-left:.3em;border-radius:50%;background:var(--tint);color:var(--ink)}
 .shop-head em svg{width:1.2em;height:1.2em}
-.shop-head em span{position:absolute;top:-.35em;right:-.35em;display:grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--accent-btn);font-size:.7em;font-style:normal;font-weight:700;color:var(--surface)}
+.shop-head em span{position:absolute;top:-.35em;right:-.35em;display:grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--accent-btn);font-size:.7em;font-style:normal;font-weight:var(--fw-semibold);color:var(--surface)}
 .shop-title{display:flex;align-items:center;justify-content:space-between}
 .shop-title .sk-h{width:34%;height:1em;background:rgba(11,14,20,.75)}
 .shop-sort{width:6em;height:1.7em;border:1px solid var(--line);border-radius:99px}
@@ -166,11 +167,11 @@
 .shop-grid i{position:relative;flex:1;min-height:3em;margin-bottom:.2em;border-radius:.45em;background:radial-gradient(circle 2em at 50% 55%,var(--glow) 96%,transparent),linear-gradient(150deg,var(--tint),rgba(169,196,171,.35))}
 .shop-grid i.p2{background:linear-gradient(var(--accent-on-dark),var(--accent-on-dark)) 50% 58%/3.2em 4em no-repeat,linear-gradient(150deg,rgba(234,240,234,.5),var(--tint))}
 .shop-grid i.p3{background:radial-gradient(circle 2.1em at 50% 55%,transparent 44%,var(--glow) 46% 96%,transparent),linear-gradient(150deg,var(--tint),rgba(169,196,171,.35))}
-.shop-grid small{position:absolute;top:.6em;left:.6em;padding:.15em .6em;border-radius:99px;background:var(--accent-btn);font-size:.7em;font-weight:700;color:var(--surface)}
+.shop-grid small{position:absolute;top:.6em;left:.6em;padding:.15em .6em;border-radius:99px;background:var(--accent-btn);font-size:.7em;font-weight:var(--fw-semibold);color:var(--surface)}
 .shop-grid b{width:85%}
 .shop-grid b.sk-s{width:60%}
 .shop-grid .sk-n{width:40%;height:.8em;background:rgba(11,14,20,.75)}
-.shop-grid em{display:grid;place-items:center;height:2.2em;border:1px solid rgba(11,14,20,.18);border-radius:99px;font-size:.72em;font-style:normal;font-weight:700;white-space:nowrap;color:var(--surface)}
+.shop-grid em{display:grid;place-items:center;height:2.2em;border:1px solid rgba(11,14,20,.18);border-radius:99px;font-size:.72em;font-style:normal;font-weight:var(--fw-semibold);white-space:nowrap;color:var(--surface)}
 .shop-grid em.fill{border-color:var(--accent-btn);background:var(--accent-btn)}
 
 /* 04 e-commerce: a checkout with UPI selected beside the order summary and the pay button */
@@ -182,41 +183,41 @@
 .pay-dots i{width:1.6em;height:.35em;border-radius:99px;background:rgba(11,14,20,.12)}
 .pay-dots i.done{background:var(--accent-btn)}
 .pay-dots i.on{background:var(--glow)}
-.pay-step{display:flex;align-items:center;gap:.6em;font-size:.9em;font-weight:700}
+.pay-step{display:flex;align-items:center;gap:.6em;font-size:.9em;font-weight:var(--fw-semibold)}
 .pay-step .sk{flex:1;margin-left:.6em}
 .pay-ic{display:grid;place-items:center;flex:none;width:1.9em;height:1.9em;border:1.5px solid var(--accent-btn);border-radius:50%;font-size:.85em;color:var(--accent)}
 .pay-ic.done{background:var(--accent-btn);color:var(--surface)}
 .pay-ic svg{width:1.1em;height:1.1em}
-.pay-opt{display:flex;align-items:center;gap:.6em;padding:.75em .9em;border:1px solid var(--line);border-radius:.7em;font-size:.88em;font-weight:600;color:var(--muted)}
+.pay-opt{display:flex;align-items:center;gap:.6em;padding:.75em .9em;border:1px solid var(--line);border-radius:.7em;font-size:.88em;font-weight:var(--fw-semibold);color:var(--muted)}
 .pay-opt i{flex:none;width:1em;height:1em;border:1.5px solid rgba(11,14,20,.25);border-radius:50%}
 .pay-opt.on{border-color:rgba(86,104,90,.35);background:var(--tint);color:var(--ink)}
 .pay-opt.on i{border-color:var(--accent-btn);background:radial-gradient(circle,var(--accent-btn) 0 38%,transparent 44%)}
 .pay-opt em{width:2.2em;height:1.3em;border:1px solid rgba(86,104,90,.35);border-radius:.3em;background:var(--surface)}
 .pay-opt em:first-of-type{margin-left:auto}
 .sum{display:flex;flex-direction:column;gap:.85em;padding:1.1em}
-.sum-t{font-size:.9em;font-weight:700}
+.sum-t{font-size:.9em;font-weight:var(--fw-semibold)}
 .sum-row{display:grid;grid-template-columns:2.2em minmax(0,1fr) 2.4em;gap:.6em;align-items:center}
 .sum-row i{width:2.2em;height:2.2em;border-radius:.45em;background:radial-gradient(circle,var(--glow) 0 30%,transparent 32%),var(--tint)}
 .sum-row i.p2{background:linear-gradient(var(--glow),var(--glow)) center/38% 55% no-repeat,var(--tint)}
 .sum-row b{height:.7em;background:rgba(11,14,20,.7)}
-.sum-tot{display:flex;align-items:center;justify-content:space-between;padding-top:.85em;border-top:1px solid var(--line);font-size:.9em;font-weight:700}
+.sum-tot{display:flex;align-items:center;justify-content:space-between;padding-top:.85em;border-top:1px solid var(--line);font-size:.9em;font-weight:var(--fw-semibold)}
 .sum-tot b{width:4em;height:.9em;background:rgba(11,14,20,.78)}
-.sum-pay{display:grid;place-items:center;height:2.6em;border-radius:99px;background:var(--accent-btn);font-size:.85em;font-style:normal;font-weight:700;color:var(--surface)}
+.sum-pay{display:grid;place-items:center;height:2.6em;border-radius:99px;background:var(--accent-btn);font-size:.85em;font-style:normal;font-weight:var(--fw-semibold);color:var(--surface)}
 
 /* 05 AI: a chat assistant answering from the site's own content, the answer checked by a person */
 .chat{position:absolute;inset:0 4.5em;display:flex;flex-direction:column}
 .chat-head{display:flex;align-items:center;gap:.7em;padding:.9em 1.1em;border-bottom:1px solid var(--line)}
 .chat-av{display:grid;place-items:center;flex:none;width:2.2em;height:2.2em;border-radius:50%;background:var(--grad);color:var(--surface)}
 .chat-av svg{width:1.1em;height:1.1em}
-.chat-id{display:flex;flex-direction:column;line-height:1.25}
+.chat-id{display:flex;flex-direction:column;line-height:var(--lh-title)}
 .chat-id b{font-size:.95em}
 .chat-id span{font-size:.75em;color:var(--muted)}
 .chat-log{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:.8em;padding:1.2em 1.1em}
-.msg{max-width:80%;padding:.65em .9em;font-size:.9em;line-height:1.4}
+.msg{max-width:80%;padding:.65em .9em;font-size:.9em;line-height:var(--lh-title)}
 .msg.me{align-self:flex-end;border-radius:1em 1em .3em 1em;background:var(--accent-btn);color:var(--surface)}
 .msg.bot{align-self:flex-start;border-radius:1em 1em 1em .3em;background:var(--tint)}
-.chat-src{display:block;margin-top:.45em;font-size:.8em;font-weight:600;color:var(--accent)}
-.chat-ok{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;font-size:.8em;font-weight:700;color:var(--accent)}
+.chat-src{display:block;margin-top:.45em;font-size:.8em;font-weight:var(--fw-semibold);color:var(--accent)}
+.chat-ok{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;font-size:.8em;font-weight:var(--fw-semibold);color:var(--accent)}
 .chat-ok svg{width:1.4em;height:1.4em;padding:.2em;border-radius:50%;background:var(--tint)}
 .chat-in{display:flex;align-items:center;gap:.8em;margin:0 1.1em 1.1em;padding:.35em .35em .35em 1em;border:1px solid var(--line);border-radius:99px}
 .chat-in .sk{flex:1;max-width:55%}
@@ -228,10 +229,9 @@
    fill over the grey track). services.js adds .track and then .lit; without it (or under reduced motion) all is filled ---------- */
 .sv-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2rem;counter-reset:s}
 .sv-steps li{position:relative;z-index:1;counter-increment:s;display:flex;flex-direction:column;gap:.5rem}
-.sv-steps li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-bottom:1.25rem;border:1px solid var(--accent-btn);border-radius:50%;background:var(--accent-btn);box-shadow:0 0 0 8px var(--surface);font-family:var(--display);font-size:1.1875rem;font-weight:400;line-height:1;color:var(--surface);font-variant-numeric:lining-nums;transition:background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
+.sv-steps li::before{content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:3.5rem;height:3.5rem;margin-bottom:1.25rem;border:1px solid var(--accent-btn);border-radius:50%;background:var(--accent-btn);box-shadow:0 0 0 8px var(--surface);font-family:var(--display);font-size:var(--fs-md);font-weight:var(--fw-regular);line-height:var(--lh-display);color:var(--surface);font-variant-numeric:lining-nums;transition:background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
 .sv-steps li:not(:last-child)::after{content:"";position:absolute;z-index:-1;top:calc(1.75rem - 1px);left:1.75rem;width:calc(100% + 2rem);height:2px;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 0 0/100% 100% no-repeat,var(--line);transition:background-size .3s linear}
-.sv-steps h3{font-size:1.1875rem}
-.sv-steps p{color:var(--muted);font-size:.9688rem}
+.sv-steps p{color:var(--muted);font-size:var(--fs-sm)}
 .sv-steps.track:not(.lit) li::before{border-color:rgba(99,118,101,.35);background:var(--surface);color:var(--accent)}
 .sv-steps.track:not(.lit) li::after{background-size:0 100%}
 .sv-steps.lit li:nth-child(1)::after{transition-delay:.15s}
@@ -260,18 +260,13 @@
 .sv-ways li:hover{transform:translateY(-4px);border-color:var(--line-strong)}
 .sv-ic{display:grid;place-items:center;width:2.75rem;height:2.75rem;margin-bottom:.6rem;border-radius:12px;background:var(--grad);color:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 12px -6px rgba(99,118,101,.6)}
 .sv-ic svg{width:1.25rem;height:1.25rem}
-.sv-ways h3{font-size:1.375rem;letter-spacing:-.02em}
-.sv-ways p{color:var(--muted);font-size:.9688rem}
+.sv-ways p{color:var(--muted);font-size:var(--fs-sm)}
 .sv-ways .btn{align-self:flex-start;margin-top:auto}
 .sv-ways p{margin-bottom:1rem}
 
-/* ---------- FAQ: heading column held in view on desktop; the plus sits in a ring that turns sage when open ---------- */
+/* ---------- FAQ: heading column held in view on desktop (the list itself uses the shared .faq styles in main.css) ---------- */
 .sv .faq-grid h2{position:static}
 .sv-split-head{position:sticky;top:6.5rem}
-.sv .faq summary{padding:1.5rem 0;font-size:1.125rem}
-.sv .faq summary::after{width:2.25rem;height:2.25rem;border:1px solid var(--line);border-radius:50%;background:linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/.75rem 1.5px no-repeat,linear-gradient(var(--accent-btn),var(--accent-btn)) 50%/1.5px .75rem no-repeat;transition:transform .3s var(--ease),border-color .3s}
-.sv .faq details[open] summary::after{border-color:var(--accent-btn)}
-.sv .faq summary:hover::after{border-color:var(--line-strong)}
 
 @media (max-width:900px){
   .sv .sec-head .lede{justify-self:start}

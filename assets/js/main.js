@@ -194,5 +194,30 @@
     });
   }
 
+  /* ---------- FAQ: smooth open/close. The <details> height animates between its closed and open sizes; while closing it
+     stays open (so the answer is visible) with .is-closing, which drops the tint and turns the cross back. Instant under reduced motion. ---------- */
+  var rm = matchMedia('(prefers-reduced-motion: reduce)');
+  $$('.faq details').forEach(function (d) {
+    var s = $('summary', d), anim = null;
+    if (!s || !d.animate) return;
+    s.addEventListener('click', function (e) {
+      if (rm.matches) return;
+      e.preventDefault();
+      var from = d.getBoundingClientRect().height;
+      var opening = !d.open || d.classList.contains('is-closing');
+      if (anim) { anim.onfinish = null; anim.cancel(); anim = null; }
+      d.classList.remove('is-closing');
+      d.open = false; var shut = d.getBoundingClientRect().height;
+      d.open = true; var full = d.getBoundingClientRect().height;
+      if (!opening) d.classList.add('is-closing');
+      d.style.overflow = 'hidden';
+      anim = d.animate({ height: [from + 'px', (opening ? full : shut) + 'px'] }, { duration: 350, easing: 'cubic-bezier(.2,.7,.1,1)' });
+      anim.onfinish = function () {
+        anim = null; d.style.overflow = '';
+        if (!opening) { d.open = false; d.classList.remove('is-closing'); }
+      };
+    });
+  });
+
   var yr = $('[data-year]'); if (yr) yr.textContent = new Date().getFullYear();
 })();
