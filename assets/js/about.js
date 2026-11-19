@@ -54,6 +54,7 @@
       aeo: ['geo', 'content'], geo: ['content'], seoreport: ['ga'],
       ga: ['excel'], tableau: ['powerbi', 'excel'], powerbi: ['excel'],
       chatgpt: ['claude'], claude: ['python'],
+      deeplearning: ['tensorflow', 'keras'], imageproc: ['opencv', 'deeplearning'], nlp: ['chatgpt', 'claude', 'deeplearning'],
       pandas: ['numpy', 'python', 'sql', 'excel'], numpy: ['python'], sklearn: ['pandas', 'numpy'],
       tensorflow: ['keras', 'numpy', 'python'], keras: ['python'], opencv: ['numpy', 'python'],
       git: ['github', 'vscode'], github: ['vscode'], claudecode: ['vscode', 'github', 'claude'], docker: ['aws'], aws: ['django']
