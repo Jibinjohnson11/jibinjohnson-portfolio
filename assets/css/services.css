@@ -276,6 +276,3 @@
 @media (prefers-reduced-motion:reduce){
   .sv-ways li:hover,.btn:hover .arrow{transform:none}
 }
-
-/* ---------- pricing: six cards, three per row on desktop (main.css sets two below 1100px and one on phones) ---------- */
-@media (min-width:1101px){.sv .prices{grid-template-columns:repeat(3,minmax(0,1fr))}}

@@ -8,8 +8,6 @@
 @font-face{font-family:"Switzer";font-style:normal;font-weight:100 900;font-display:swap;src:url("../fonts/Switzer-Variable.woff2") format("woff2")}
 @font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/InstrumentSerif-Regular.woff2") format("woff2")}
 @font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/InstrumentSerif-Italic.woff2") format("woff2")}
-/* Switzer has no ₹ (U+20B9): supplied from the Plus Jakarta Sans subset, loaded only on pages that show ₹ in Switzer text */
-@font-face{font-family:"Rupee Fallback";font-style:normal;font-weight:400 800;font-display:swap;src:url("../fonts/plus-jakarta-sans.woff2") format("woff2");unicode-range:U+20B9}
 /* metric-matched local fallbacks so text doesn't shift when the web fonts swap in */
 @font-face{font-family:"Switzer Fallback";font-weight:100 500;src:local("Arial"),local("ArialMT");size-adjust:97.8%;ascent-override:100.2%;descent-override:25.56%;line-gap-override:9.2%}
 @font-face{font-family:"Switzer Fallback";font-weight:600 900;src:local("Arial Bold"),local("Arial-BoldMT");size-adjust:97.8%;ascent-override:100.2%;descent-override:25.56%;line-gap-override:9.2%}
@@ -17,7 +15,7 @@
 @font-face{font-family:"Instrument Serif Fallback";font-style:italic;font-weight:400;src:local("Times New Roman Italic"),local("TimesNewRomanPS-ItalicMT");size-adjust:86.88%;ascent-override:113.95%;descent-override:35.68%;line-gap-override:0%}
 
 :root{
-  --bg:#FFFFFF; --surface:#FFFFFF; --tint:#EAF0EA;   /* page, alternate bands + cards, tints and the featured pricing card */
+  --bg:#FFFFFF; --surface:#FFFFFF; --tint:#EAF0EA;   /* page, alternate bands + cards, tints and selection */
   --ink:#0B0E14; --muted:#5B606B; --line:rgba(11,14,20,.10);
   --accent:#56685A;            /* deep sage: accent text of any size, numbers, icons, decoration (5.96:1 on white, 5.15:1 on --tint) */
   --accent-btn:#637665;        /* sage: buttons, links and small accent text; white text on it 4.87:1 */
@@ -29,8 +27,8 @@
   --card-tint:#F7FAF7; --card-line:#E0E8E0; --card-line-hover:#B4C5B6;   /* service icon cards */
   --line-strong:rgba(11,14,20,.22);   /* ink at 22%: hover borders */
   /* ---- typography system (see CLAUDE.md "Typography system") ---- */
-  --font:"Switzer","Rupee Fallback","Switzer Fallback",sans-serif;   /* body, UI, H3 and every card title, labels */
-  --display:"Instrument Serif","Rupee Fallback","Instrument Serif Fallback",serif;   /* H1, H2, statements, FAQ questions, large numbers */
+  --font:"Switzer","Switzer Fallback",sans-serif;   /* body, UI, H3 and every card title, labels */
+  --display:"Instrument Serif","Instrument Serif Fallback",serif;   /* H1, H2, statements, FAQ questions, large numbers */
   /* size scale, about 1.25 between steps from 17px up (the small UI steps are closer together) */
   --fs-2xs:.75rem;     /* 12px: pills, counters, chips inside the home service cards */
   --fs-xs:.8125rem;    /* 13px: uppercase labels, tags and chips, legal line */
@@ -40,7 +38,7 @@
   --fs-md:1.25rem;     /* 20px: H3 and card titles */
   --fs-lg:clamp(1.1875rem,1rem + .75vw,1.5625rem);     /* 19 -> 25px: FAQ questions, lead paragraphs */
   --fs-xl:clamp(1.5rem,1rem + 1.05vw,2rem);            /* 24 -> 32px: large H3s, service one-liners */
-  --fs-2xl:clamp(1.75rem,1.3rem + 1.4vw,2.5rem);       /* 28 -> 40px: project titles, prices, menu links */
+  --fs-2xl:clamp(1.75rem,1.3rem + 1.4vw,2.5rem);       /* 28 -> 40px: project titles, menu links */
   --fs-h2:clamp(2rem,1.3rem + 2.15vw,3.25rem);         /* 32 -> 52px */
   --fs-h1:clamp(2.25rem,.75rem + 3.45vw,4rem);         /* 36 -> 64px: inner-page H1 */
   --fs-display:clamp(3rem,5.1vw,4.875rem);             /* 48 -> 78px: home H1 and the statement line */
@@ -232,8 +230,8 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem 4rem;align-items:end;margin-bottom:clamp(2.5rem,2rem + 2vw,3.5rem)}
 
 /* ---------- cards ---------- */
-.svc a,.why li,.price,.pcard,.ind li,.steps li,.incl li,.proof li,.proj{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .25s var(--ease),border-color .25s}
-.svc a:hover,.why li:hover,.price:hover,.pcard:hover,.ind li:hover,.steps li:hover,.incl li:hover,.proof li:hover,.proj:hover{transform:translateY(-4px);border-color:var(--line-strong)}
+.svc a,.why li,.pcard,.ind li,.steps li,.incl li,.proof li,.proj{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .25s var(--ease),border-color .25s}
+.svc a:hover,.why li:hover,.pcard:hover,.ind li:hover,.steps li:hover,.incl li:hover,.proof li:hover,.proj:hover{transform:translateY(-4px);border-color:var(--line-strong)}
 
 /* about (home): editorial three-column composition. Left: label and "Hey," heading on top, the intro at the foot;
    centre: a tall portrait (the focal point); right: the approach paragraph and a quiet "Explore My Work" link */
@@ -323,19 +321,6 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .steps li{counter-increment:s;display:flex;flex-direction:column;gap:.5rem;padding:1.5rem}
 .steps li::before{content:counter(s);margin-bottom:.75rem;font-family:var(--display);font-size:var(--fs-2xl);font-weight:var(--fw-regular);line-height:var(--lh-display);color:var(--accent)}
 
-/* pricing */
-.prices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}
-.price{display:flex;flex-direction:column;gap:1.25rem;padding:1.75rem}
-.price.pick{background:var(--tint);border-color:var(--accent)}
-.price.pick:hover{border-color:var(--accent)}
-.amt{font-family:var(--display);font-size:var(--fs-2xl);font-weight:var(--fw-regular);letter-spacing:var(--ls-h2);line-height:var(--lh-display)}
-.amt small{display:block;margin-bottom:.4rem;font-family:var(--font);font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:0;color:var(--muted)}
-.amt .per{font-family:var(--font);font-size:var(--fs-sm);font-weight:var(--fw-medium);letter-spacing:0;color:var(--muted)}
-.price ul{display:grid;gap:.55rem;padding-top:1.25rem;border-top:1px solid var(--line);font-size:var(--fs-sm)}
-.price li{position:relative;padding-left:1.5rem}
-.price li::before{content:"";position:absolute;left:.1rem;top:.55em;width:.65rem;height:.35rem;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
-.price .btn{margin-top:auto}
-.prices+.note{margin-top:1.5rem;max-width:60em}
 
 /* faq (every page): questions in the display serif; the open row is a soft sage card, closed rows plain with a hairline
    between them; a thin plus turns 45° into a cross. main.js animates the height (instant under reduced motion and without JS) */
@@ -724,7 +709,7 @@ html.lenis,html.lenis body{height:auto}
 @media (min-width:901px){.hero.glass h1 .ln:not(.it){display:inline-block;vertical-align:top}}
 @media (min-width:768px){.hero-portrait{bottom:0;height:min(100%,92vw)}}   /* the whole image shows: top on the stage top, bottom on the hero bottom */
 @media (max-width:1100px){
-  .prices,.incl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .incl{grid-template-columns:repeat(2,minmax(0,1fr))}
   .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
   .foot{grid-template-columns:repeat(4,minmax(0,1fr))}
   .foot>div:first-child{grid-column:1/-1}
@@ -763,7 +748,7 @@ html.lenis,html.lenis body{height:auto}
   .hero.glass .cta-row{flex-wrap:nowrap;gap:.5rem}
   .hero.glass .btn{min-height:2.75rem;padding:0 clamp(.625rem,3.4vw,1.125rem);font-size:clamp(.75rem,3.6vw,.9375rem);gap:.4rem;white-space:nowrap}
   .hero.glass .btn svg{width:1.05em;height:1.05em}
-  .prices,.incl,.why,.steps,.form,.pgrid{grid-template-columns:minmax(0,1fr)}
+  .incl,.why,.steps,.form,.pgrid{grid-template-columns:minmax(0,1fr)}
   .bio{grid-template-columns:repeat(2,minmax(0,1fr))}
   .proj dl{grid-template-columns:minmax(0,1fr);gap:.15rem}
   .proj dd{margin-bottom:.6rem}
@@ -776,5 +761,5 @@ html.lenis,html.lenis body{height:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .js .rv{opacity:1;transform:none}
   .hero.glass .btn:hover{transform:none}
-  .svc a:hover,.why li:hover,.price:hover,.pcard:hover,.ind li:hover,.steps li:hover,.incl li:hover,.proof li:hover,.proj:hover,.svc.icons a:hover,.svc.icons a:hover .shot img{transform:none}
+  .svc a:hover,.why li:hover,.pcard:hover,.ind li:hover,.steps li:hover,.incl li:hover,.proof li:hover,.proj:hover,.svc.icons a:hover,.svc.icons a:hover .shot img{transform:none}
 }

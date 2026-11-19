@@ -5,14 +5,14 @@
 ## Pages
 
 - [About](https://jibinjohnson.in/about/): story, services, working principles, tools, experience and education
-- [Services](https://jibinjohnson.in/services/): all six services, process, ways to work, pricing and FAQ
+- [Services](https://jibinjohnson.in/services/): all six services, process, ways to work and FAQ
 - [Projects](https://jibinjohnson.in/projects/): websites built and SEO results
 - [Contact](https://jibinjohnson.in/contact/): WhatsApp, call booking and contact form
 
 ## Services
 
-- [Website design and development](https://jibinjohnson.in/website-development-kerala/): Website development services in Kerala from a freelance website developer in Trivandrum. Custom, fast, SEO-ready business websites from ₹12,000.
-- [SEO services](https://jibinjohnson.in/seo-services-kerala/): Freelance SEO specialist in Kerala offering technical, on-page and local SEO services in Trivandrum. Position-one rankings for clients. From ₹8,000 a month.
+- [Website design and development](https://jibinjohnson.in/website-development-kerala/): Website development services in Kerala from a freelance website developer in Trivandrum. Custom, fast, SEO-ready business websites with a fixed quote in writing.
+- [SEO services](https://jibinjohnson.in/seo-services-kerala/): Freelance SEO specialist in Kerala offering technical, on-page and local SEO services in Trivandrum. Position-one rankings for clients and a monthly report on what changed.
 - [Shopify store development](https://jibinjohnson.in/shopify-developer-kerala/): Shopify developer in Kerala for Shopify store development in Trivandrum: store setup, theme customisation, Indian payments and SEO from launch.
 - [E-commerce website development](https://jibinjohnson.in/ecommerce-website-development-kerala/): E-commerce website development in Kerala: custom online stores with Razorpay and UPI payments, order management and SEO. Developer based in Trivandrum.
 - [Full-stack and software development](https://jibinjohnson.in/full-stack-developer-kerala/): Full stack developer in Kerala building web applications, dashboards and business software with Python, Django and JavaScript. Based in Trivandrum.
@@ -24,15 +24,6 @@
 - Blackbox Learning: SEO for an AI training academy. Seven keywords at position one on Google, with more on page one.
 - Serene Derma: SEO team lead for a dermatology clinic group. Two target keywords at the top of Google.
 - Prception Medialab: Ongoing technical and on-page SEO for a branding and digital marketing agency.
-
-## Pricing
-
-- Landing page: from ₹6,000
-- Business website: from ₹12,000
-- Shopify store: from ₹20,000
-- Web application: from ₹30,000
-- E-commerce website: from ₹35,000
-- SEO: from ₹8,000 a month
 
 ## Contact
 
