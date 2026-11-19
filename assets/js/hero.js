@@ -31,18 +31,19 @@
   };
 
   /* kind: "card" = icon + title, "img" = picture panel. Every panel shares one size, radius and border.
-     Pictures are WebP at 320 and 480px wide (panels are 150px wide on phones, at most 232px elsewhere: 2x);
+     Pictures are real screenshots of client projects only (name = the project), WebP at 320 and 480px wide
+     (panels are 150px wide on phones, at most 232px elsewhere: 2x), cropped to the panel by object-fit: cover;
      src is the path without the -<width>.webp suffix; w/h are the 480px file's intrinsic size. */
   var PANELS = [
     { kind: 'card', title: 'Web Development', caption: 'Fast, modern sites', icon: 'code' },
-    { kind: 'img', src: 'assets/img/work-muziris', w: 480, h: 245 },
+    { kind: 'img', name: 'Blackbox Learning', src: 'assets/img/shot-blackbox-learning', w: 480, h: 300 },
     { kind: 'card', title: 'Full Stack Development', caption: 'End-to-end apps', icon: 'layers' },
     { kind: 'card', title: 'Python Development', caption: 'Django · pandas', icon: 'python' },
     { kind: 'card', title: 'Artificial Intelligence', caption: 'Models that learn', icon: 'brain' },
-    { kind: 'img', src: 'assets/img/work-airaq', w: 480, h: 269 },
+    { kind: 'img', name: 'AQ Air', src: 'assets/img/work-airaq', w: 480, h: 269 },
     { kind: 'card', title: 'Generative AI', caption: 'RAG chatbots', icon: 'spark' },
     { kind: 'card', title: 'UI/UX Design', caption: 'Clean interfaces', icon: 'penTool' },
-    { kind: 'img', src: 'assets/img/work-nova', w: 480, h: 360 },
+    { kind: 'img', name: 'Serene Derma', src: 'assets/img/shot-serene-derma', w: 480, h: 300 },
     { kind: 'card', title: 'Search Engine Optimization (SEO)', caption: 'Rank higher', icon: 'trend' }
   ];
   /* 10 panels on tablet/desktop, 6 on phones: few enough that each slot leaves room for a readable card */

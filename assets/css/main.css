@@ -42,6 +42,7 @@
   --fs-h2:clamp(2rem,1.3rem + 2.15vw,3.25rem);         /* 32 -> 52px */
   --fs-h1:clamp(2.25rem,.75rem + 3.45vw,4rem);         /* 36 -> 64px: inner-page H1 */
   --fs-display:clamp(3rem,5.1vw,4.875rem);             /* 48 -> 78px: home H1 and the statement line */
+  --fs-giant:calc(min(75rem,100vw - 2 * var(--gut)) * .285);  /* the home Work H2 "Projects" (~3.44em wide): spans ~98% of the content width (91 -> 342px) */
   --fw-regular:400; --fw-medium:500; --fw-semibold:600;
   --fw-brand:800;      /* the "Jibin" wordmark only (logo and footer name) */
   --lh-display:1; --lh-heading:1.1; --lh-title:1.25; --lh-snug:1.5; --lh-body:1.65;
@@ -273,11 +274,6 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .svc.icons a:hover{transform:translateY(-6px);border-color:var(--card-line-hover);box-shadow:0 30px 60px -30px rgba(99,118,101,.35)}
 .ic{display:grid;place-items:center;flex:none;width:52px;height:52px;border-radius:16px;background:var(--glass-dark);color:var(--glow);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
 .ic svg{width:26px;height:26px;filter:drop-shadow(0 0 6px rgba(169,196,171,.8))}
-/* card with a project screenshot on top (Website design and development) */
-.svc.icons .shot{position:relative;display:block;flex:none;margin:-30px -30px 0;aspect-ratio:16/9;overflow:hidden;border-radius:23px 23px 0 0;border-bottom:1px solid var(--card-line)}
-.svc.icons .shot img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-.svc.icons a:hover .shot img{transform:scale(1.04)}
-.svc.icons .shot+.ic{position:relative;margin-top:-26px}
 .svc.icons h3{margin:22px 0 8px}
 .go{display:inline-flex;margin-top:auto;padding-top:.75rem;color:var(--accent-btn)}
 .go svg{width:1.25rem;height:1.25rem;transition:transform .25s var(--ease)}
@@ -457,8 +453,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .home #services+.sec{padding-top:var(--sec)}
 .home #services .sec-link{background:transparent;transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
 .home #services .sec-link:hover{background:var(--ink);border-color:var(--ink);color:#fff}
-/* cards: image (the Verdant screenshot or a flat illustration, all in the same window frame on a sage tile, at the
-   screenshot's 800:447), H3, description, tool chips, then the footer: "01 / 06" and the round arrow link. The arrow is
+/* cards: image (a flat inline SVG illustration in a window frame on a sage tile, 800:447), H3, description, tool chips, then the footer: "01 / 06" and the round arrow link. The arrow is
    the card's only link (aria-label names the service); its ::after stretches over the whole card as the click area. */
 .bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1.5rem}
 .bento>li{grid-column:span 4}
@@ -469,8 +464,8 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .shot{position:relative;display:block;flex:none;aspect-ratio:800/447;overflow:hidden;border-radius:12px;background:var(--tint)}
 .shot .win{position:absolute;left:7%;right:7%;top:9%;bottom:0;overflow:hidden;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;background:#fff;box-shadow:0 12px 26px -16px rgba(32,34,31,.28)}
 .shot .win::before{content:"";position:absolute;inset:0 0 auto;height:14px;border-bottom:1px solid var(--line);background-color:var(--sv-bg);background-image:radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px);background-size:10px 10px;background-repeat:no-repeat;background-position:3px 50%,13px 50%,23px 50%}
-.shot img,.shot svg{position:absolute;left:0;top:14px;display:block;width:100%;height:calc(100% - 14px);object-fit:cover;object-position:50% 0;transition:transform 1s var(--sv-ease);transform-origin:50% 0}
-.svc-card:hover .shot img,.svc-card:hover .shot svg{transform:scale(1.03)}
+.shot svg{position:absolute;left:0;top:14px;display:block;width:100%;height:calc(100% - 14px);transition:transform 1s var(--sv-ease);transform-origin:50% 0}
+.svc-card:hover .shot svg{transform:scale(1.03)}
 .svc-body{display:flex;flex-direction:column;flex:1 0 auto;padding:16px 8px 4px}
 .svc-card h3{color:var(--ink);text-wrap:balance}
 .svc-card p{margin-top:.5rem}
@@ -661,6 +656,59 @@ html:not(.is-signing) .sign:not(.out){display:none}
 @media (max-width:1000px){
   .bento>li{grid-column:span 6}
 }
+/* selected work (#work, home): four tilted project cards (dark, the real screenshot on top) float over the giant H2
+   "Projects" (Switzer at --fs-giant, its "o" Instrument Serif Italic). The H2 comes first in the HTML (heading order
+   H2 -> H3s) and is placed under the cards by the grid (.wk-stage: cards row 1, word row 2, pulled up so the cards
+   overlap its top on desktop). Each card's transform = its tilt (--rot) x scroll straightening (--k, work.js) x hover
+   straightening (--hk), plus the scroll drift (--dy, work.js) and the hover lift (--lift). 640-1023px: two per row, a
+   lighter tilt, the word below. Below 640px: upright cards in a swipeable scroll-snap row (80% wide), the word below. */
+@property --hk{syntax:"<number>";inherits:false;initial-value:1}
+@property --lift{syntax:"<length>";inherits:false;initial-value:0px}
+#work{overflow-x:clip}
+.wk-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem 2rem;margin-bottom:clamp(2.5rem,2rem + 2vw,3.5rem)}
+.wk-head .eyebrow{margin-bottom:0}
+.wk-note{font-size:var(--fs-sm);line-height:var(--lh-snug);color:var(--muted)}
+.wk-stage{display:grid;grid-template-columns:minmax(0,1fr)}
+.wk-word{grid-row:2;position:relative;z-index:0;margin-top:-.3em;font-family:var(--font);font-size:var(--fs-giant);font-weight:var(--fw-regular);letter-spacing:var(--ls-display);line-height:var(--lh-display);text-align:center;white-space:nowrap;text-wrap:nowrap;color:var(--ink)}
+.wk-word .it{font-family:var(--display);padding-right:0}
+.wk-cards{grid-row:1;position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:clamp(1.25rem,2.2vw,2rem);margin-inline:calc(50% - min(50vw - 2rem,42.5rem))}
+.wk-c{--rot:0deg;--dy:0px;--k:1}
+.wk-c:nth-child(1){--rot:-6deg;margin-top:3.5rem}
+.wk-c:nth-child(2){--rot:4.5deg;margin-top:0}
+.wk-c:nth-child(3){--rot:-2.5deg;margin-top:5rem}
+.wk-c:nth-child(4){--rot:7deg;margin-top:1.5rem}
+.wk-card{display:block;padding:.5rem;border-radius:var(--r);background:var(--ink);color:var(--bg);text-decoration:none;box-shadow:0 1.5rem 3rem -1.75rem rgba(11,14,20,.5);transform:translate3d(0,calc(var(--dy) + var(--lift)),0) rotate(calc(var(--rot) * var(--k) * var(--hk)));transition:--hk .45s var(--ease),--lift .45s var(--ease),box-shadow .45s var(--ease)}
+.wk-card img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top;border-radius:calc(var(--r) - .5rem);background:rgba(255,255,255,.06)}
+.wk-body{padding:1.25rem .75rem .75rem}
+.wk-card h3{font-size:var(--fs-xl);font-weight:var(--fw-medium);letter-spacing:var(--ls-title);line-height:var(--lh-heading);text-transform:uppercase;color:var(--bg)}
+.wk-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.16)}
+.wk-desc{font-size:var(--fs-xs);line-height:var(--lh-snug);color:rgba(255,255,255,.72)}
+.wk-go{flex:none;display:grid;place-items:center;width:1.75rem;height:1.75rem;border:1px solid rgba(255,255,255,.24);border-radius:6px;transition:background-color .3s var(--ease),color .3s var(--ease)}
+.wk-go svg{width:.875rem;height:.875rem}
+.wk-card:focus-visible{outline:2px solid var(--accent-btn);outline-offset:4px;--hk:0}
+.wk-card:hover .wk-go,.wk-card:focus-visible .wk-go{background:var(--bg);color:var(--ink)}
+@media (hover:hover){.wk-card:hover{--lift:-10px;--hk:0;box-shadow:0 2rem 3.5rem -1.75rem rgba(11,14,20,.55)}}
+.wk-all{display:flex;width:fit-content;margin:clamp(1.5rem,1rem + 1.5vw,2.5rem) auto 0}
+.wk-all:hover svg{transform:translateX(3px)}
+@media (max-width:1023px){
+  .wk-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem clamp(1.5rem,4vw,2.5rem);margin-inline:0}
+  .wk-c:nth-child(1){--rot:-3deg;margin-top:0}
+  .wk-c:nth-child(2){--rot:2.5deg;margin-top:3rem}
+  .wk-c:nth-child(3){--rot:2deg;margin-top:0}
+  .wk-c:nth-child(4){--rot:-3.5deg;margin-top:3rem}
+  .wk-word{margin-top:clamp(2rem,1rem + 3vw,3rem)}
+}
+@media (max-width:639px){
+  .wk-cards{display:flex;gap:1rem;margin-inline:calc(-1 * var(--gut));padding:.5rem var(--gut) 2rem;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);scrollbar-width:none}
+  .wk-cards::-webkit-scrollbar{display:none}
+  .wk-c:nth-child(n){flex:0 0 80%;margin-top:0;--rot:0deg;scroll-snap-align:start}
+  .wk-card{height:100%;box-shadow:0 1rem 1.5rem -1rem rgba(11,14,20,.4)}
+  .wk-word{margin-top:.5rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .wk-card,.wk-go{transition:none}
+  .wk-card:hover,.wk-card:focus-visible{--lift:0px;--hk:1}
+}
 @media (max-width:900px){
   .split-sec{grid-template-columns:minmax(0,1fr)}
   .home .split-head{position:static}
@@ -681,7 +729,7 @@ html:not(.is-signing) .sign:not(.out){display:none}
 }
 @media (prefers-reduced-motion:reduce){
   .ed-cta:hover svg{transform:none}
-  .svc-card:hover,.svc-card:hover .shot img,.svc-card:hover .shot svg,.svc-card:hover .svc-go svg{transform:none}
+  .svc-card:hover,.svc-card:hover .shot svg,.svc-card:hover .svc-go svg{transform:none}
 }
 
 /* ---------- floating WhatsApp button (phones and tablets) ---------- */
@@ -761,5 +809,5 @@ html.lenis,html.lenis body{height:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .js .rv{opacity:1;transform:none}
   .hero.glass .btn:hover{transform:none}
-  .svc a:hover,.why li:hover,.pcard:hover,.ind li:hover,.steps li:hover,.incl li:hover,.proof li:hover,.proj:hover,.svc.icons a:hover,.svc.icons a:hover .shot img{transform:none}
+  .svc a:hover,.why li:hover,.pcard:hover,.ind li:hover,.steps li:hover,.incl li:hover,.proof li:hover,.proj:hover,.svc.icons a:hover{transform:none}
 }
