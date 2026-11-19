@@ -11,7 +11,9 @@
   gsap.registerPlugin(ST);
 
   var cards = Array.prototype.slice.call(sec.querySelectorAll('.wk-c'));
-  var travel = [80, 44, 110, 62];   /* px each card rises over the whole pass, so they move at different speeds */
+  /* px each card rises over the whole pass, so they move at different speeds; card 2 barely moves (on desktop it covers
+     the top of the giant word's j, with only a few px to spare) */
+  var travel = [80, 12, 110, 62];
 
   gsap.matchMedia().add('(min-width:640px) and (prefers-reduced-motion: no-preference)', function () {
     cards.forEach(function (li, i) {

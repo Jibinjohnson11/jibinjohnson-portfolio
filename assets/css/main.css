@@ -677,6 +677,9 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .wk-c:nth-child(2){--rot:4.5deg;margin-top:0}
 .wk-c:nth-child(3){--rot:-2.5deg;margin-top:5rem}
 .wk-c:nth-child(4){--rot:7deg;margin-top:1.5rem}
+/* desktop: card 2's foot is tied to the word (not to its own height) so it always covers the j's dot (~.28-.38em below
+   the word's top) and stops above the tops of "r" and "o" (~.45em): its foot sits .41em down (.3em pull + .11em) */
+@media (min-width:1024px){.wk-c:nth-child(2){align-self:end;position:relative;top:calc(var(--fs-giant) * .11)}}
 .wk-card{display:block;padding:.5rem;border-radius:var(--r);background:var(--ink);color:var(--bg);text-decoration:none;box-shadow:0 1.5rem 3rem -1.75rem rgba(11,14,20,.5);transform:translate3d(0,calc(var(--dy) + var(--lift)),0) rotate(calc(var(--rot) * var(--k) * var(--hk)));transition:--hk .45s var(--ease),--lift .45s var(--ease),box-shadow .45s var(--ease)}
 .wk-card img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top;border-radius:calc(var(--r) - .5rem);background:rgba(255,255,255,.06)}
 .wk-body{padding:1.25rem .75rem .75rem}
