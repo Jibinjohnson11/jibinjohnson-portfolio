@@ -1,4 +1,4 @@
-/* jibinjohnson.in — About page only: section index, local time, principles accordion, toolkit links, journey line.
+/* jibinjohnson.in — About page only: section index, local time, principles accordion, journey line (toolkit chip links: stack-links.js).
    No libraries. Without it the page reads in full: the time shows "IST", every principle is open, the timeline is filled. */
 (function () {
   'use strict';
@@ -40,54 +40,6 @@
       b.setAttribute('aria-expanded', b.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
     });
   });
-
-  /* ---------- toolkit: a tool chip highlights the tools it works with (hover, focus or tap); the others fade back ---------- */
-  var box = doc.querySelector('.ab-tools');
-  if (box) {
-    /* keys are each chip's data-t */
-    var pairs = {
-      html: ['css', 'js', 'bootstrap'], css: ['bootstrap'], js: ['bootstrap', 'mongo'],
-      python: ['django', 'postgres'], django: ['postgres', 'mysql', 'docker'],
-      postgres: ['sql', 'docker'], mysql: ['sql'], sql: ['excel', 'tableau', 'powerbi'],
-      shopify: ['razorpay'], razorpay: ['django', 'js'],
-      kw: ['competitor', 'content', 'onpage'], onpage: ['techseo', 'content'], offpage: ['competitor', 'local'],
-      aeo: ['geo', 'content'], geo: ['content'], seoreport: ['ga'],
-      ga: ['excel'], tableau: ['powerbi', 'excel'], powerbi: ['excel'],
-      chatgpt: ['claude'], claude: ['python'],
-      deeplearning: ['tensorflow', 'keras'], imageproc: ['opencv', 'deeplearning'], nlp: ['chatgpt', 'claude', 'deeplearning'],
-      pandas: ['numpy', 'python', 'sql', 'excel'], numpy: ['python'], sklearn: ['pandas', 'numpy'],
-      tensorflow: ['keras', 'numpy', 'python'], keras: ['python'], opencv: ['numpy', 'python'],
-      git: ['github', 'vscode'], github: ['vscode'], claudecode: ['vscode', 'github', 'claude'], docker: ['aws'], aws: ['django']
-    };
-    var map = {};
-    Object.keys(pairs).forEach(function (a) {
-      pairs[a].forEach(function (b) {
-        (map[a] = map[a] || []).push(b);
-        (map[b] = map[b] || []).push(a);
-      });
-    });
-    var chips = $$('.chip', box), pinned = null;
-    var show = function (chip) {
-      box.classList.toggle('linking', !!chip);
-      var t = chip && chip.getAttribute('data-t'), rel = (t && map[t]) || [];
-      chips.forEach(function (c) {
-        var ct = c.getAttribute('data-t');
-        c.classList.toggle('on', c === chip);
-        c.classList.toggle('rel', rel.indexOf(ct) > -1);
-      });
-    };
-    chips.forEach(function (c) {
-      c.addEventListener('mouseenter', function () { show(c); });
-      c.addEventListener('mouseleave', function () { show(pinned); });
-      c.addEventListener('focus', function () { show(c); });
-      c.addEventListener('blur', function () { show(pinned); });
-      c.addEventListener('click', function () {
-        pinned = pinned === c ? null : c;
-        chips.forEach(function (x) { x.setAttribute('aria-pressed', x === pinned ? 'true' : 'false'); });
-        show(pinned);
-      });
-    });
-  }
 
   /* ---------- journey: dots light up and the line fills down to the last one reached (not under reduced motion) ---------- */
   var line = doc.querySelector('.ab-line');

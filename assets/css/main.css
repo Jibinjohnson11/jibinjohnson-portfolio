@@ -586,6 +586,12 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .stk-link:hover svg{transform:translateX(3px)}
 .stk-tools{display:flex;margin-top:1.25rem;flex-wrap:wrap;gap:.5rem}
 .stk-tools .tag{padding:.35rem .85rem;font-size:.875rem;font-weight:500;color:var(--ink)}
+.stk-tools .tk{cursor:pointer;transition:background-color .2s,border-color .2s,color .2s}
+/* tool chips that link (home Stack, About toolkit; stack-links.js): the active tool fills sage, the tools it works
+   with turn tint, the rest fade back to muted text (still 6:1) */
+.tg-grid.linking [data-t]{border-color:rgba(11,14,20,.06);color:var(--muted)}
+.tg-grid.linking [data-t].rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
+.tg-grid.linking [data-t].on{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
 /* process: numbered nodes on one line (horizontal on desktop, vertical from 1100px down) */
 .home .steps{position:relative;gap:2rem}
 .home .steps::before{content:"";position:absolute;left:0;right:0;top:1.75rem;height:1px;background:linear-gradient(90deg,rgba(99,118,101,.45),var(--line) 70%,transparent)}
