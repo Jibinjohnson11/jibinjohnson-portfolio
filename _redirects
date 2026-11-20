@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects (301). Python and Django is no longer a separate service; its old page goes to full-stack development.
+# The www.jibinjohnson.in -> jibinjohnson.in redirect is set up in the Cloudflare dashboard (Pages _redirects can't match on domain).
+/python-django-developer-kerala /full-stack-developer-kerala/ 301
+/python-django-developer-kerala/ /full-stack-developer-kerala/ 301
+/python-django-developer-kerala/* /full-stack-developer-kerala/ 301

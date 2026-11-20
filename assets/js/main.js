@@ -157,25 +157,29 @@
     }, { passive: true });
   }
 
-  /* ---------- contact form (Netlify Forms) ---------- */
-  var form = $('form[data-netlify]');
+  /* ---------- contact form (Web3Forms): sent with fetch, no page reload; the button stays disabled while sending ---------- */
+  var form = $('form[action*="api.web3forms.com"]');
   if (form) {
     var status = $('.form-status', form), send = $('button[type=submit]', form);
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       status.className = 'form-status'; status.textContent = 'Sending your message…';
       send.disabled = true;
-      fetch('/', {
+      fetch(form.action, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form)).toString()
+        headers: { Accept: 'application/json' },
+        body: new FormData(form)
       }).then(function (r) {
-        if (!r.ok) throw new Error(r.status);
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (!r.ok || !d.success) throw new Error(d.message || r.status);
+        });
+      }).then(function () {
         form.reset();
         status.className = 'form-status ok';
         status.textContent = 'Message sent. I reply within one working day.';
       }).catch(function () {
-        status.textContent = 'Message not sent. Email jibinjohnsoninfo@gmail.com or use WhatsApp on +91 77362 08172.';
+        status.className = 'form-status';
+        status.textContent = 'Sorry, your message could not be sent. Please email me at jibinjohnsoninfo@gmail.com or WhatsApp +91 77362 08172.';
       }).then(function () { send.disabled = false; });
     });
   }
