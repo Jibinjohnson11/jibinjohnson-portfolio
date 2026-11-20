@@ -1,0 +1,29 @@
+# Never published by Cloudflare Workers static assets (gitignore syntax).
+# llms.txt, robots.txt, sitemap.xml, _redirects and _headers stay public.
+
+# Git and repo config
+.git
+.github
+.gitignore
+.gitattributes
+.assetsignore
+
+# Cloudflare / Wrangler config and local state
+wrangler.jsonc
+wrangler.json
+wrangler.toml
+.wrangler
+.dev.vars
+.env*
+
+# Notes and docs
+*.md
+
+# Tooling and editors
+node_modules
+.claude
+.vscode
+.idea
+
+# macOS
+.DS_Store
