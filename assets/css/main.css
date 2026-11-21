@@ -345,15 +345,16 @@ html:not(.is-signing) .sign{display:none}
 .end{padding-top:var(--sec)}
 .end:has(> .wrap > .foot:first-child){padding-top:0}   /* contact page: footer only */
 .contact-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:2.5rem 4rem;align-items:end}
+.contact-grid>*,.foot>*,.legal>*{min-width:0}   /* grid/flex children may shrink below their content, so nothing pushes the page wider */
 .contact-grid .lede{margin:1rem 0 2rem}
 .contact-grid :is(h1,h2)+.cta-row{margin-top:2rem}
-.reach{display:grid;gap:.15rem;font-weight:var(--fw-medium)}
+.reach{display:grid;gap:.15rem;font-weight:var(--fw-medium);overflow-wrap:anywhere}   /* the email address and location wrap rather than overflow on narrow phones */
 .reach span{display:block;margin-top:1rem;font-size:var(--fs-sm);font-weight:var(--fw-regular);color:var(--muted)}
 .reach span:first-child{margin-top:0}
 .reach a{justify-self:start}
 .hero .contact-grid{align-items:start}
 .contact-grid .cta-row+.reach{margin-top:2.5rem}
-.foot{margin-top:clamp(3rem,var(--sec) * .6,4.5rem);padding-top:clamp(2.5rem,4vw,3.5rem);border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,3.6fr) repeat(4,minmax(0,2fr));gap:2.5rem 2rem;font-size:var(--fs-sm)}
+.foot{margin-top:clamp(3rem,var(--sec) * .6,4.5rem);padding-top:clamp(2.5rem,4vw,3.5rem);border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,3.6fr) repeat(4,minmax(0,2fr));gap:2.5rem 2rem;font-size:var(--fs-sm);overflow-wrap:anywhere}
 .foot:first-child{margin-top:0;border-top:0}
 .foot .brand{font-size:1.75rem;color:var(--bg)}
 .foot-role{display:block;margin-top:.4rem;font-weight:var(--fw-medium);color:var(--accent)}
@@ -369,11 +370,11 @@ html:not(.is-signing) .sign{display:none}
 .social svg{width:1.125rem;height:1.125rem}
 .end .link{color:var(--bg)}
 .foot li a:hover,.legal a:hover{text-decoration:underline;text-underline-offset:.2em}
-.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem;margin-top:clamp(2.5rem,5vw,4rem);padding-top:1.75rem;border-top:1px solid var(--line);font-size:var(--fs-xs);color:var(--muted)}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem;margin-top:clamp(2.5rem,5vw,4rem);padding-top:1.75rem;border-top:1px solid var(--line);font-size:var(--fs-xs);color:var(--muted);overflow-wrap:anywhere}
 /* the giant name at the foot of every page: decorative, sage glow fading into the dark, cropped by the page bottom.
-   Full width, edge to edge: .end is the size container, the mark breaks out of .wrap to its exact width (100cqw, so no scrollbar overflow);
+   Full width, edge to edge: .end is the size container, the mark breaks out of .wrap to its exact width (100cqw, never 100vw, so no scrollbar overflow) and clips its own glyphs;
    "Jibin" in Switzer 800 at -.04em tracking is 2.081em of ink with .022em before the J, so 48cqi fills the width and the indent puts the ink on the left edge */
-.end{container-type:inline-size;overflow-x:clip}
+.end{container-type:inline-size}
 .foot-mark{overflow:hidden;container-type:inline-size;margin-top:clamp(2.5rem,7vw,6rem);margin-inline:calc(50% - 50cqw);user-select:none;pointer-events:none}
 .foot-mark span{display:block;margin-bottom:-.14em;font-size:48cqi;font-weight:var(--fw-brand);letter-spacing:-.04em;line-height:.8;white-space:nowrap;text-indent:-.022em;color:transparent;background:linear-gradient(180deg,rgba(169,196,171,.30) 0%,rgba(169,196,171,.12) 55%,rgba(169,196,171,0) 92%);-webkit-background-clip:text;background-clip:text}
 

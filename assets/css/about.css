@@ -33,7 +33,10 @@
 .ab-facts{margin-top:2rem;border-top:1px solid var(--line)}
 .ab-facts>div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:.25rem 1.5rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
 .ab-facts dt{font-size:var(--fs-sm);color:var(--muted);padding-top:.1em}
-.ab-facts dd{font-weight:var(--fw-medium)}
+.ab-facts dd{font-weight:var(--fw-medium);overflow-wrap:anywhere}
+.ab-facts>div>*{min-width:0}
+/* under 360px the 7.5rem label column leaves too little room for "(Thiruvananthapuram),": stack label above value */
+@media (max-width:359px){.ab-facts>div{grid-template-columns:minmax(0,1fr)}}
 .ab-status{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;margin-top:1.5rem;font-size:var(--fs-sm);font-weight:var(--fw-medium)}
 .ab-dot{position:relative;flex:none;width:.5rem;height:.5rem;border-radius:50%;background:var(--accent-btn)}
 .ab-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent-btn);animation:ab-pulse 2.2s var(--ease) infinite}
