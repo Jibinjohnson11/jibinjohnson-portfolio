@@ -392,7 +392,14 @@
   /* On short screens (phones) the hero is taller than the viewport: it pins once its foot reaches the bottom.
      scrub: true ties the zoom to the scroll position directly. The scroll itself is already smoothed (Lenis on
      wheel/trackpad, the browser's own momentum on touch); a scrub lag on top of that made the zoom trail the page.
-     No anticipatePin: it nudges the pin early, which shows as a jump when the scroll is smoothed. */
+     No anticipatePin: it nudges the pin early, which shows as a jump when the scroll is smoothed.
+     Pinning moves the hero into a .pin-spacer, and moving an element restarts its CSS animations: the load-in of
+     the intro, buttons and portrait (main.css) would play a second time. Their progress is saved first and put
+     back after the move (finished ones are finished again). */
+  var loadIn = [].map.call(hero.querySelectorAll('.lede,.cta-row,.hero-portrait'), function (el) {
+    var a = el.getAnimations ? el.getAnimations()[0] : null;
+    return { el: el, t: a ? a.currentTime : 'done' };
+  });
   var heroTrigger = ScrollTrigger.create({
     animation: tl,
     trigger: hero,
@@ -403,6 +410,11 @@
     scrub: true,
     invalidateOnRefresh: true,
     onToggle: function (self) { stage.style.willChange = self.isActive ? 'transform' : ''; }
+  });
+  loadIn.forEach(function (k) {
+    var a = k.el.getAnimations ? k.el.getAnimations()[0] : null;
+    if (!a) return;
+    if (k.t === 'done') a.finish(); else if (k.t != null) a.currentTime = k.t;
   });
 
   /* ---------- arrival of the next section ([data-arrive]: About) ----------
