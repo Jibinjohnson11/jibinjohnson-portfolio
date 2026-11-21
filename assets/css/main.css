@@ -174,7 +174,10 @@ h1 .ln>span{display:block}
 .hero.glass .btn-line:hover{background:var(--surface)}
 /* portrait stage: fills the rest of the screen under the buttons; the portrait never moves, only the cards do */
 .hero-stage{position:relative;z-index:10;flex:1 0 auto;min-height:clamp(18rem,40vh,26rem);margin-top:clamp(.25rem,1.2vh,1rem)}
-.hero-portrait{position:absolute;bottom:-12%;left:50%;aspect-ratio:1;height:min(112%,140vw);transform:translateX(-53%)}
+/* --head-x: the head's centre as a share of the image width (the photo is a profile, so the head sits right of the
+   image centre). The box is placed so that point is on the page centre line at every width; hero.js reads the same
+   variable for the orbit ring's centre. Re-measure it if hero-portrait.webp changes. */
+.hero-portrait{--head-x:.53;position:absolute;bottom:-12%;left:50%;aspect-ratio:1;height:min(112%,140vw);transform:translateX(calc(var(--head-x) * -100%))}
 .hero-img{position:relative;z-index:20;width:100%;height:100%;object-fit:contain;object-position:bottom;user-select:none;-webkit-user-select:none}
 /* glass stats panel, over the foot of the portrait */
 /* load-in, by CSS from the first paint, in step with the H1 lines */
@@ -790,11 +793,12 @@ html.lenis,html.lenis body{height:auto}
   .wa svg{width:1.5rem;height:1.5rem}
 }
 @media (max-width:767px){
-  /* mobile: the hero fits the viewport width. The portrait is 80% of the screen wide, flush with the left edge and the bottom
-     of the hero (the photo's shirt runs to its left and bottom edges); the stage is as tall as the portrait, and spare height centres the copy */
+  /* mobile: the hero fits the viewport width. The portrait is 80% of the screen wide, on the bottom of the hero, with
+     the head (--head-x) on the page centre line like on desktop; placed with left, not a transform, because hero.js
+     fits the phone ring from offsetLeft. The stage is as tall as the portrait, and spare height centres the copy */
   .hero-copy{flex:1 0 auto;display:flex;flex-direction:column;justify-content:center;padding-inline:1rem}
   .hero-stage{flex:none;min-height:0;height:80vw}
-  .hero-portrait{bottom:0;left:0;width:80%;height:auto;transform:none}
+  .hero-portrait{bottom:0;left:calc(50% - 80% * var(--head-x));width:80%;height:auto;transform:none}
   /* the cards follow the smaller portrait, so their compact layout gives the text a little more room */
   .op-compact{gap:6px;padding:0 8px}
   .op-compact .op-ic{width:20px;height:20px;border-radius:7px}

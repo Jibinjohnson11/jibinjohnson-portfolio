@@ -59,11 +59,13 @@
        Card size, radius cap and camera grow with the screen from 430px (k = 1) so a large phone or small tablet in
        portrait (the portrait is 80vw there) reaches the tablet sizes at 767px instead of keeping phone-sized cards */
     var k = Math.min(1.5, Math.max(1, w / 430));
+    /* the head's centre in the image: the same --head-x that main.css uses to put it on the page centre line */
+    var cx = parseFloat(getComputedStyle(box.parentNode).getPropertyValue('--head-x')) || 0.53;
     return w < 768
-      ? { set: MOBILE_SET, fit: true, edge: 14, rMax: 230 * k, cardW: 150 * k, cardH: Math.round(48 * k), gap: 8, tilt: 14, roll: 7, cam: 1100 * k, period: 16, cx: 0.53 }
+      ? { set: MOBILE_SET, fit: true, edge: 14, rMax: 230 * k, cardW: 150 * k, cardH: Math.round(48 * k), gap: 8, tilt: 14, roll: 7, cam: 1100 * k, period: 16, cx: cx }
       : w < 1024
-        ? { set: WIDE_SET, r: 0.45, rMax: 355, cardW: 224, cardH: 70, gap: 26, tilt: 13, roll: 7, cam: 1600, period: 18, cx: 0.53 }
-        : { set: WIDE_SET, r: 0.27, rMax: 450, cardW: 232, cardH: 78, gap: 28, tilt: 12, roll: 7, cam: 2000, period: 20, cx: 0.53 };
+        ? { set: WIDE_SET, r: 0.45, rMax: 355, cardW: 224, cardH: 70, gap: 26, tilt: 13, roll: 7, cam: 1600, period: 18, cx: cx }
+        : { set: WIDE_SET, r: 0.27, rMax: 450, cardW: 232, cardH: 78, gap: 28, tilt: 12, roll: 7, cam: 2000, period: 20, cx: cx };
   };
 
   /* Widest flat panel that still leaves `gap` between neighbours on a ring of radius R with n slots.
