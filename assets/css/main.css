@@ -206,8 +206,12 @@ html:not(.is-signing) .sign:not(.out){display:none}
 .orbit-slot,.orbit-curve,.orbit-hinge{position:absolute;transform-style:preserve-3d}
 .orbit-curve{top:0;width:0;height:100%}
 .orbit-hinge{top:0}
-.orbit-face{position:absolute;opacity:0}
+.orbit-face{position:absolute;opacity:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+/* plain back of each strip: a card on the far side of the ring shows a blank panel, never its content mirrored */
+.orbit-back{position:absolute;left:0;top:0;overflow:hidden;opacity:0;transform:rotateY(180deg);-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .orbit-clip{position:absolute}
+.op-back{border:1.5px solid rgba(255,255,255,.75);background:linear-gradient(140deg,rgba(255,255,255,.82),rgba(234,240,234,.55) 55%,rgba(255,255,255,.7))}
+.op-back-img{border-color:rgba(255,255,255,.85);background:var(--tint)}
 .op{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;text-align:left}
 .op-glass,.op-card{border:1.5px solid rgba(255,255,255,.75);background:linear-gradient(140deg,rgba(255,255,255,.82),rgba(234,240,234,.55) 55%,rgba(255,255,255,.7));box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(11,14,20,.06),0 6px 14px -8px rgba(11,14,20,.28)}
 .op-card{display:flex;align-items:center;gap:12px;padding:0 14px}

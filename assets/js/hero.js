@@ -164,10 +164,15 @@
     return d;
   };
 
-  /* builds one curling card; returns its faces (strips) and hinges for the frame loop */
+  /* builds one curling card; returns its faces (strips), backs and hinges for the frame loop.
+     Each strip has two sides, both backface-visibility: hidden: the face (the panel's content) and a plain back
+     (rotateY(180deg), the blank panel, no text or picture), so a card on the far side of the ring shows its blank
+     back instead of a mirrored front. The back shows the mirrored slice of the blank panel, so its rounded corners
+     stay on the card's outer edges. */
   function buildCard(w, h, html, opaque) {
     var alpha = opaque ? SEAM_ALPHA.opaque : SEAM_ALPHA.glass;
-    var sw = w / SLICES, faces = new Array(SLICES), hinges = { r: [], l: [] };
+    var sw = w / SLICES, faces = new Array(SLICES), backs = [], hinges = { r: [], l: [] };
+    var backHTML = '<div class="op op-back' + (opaque ? ' op-back-img' : '') + '"></div>';
     var root = el('orbit-curve', { left: w / 2 + 'px' });
     [1, -1].forEach(function (side) {
       var right = side > 0, node = null;
@@ -189,15 +194,21 @@
         var clip = el('orbit-clip', { left: extL - from + 'px', top: PAD_TOP + 'px', width: w + 'px', height: h + 'px' });
         clip.innerHTML = html;
         face.appendChild(clip);
+        var back = el('orbit-back', { width: sw + 'px', height: h + 'px' });
+        var bclip = el('orbit-clip', { left: from + sw - w + 'px', top: 0, width: w + 'px', height: h + 'px' });
+        bclip.innerHTML = backHTML;
+        back.appendChild(bclip);
         hinge.appendChild(face);
+        hinge.appendChild(back);
         if (node) hinge.appendChild(node);
         node = hinge;
         faces[right ? HALF + k : HALF - 1 - k] = face;
+        backs.push(back);
         (right ? hinges.r : hinges.l)[k] = hinge;
       }
       root.appendChild(node);
     });
-    return { root: root, faces: faces, hinges: hinges };
+    return { root: root, faces: faces, backs: backs, hinges: hinges };
   }
 
   if (box && ring) {
@@ -280,6 +291,10 @@
               var face = c.faces[f];
               if (opChanged) { face.style.opacity = opStr; fitSeams(face, op); }
               if (blurChanged) face.style.filter = blur;
+            }
+            for (var b = 0; b < c.backs.length; b++) {
+              if (opChanged) c.backs[b].style.opacity = opStr;
+              if (blurChanged) c.backs[b].style.filter = blur;
             }
           }
           /* the half of the card nearer the back of the ring curls inward, mirrored between the sides */
