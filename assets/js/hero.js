@@ -156,9 +156,11 @@
     face.style.maskImage = mask;
   };
 
+  var imgsLive = false; /* set by showRing(): rebuilds after that (resize) use src directly */
   var panelHTML = function (p, compact, w) {
-    /* decorative: the ring is aria-hidden and each card is drawn once per strip */
-    if (p.kind === 'img') return '<div class="op op-img"><img src="' + p.src + '-480.webp" srcset="' + p.src + '-320.webp 320w, ' + p.src + '-480.webp 480w" sizes="' + Math.round(w) + 'px" width="' + p.w + '" height="' + p.h + '" alt="" draggable="false" decoding="async"><span class="op-gloss"></span></div>';
+    /* decorative: the ring is aria-hidden and each card is drawn once per strip. Picture sources go in data-src /
+       data-srcset: showRing() sets them once the portrait (the LCP image) has loaded, at low priority */
+    if (p.kind === 'img') return '<div class="op op-img"><img ' + (imgsLive ? '' : 'data-') + 'src="' + p.src + '-480.webp" ' + (imgsLive ? '' : 'data-') + 'srcset="' + p.src + '-320.webp 320w, ' + p.src + '-480.webp 480w" sizes="' + Math.round(w) + 'px" width="' + p.w + '" height="' + p.h + '" alt="" draggable="false" fetchpriority="low"><span class="op-gloss"></span></div>';
     return '<div class="op op-card' + (compact ? ' op-compact' : '') + '">' +
       '<span class="op-sheen"></span>' +
       '<span class="op-ic">' + (ICONS[p.icon] || '') + '</span>' +
@@ -237,7 +239,7 @@
 
   if (box && ring) {
     var layout, cards = [], n = 0, size = { w: 0, h: 0 }, builtFor = -1;
-    var start = null, lastBlur = '', ringGone = false, visible = true, running = false;
+    var start = null, shown = null, lastBlur = '', ringGone = false, visible = true, running = false;
     var lastPersp = '', lastOrigin = '';
 
     var build = function () {
@@ -312,7 +314,9 @@
         var blur = L.blur ? exitBlur(exit) : '';
         var blurChanged = blur !== lastBlur;
         lastBlur = blur;
-        var intro = (reduce ? 1 : Math.min(1, Math.max(0, (t - 400) / 900))) * (1 - exit);
+        /* the ring stays invisible (faces start at opacity 0 in CSS) until its pictures are decoded (showRing), then
+           fades in over FADE ms; the spin runs from the first frame either way */
+        var intro = (shown === null ? 0 : reduce ? 1 : Math.min(1, Math.max(0, (now - shown) / FADE))) * (1 - exit);
         for (var i = 0; i < n; i++) {
           var c = cards[i], a = ((spin + (i * 360) / n) * Math.PI) / 180;
           var near = (Math.cos(a) + 1) / 2; /* 0 = back of the ring, 1 = front */
@@ -346,8 +350,31 @@
     };
     var kick = function () { if (!running) { running = true; requestAnimationFrame(frame); } };
 
-    /* The ring (80 strips and its pictures) is built after the page has loaded, at the next idle moment, so it never
-       competes with the portrait (the LCP image), the fonts or the first paint. The cards fade in by themselves. */
+    /* The ring is built as soon as this script runs (deferred: right after the HTML is parsed), not after the load
+       event, the signature intro or an idle callback, and it spins from its first frame. It stays invisible until
+       its pictures are ready: their downloads start only once the portrait (the LCP image, preloaded with
+       fetchpriority high) has loaded, at fetchpriority low, and every copy is decoded before the ring fades in
+       (FADE), so no card shows blank and fills in later. SHOW_CAP: on a stalled network the ring shows anyway. */
+    var FADE = 400, SHOW_CAP = 5000;
+    var showRing = function () {
+      var done = false;
+      var reveal = function () { if (done) return; done = true; shown = performance.now(); kick(); };
+      setTimeout(reveal, SHOW_CAP);
+      var load = function () {
+        imgsLive = true;
+        var imgs = [].slice.call(ring.querySelectorAll('img[data-src]')); /* queried now: a resize may have rebuilt the ring */
+        Promise.all(imgs.map(function (im) {
+          im.srcset = im.getAttribute('data-srcset');
+          im.src = im.getAttribute('data-src');
+          im.removeAttribute('data-srcset');
+          im.removeAttribute('data-src');
+          return im.decode ? im.decode().catch(function () {}) : null;
+        })).then(reveal);
+      };
+      var lcp = document.querySelector('.hero-img');
+      if (!lcp || lcp.complete) load();
+      else { lcp.addEventListener('load', load, { once: true }); lcp.addEventListener('error', load, { once: true }); }
+    };
     var startOrbit = function () {
       box._wake = kick; /* the push (below) restarts the loop when the ring returns from a full exit */
       new ResizeObserver(function (entries) {
@@ -368,17 +395,8 @@
       build();
       kick();
     };
-    var whenIdle = function () {
-      if ('requestIdleCallback' in window) requestIdleCallback(startOrbit, { timeout: 300 });
-      else setTimeout(startOrbit, 1);
-    };
-    var afterLoad = function () {
-      if (document.readyState === 'complete') whenIdle();
-      else window.addEventListener('load', whenIdle, { once: true });
-    };
-    /* while the signature preloader plays (sign.js), wait for it: building the ring would cost it frames */
-    if (document.documentElement.classList.contains('is-signing')) document.addEventListener('sign:done', afterLoad, { once: true });
-    else afterLoad();
+    startOrbit();
+    showRing();
   }
 
   /* =====================================================================================
