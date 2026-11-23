@@ -5,7 +5,7 @@
 (function () {
   'use strict';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* touch devices (phones, tablets): the light orbit (layoutFor) */
+  /* touch devices (phones, tablets): the light orbit and no exit blur (layoutFor) */
   var TOUCH = matchMedia('(hover: none) and (pointer: coarse)').matches;
 
   /* =====================================================================================
@@ -63,8 +63,8 @@
     var k = Math.min(1.5, Math.max(1, w / 430));
     /* the head's centre in the image: the same --head-x that main.css uses to put it on the page centre line */
     var cx = parseFloat(getComputedStyle(box.parentNode).getPropertyValue('--head-x')) || 0.53;
-    /* light orbit on touch devices and below 1024px: 3 strips per card (desktop: 8) */
-    var lite = TOUCH || w < 1024, fx = { flex: lite ? FLEX_LITE : FLEX_FULL };
+    /* light orbit on touch devices and below 1024px: 3 strips per card and no exit blur (desktop: 8 strips, coarse blur) */
+    var lite = TOUCH || w < 1024, fx = { flex: lite ? FLEX_LITE : FLEX_FULL, blur: !lite };
     return Object.assign(fx, w < 768
       ? { set: MOBILE_SET, fit: true, edge: 14, rMax: 230 * k, cardW: 150 * k, cardH: Math.round(48 * k), gap: 8, tilt: 14, roll: 7, cam: 1100 * k, period: 16, cx: cx }
       : w < 1024
@@ -277,8 +277,15 @@
     };
 
     /* Per frame only values that changed are written (strings compared first), at steps too small to see:
-       opacity 0.01, hinge angles 0.1deg, exit blur 0.5px. A style write that changes nothing still costs
-       a style recalc of every strip, so skipping them keeps the frame cheap while the page scrolls. */
+       opacity 0.01, hinge angles 0.1deg. A style write that changes nothing still costs a style recalc of every
+       strip, so skipping them keeps the frame cheap while the page scrolls.
+       Exit blur (desktop only): three coarse steps while the push runs, so the strips are re-rasterised three times
+       on the way out instead of at every 0.5px; touch devices and screens below 1024px fade without blur. */
+    var BLUR_AT = [0.2, 0.5, 0.8], BLUR_PX = [3, 5.5, 8];
+    var exitBlur = function (exit) {
+      for (var i = BLUR_AT.length - 1; i >= 0; i--) if (exit >= BLUR_AT[i]) return 'blur(' + BLUR_PX[i] + 'px)';
+      return '';
+    };
     var frame = function (now) {
       if (!visible && !reduce) { running = false; return; } /* off screen: stop; the observer restarts it */
       if (start === null) start = now;
@@ -301,7 +308,7 @@
           (exit > 0.001 ? ' scale3d(' + sc + ',' + sc + ',' + sc + ')' : '');
         /* exit: the ring keeps spinning but grows on top of the stage zoom, so the cards come at the camera faster
            than the portrait; they blur and fade. The blur goes on the strips only (a filter on a 3D wrapper flattens it). */
-        var blur = exit > 0.001 ? 'blur(' + (Math.round(exit * 16) / 2).toFixed(1) + 'px)' : '';
+        var blur = L.blur ? exitBlur(exit) : '';
         var blurChanged = blur !== lastBlur;
         lastBlur = blur;
         var intro = (reduce ? 1 : Math.min(1, Math.max(0, (t - 400) / 900))) * (1 - exit);
