@@ -5,6 +5,8 @@
 (function () {
   'use strict';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* touch devices (phones, tablets): the light orbit (layoutFor) */
+  var TOUCH = matchMedia('(hover: none) and (pointer: coarse)').matches;
 
   /* =====================================================================================
      1. Orbit: the portrait and the cards share one preserve-3d scene
@@ -61,11 +63,13 @@
     var k = Math.min(1.5, Math.max(1, w / 430));
     /* the head's centre in the image: the same --head-x that main.css uses to put it on the page centre line */
     var cx = parseFloat(getComputedStyle(box.parentNode).getPropertyValue('--head-x')) || 0.53;
-    return w < 768
+    /* light orbit on touch devices and below 1024px: 3 strips per card (desktop: 8) */
+    var lite = TOUCH || w < 1024, fx = { flex: lite ? FLEX_LITE : FLEX_FULL };
+    return Object.assign(fx, w < 768
       ? { set: MOBILE_SET, fit: true, edge: 14, rMax: 230 * k, cardW: 150 * k, cardH: Math.round(48 * k), gap: 8, tilt: 14, roll: 7, cam: 1100 * k, period: 16, cx: cx }
       : w < 1024
         ? { set: WIDE_SET, r: 0.45, rMax: 355, cardW: 224, cardH: 70, gap: 26, tilt: 13, roll: 7, cam: 1600, period: 18, cx: cx }
-        : { set: WIDE_SET, r: 0.27, rMax: 450, cardW: 232, cardH: 78, gap: 28, tilt: 12, roll: 7, cam: 2000, period: 20, cx: cx };
+        : { set: WIDE_SET, r: 0.27, rMax: 450, cardW: 232, cardH: 78, gap: 28, tilt: 12, roll: 7, cam: 2000, period: 20, cx: cx });
   };
 
   /* Widest flat panel that still leaves `gap` between neighbours on a ring of radius R with n slots.
@@ -104,13 +108,14 @@
     return lo;
   };
 
-  /* Flexible cards: each panel is cut into SLICES vertical strips joined by hinges, chained outward from the
-     card's centre line. Each strip shows its own slice of the same panel, so content stays continuous; strips
-     are rigid, so bending never stretches the card, it only curls in depth. Opacity is set on the strips,
-     never on a wrapper: opacity on a preserve-3d parent flattens it. */
-  var SLICES = 8, HALF = SLICES / 2;
-  var BEND = 36;                          /* max curl (deg) at the far edge, reached at the sides */
-  var BEND_SUM = (HALF * (HALF - 1)) / 2; /* hinge k turns k/BEND_SUM of it, so the total is BEND */
+  /* Flexible cards: each panel is cut into `slices` vertical strips joined by hinges, chained outward from the
+     card's centre line (an odd count has a flat centre strip). Each strip shows its own slice of the same panel, so
+     content stays continuous; strips are rigid, so bending never stretches the card, it only curls in depth. Opacity
+     is set on the strips, never on a wrapper: opacity on a preserve-3d parent flattens it.
+     Every strip is two composited 3D layers (face and back), so the count is what the GPU pays for: desktop keeps 8
+     strips and the full 36° curl; touch devices and screens below 1024px use 3 (a gentle 20° curl, 6 layers a card). */
+  var FLEX_FULL = { slices: 8, bend: 36 };   /* bend: max curl (deg) at the far edge, reached at the sides */
+  var FLEX_LITE = { slices: 3, bend: 20 };
 
   /* Seamless joins: neighbouring strips overlap by SEAM px and cross-fade through a mask whose curve m(t)
      makes two layers of glass with alpha a composite back to exactly one: a·m(t) + a·m(1−t) − a²·m(t)·m(1−t) = a */
@@ -171,46 +176,62 @@
      (rotateY(180deg), the blank panel, no text or picture), so a card on the far side of the ring shows its blank
      back instead of a mirrored front. The back shows the mirrored slice of the blank panel, so its rounded corners
      stay on the card's outer edges. */
-  function buildCard(w, h, html, opaque) {
+  function buildCard(w, h, html, opaque, flex) {
     var alpha = opaque ? SEAM_ALPHA.opaque : SEAM_ALPHA.glass;
-    var sw = w / SLICES, faces = new Array(SLICES), backs = [], hinges = { r: [], l: [] };
+    var slices = flex.slices, half = Math.floor(slices / 2), odd = slices % 2;
+    var sw = w / slices, mid = odd ? sw / 2 : 0; /* mid: half the flat centre strip (odd counts) */
+    var faces = [], backs = [], hinges = { r: [], l: [] };
     var backHTML = '<div class="op op-back' + (opaque ? ' op-back-img' : '') + '"></div>';
     var root = el('orbit-curve', { left: w / 2 + 'px' });
+    /* one strip (face + plain back) into `box`, showing the panel from x = `from`; each face reaches SEAM/2 past every
+       join (fadeL/fadeR) and further past an outer edge for the shadow */
+    var strip = function (box, from, fadeL, fadeR) {
+      var extL = fadeL ? SEAM / 2 : PAD_SIDE, extR = fadeR ? SEAM / 2 : PAD_SIDE;
+      var faceW = sw + extL + extR;
+      var face = el('orbit-face', { left: -extL + 'px', top: -PAD_TOP + 'px', width: faceW + 'px', height: h + PAD_TOP + PAD_BOTTOM + 'px' });
+      face._seam = { width: faceW, fadeL: fadeL, fadeR: fadeR, alpha: alpha };
+      face._rampKey = null;
+      var clip = el('orbit-clip', { left: extL - from + 'px', top: PAD_TOP + 'px', width: w + 'px', height: h + 'px' });
+      clip.innerHTML = html;
+      face.appendChild(clip);
+      var back = el('orbit-back', { width: sw + 'px', height: h + 'px' });
+      var bclip = el('orbit-clip', { left: from + sw - w + 'px', top: 0, width: w + 'px', height: h + 'px' });
+      bclip.innerHTML = backHTML;
+      back.appendChild(bclip);
+      box.appendChild(face);
+      box.appendChild(back);
+      backs.push(back);
+      return face;
+    };
+    if (odd) {
+      var centre = el('orbit-hinge', { left: -mid + 'px', width: sw + 'px', height: h + 'px' });
+      faces[half] = strip(centre, w / 2 - mid, slices > 1, slices > 1);
+      root.appendChild(centre);
+    }
     [1, -1].forEach(function (side) {
       var right = side > 0, node = null;
-      for (var k = HALF - 1; k >= 0; k--) {
-        var outer = k === HALF - 1;
-        var from = right ? w / 2 + k * sw : w / 2 - (k + 1) * sw; /* slice's left edge within the panel */
-        /* each face reaches SEAM/2 past every join and further past the outer edge for the shadow */
-        var extL = right ? SEAM / 2 : outer ? PAD_SIDE : SEAM / 2;
-        var extR = right ? (outer ? PAD_SIDE : SEAM / 2) : SEAM / 2;
-        var faceW = sw + extL + extR;
+      for (var k = half - 1; k >= 0; k--) {
+        var outer = k === half - 1;
+        var from = right ? w / 2 + mid + k * sw : w / 2 - mid - (k + 1) * sw; /* slice's left edge within the panel */
         var hinge = el('orbit-hinge', {
-          left: (right ? (k === 0 ? 0 : sw) : -sw) + 'px',
+          left: (right ? (k === 0 ? mid : sw) : (k === 0 ? -mid - sw : -sw)) + 'px',
           width: sw + 'px', height: h + 'px',
           transformOrigin: right ? '0 50%' : '100% 50%'
         });
-        var face = el('orbit-face', { left: -extL + 'px', top: -PAD_TOP + 'px', width: faceW + 'px', height: h + PAD_TOP + PAD_BOTTOM + 'px' });
-        face._seam = { width: faceW, fadeL: right || !outer, fadeR: !right || !outer, alpha: alpha };
-        face._rampKey = null;
-        var clip = el('orbit-clip', { left: extL - from + 'px', top: PAD_TOP + 'px', width: w + 'px', height: h + 'px' });
-        clip.innerHTML = html;
-        face.appendChild(clip);
-        var back = el('orbit-back', { width: sw + 'px', height: h + 'px' });
-        var bclip = el('orbit-clip', { left: from + sw - w + 'px', top: 0, width: w + 'px', height: h + 'px' });
-        bclip.innerHTML = backHTML;
-        back.appendChild(bclip);
-        hinge.appendChild(face);
-        hinge.appendChild(back);
+        var face = strip(hinge, from, right || !outer, !right || !outer);
         if (node) hinge.appendChild(node);
         node = hinge;
-        faces[right ? HALF + k : HALF - 1 - k] = face;
-        backs.push(back);
+        faces[right ? half + odd + k : half - 1 - k] = face;
         (right ? hinges.r : hinges.l)[k] = hinge;
       }
-      root.appendChild(node);
+      if (node) root.appendChild(node);
     });
-    return { root: root, faces: faces, backs: backs, hinges: hinges };
+    /* hinge k turns wts[k] of the curl, so the far edge reaches flex.bend: 0, 1, 2, 3 sixths with 8 strips (the
+       first hinge sits on the centre line); with a flat centre strip the first hinge already turns */
+    var wts = [], sum = 0, k2;
+    for (k2 = 0; k2 < half; k2++) sum += k2 + odd;
+    for (k2 = 0; k2 < half; k2++) wts.push(sum ? (k2 + odd) / sum : 0);
+    return { root: root, faces: faces, backs: backs, hinges: hinges, half: half, wts: wts, bend: flex.bend };
   }
 
   if (box && ring) {
@@ -248,7 +269,7 @@
           width: cardW + 'px', height: cardH + 'px', left: -cardW / 2 + 'px', top: -cardH / 2 + 'px',
           transform: 'rotateY(' + (i * 360) / n + 'deg) translateZ(' + R.toFixed(1) + 'px)'
         });
-        var card = buildCard(cardW, cardH, panelHTML(p, compact, cardW), p.kind === 'img');
+        var card = buildCard(cardW, cardH, panelHTML(p, compact, cardW), p.kind === 'img', layout.flex);
         slot.appendChild(card.root);
         ring.appendChild(slot);
         return card;
@@ -257,7 +278,7 @@
 
     /* Per frame only values that changed are written (strings compared first), at steps too small to see:
        opacity 0.01, hinge angles 0.1deg, exit blur 0.5px. A style write that changes nothing still costs
-       a style recalc of the 80 strips, so skipping them keeps the frame cheap while the page scrolls. */
+       a style recalc of every strip, so skipping them keeps the frame cheap while the page scrolls. */
     var frame = function (now) {
       if (!visible && !reduce) { running = false; return; } /* off screen: stop; the observer restarts it */
       if (start === null) start = now;
@@ -265,6 +286,8 @@
       /* full exit (set by the push below): hide the ring outright; visibility doesn't flatten 3D */
       var exit = box._exit || 0, gone = exit >= 0.999;
       if (gone !== ringGone) { ringGone = gone; ring.style.visibility = gone ? 'hidden' : ''; }
+      /* gone: stop drawing; the push wakes the loop (box._wake) as soon as the ring comes back */
+      if (gone && W && !reduce) { running = false; return; }
       if (W && !gone) {
         var L = layout;
         var cx = W * L.cx, cy = H * 0.31; /* ring centre ≈ eye level of the head in the portrait */
@@ -300,9 +323,9 @@
             }
           }
           /* the half of the card nearer the back of the ring curls inward, mirrored between the sides */
-          var s = Math.sin(a), amt = BEND * Math.abs(s);
-          for (var k = 0; k < HALF; k++) {
-            var step = (amt * k) / BEND_SUM;
+          var s = Math.sin(a), amt = c.bend * Math.abs(s);
+          for (var k = 0; k < c.half; k++) {
+            var step = amt * c.wts[k];
             var tr = 'rotateY(' + (s > 0 ? step : 0).toFixed(1) + 'deg)', tlft = 'rotateY(' + (s < 0 ? -step : 0).toFixed(1) + 'deg)';
             var hr = c.hinges.r[k], hl = c.hinges.l[k];
             if (hr._t !== tr) { hr._t = tr; hr.style.transform = tr; }
@@ -318,6 +341,7 @@
     /* The ring (80 strips and its pictures) is built after the page has loaded, at the next idle moment, so it never
        competes with the portrait (the LCP image), the fonts or the first paint. The cards fade in by themselves. */
     var startOrbit = function () {
+      box._wake = kick; /* the push (below) restarts the loop when the ring returns from a full exit */
       new ResizeObserver(function (entries) {
         var r = entries[0].contentRect;
         size = { w: r.width, h: r.height };
@@ -389,7 +413,7 @@
   var tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
     .fromTo(stage, { scale: 1 }, { scale: ZOOM, duration: 1 }, 0)
     .to(copy, { yPercent: -20, autoAlpha: 0, duration: 0.3 }, 0)
-    .to(orbitExit, { v: 1, duration: 0.6 }, 0);
+    .to(orbitExit, { v: 1, duration: 0.6, onUpdate: function () { if (orbitExit.v < 0.999 && box && box._wake) box._wake(); } }, 0);
 
   /* On short screens (phones) the hero is taller than the viewport: it pins once its foot reaches the bottom.
      scrub: true ties the zoom to the scroll position directly. The scroll itself is already smoothed (Lenis on
