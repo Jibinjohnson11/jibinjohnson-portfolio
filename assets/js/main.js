@@ -43,13 +43,23 @@
     /* on the home page the section after the hero ([data-arrive], Services) is revealed by the hero push (hero.js),
        so it is left out here */
     var pushed = function (el) { return !!$('.hero[data-push]') && !!el.closest('[data-arrive]'); };
+    /* anything already on screen when this runs is left visible, as the H1s are: a heading that starts hidden is
+       recorded as painted (LCP) only once it has slid in, and on some pages the first section's H2 is the largest text.
+       All boxes are read first, in one layout. */
+    var fold = win.innerHeight;
+    var firstScreen = function (els) {
+      var rects = els.map(function (el) { return el.getBoundingClientRect(); });
+      return els.filter(function (el, i) { return rects[i].top < fold && rects[i].bottom > 0; });
+    };
+    var blocks = $$('section:not(.hero) > .wrap'), heads = $$('h2:not(.sr), .shout');
+    var shown = firstScreen(blocks.concat(heads));
     /* ---------- each section's content fades up once as it enters the viewport (not the hero) ---------- */
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, { rootMargin: '0px 0px -8% 0px' });
-    $$('section:not(.hero) > .wrap').forEach(function (b) { if (!pushed(b)) { b.classList.add('rv'); io.observe(b); } });
+    blocks.forEach(function (b) { if (!pushed(b) && shown.indexOf(b) < 0) { b.classList.add('rv'); io.observe(b); } });
 
     /* ---------- H2s and the statement line slide up once, line by line ----------
        The heading keeps its own line breaks: its rendered lines are measured, each line is wrapped
@@ -97,7 +107,7 @@
         if (e.isIntersecting) { hio.unobserve(e.target); rise(e.target); }
       });
     }, { rootMargin: '0px 0px -6% 0px' });
-    $$('h2:not(.sr), .shout').forEach(function (h) { if (!pushed(h)) { h.classList.add('rise-wait'); hio.observe(h); } });
+    heads.forEach(function (h) { if (!pushed(h) && shown.indexOf(h) < 0) { h.classList.add('rise-wait'); hio.observe(h); } });
     win.addEventListener('resize', function () { pending.forEach(restore); pending = []; }, { passive: true });
   }
 
