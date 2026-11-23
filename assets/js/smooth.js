@@ -4,7 +4,8 @@
    - Mouse wheel and trackpad are smoothed; touch keeps the browser's own scrolling (syncTouch off), which is
      smoother and cheaper on phones than any JS inertia.
    - With GSAP on the page, Lenis runs on GSAP's ticker and feeds ScrollTrigger, so the scroll position, the pinned
-     hero and every scrubbed tween are updated in the same frame (one animation loop instead of two).
+     hero and every scrubbed tween are updated in the same frame (one animation loop instead of two), and
+     ScrollTrigger updates once per frame (see below).
    - In-page links (#work, …) glide with the same offset as the CSS scroll-padding under the sticky header.
      The skip link keeps the browser's own jump so keyboard focus moves with it. */
 (function () {
@@ -25,10 +26,21 @@
   });
   win.__lenis = lenis;
 
-  var tick = null;
+  /* ScrollTrigger is updated once per frame, by whichever side moved the page:
+     - Lenis (wheel, trackpad, in-page links: isScrolling 'smooth'): right after Lenis sets the position on GSAP's
+       ticker, so pinned and scrubbed parts move in the same frame as the page. The browser's scroll event for that
+       position arrives at the start of the next frame and would only repeat the update, so while Lenis drives the
+       scroll it is stopped at the window (capture) before it reaches ScrollTrigger. Nothing else on the site listens
+       for scroll events (main.js uses IntersectionObservers), and Lenis itself ignores them while it is smoothing.
+     - the browser (touch, scrollbar, keys: 'native'): ScrollTrigger's own scroll listener; Lenis's scroll event
+       is not passed on, so it doesn't run twice. (Lenis's last glide frame reports isScrolling false; it is passed on.) */
+  var tick = null, onScroll = null, swallow = null;
   if (onTicker) {
     gsap.registerPlugin(ST);
-    lenis.on('scroll', ST.update);
+    onScroll = function () { if (lenis.isScrolling !== 'native') ST.update(); };
+    lenis.on('scroll', onScroll);
+    swallow = function (e) { if (e.target === doc && lenis.isScrolling === 'smooth') e.stopImmediatePropagation(); };
+    win.addEventListener('scroll', swallow, { capture: true, passive: true });
     tick = function (time) { lenis.raf(time * 1000); };
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0); /* no catch-up jump after a long frame: scroll and tweens stay in step */
@@ -58,7 +70,7 @@
   win.__lenisDestroy = function () {
     doc.removeEventListener('click', onClick);
     win.removeEventListener('pageshow', onShow);
-    if (tick) { gsap.ticker.remove(tick); lenis.off('scroll', ST.update); }
+    if (tick) { gsap.ticker.remove(tick); lenis.off('scroll', onScroll); win.removeEventListener('scroll', swallow, { capture: true }); }
     lenis.destroy();
     win.__lenis = null;
   };

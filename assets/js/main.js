@@ -23,18 +23,21 @@
     doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
   }
 
-  /* ---------- on scroll: header border, floating WhatsApp button after the first screen ---------- */
-  var head = $('.head'), wa = $('.wa'), ticking = false;
-  function onScroll() {
-    ticking = false;
-    var y = win.scrollY;
-    if (head) head.classList.toggle('scrolled', y > 8);
-    if (wa) wa.classList.toggle('show', y > win.innerHeight);
-  }
-  win.addEventListener('scroll', function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
-  }, { passive: true });
-  onScroll();
+  /* ---------- header frosted once the page scrolls, floating WhatsApp button after the first screen ----------
+     No scroll listener: two invisible sentinels at the top of the page (9px tall, and one screen tall) are watched by an
+     IntersectionObserver; once one has scrolled out of view its state switches. Nothing runs while the page scrolls. */
+  var head = $('.head'), wa = $('.wa');
+  var sentinel = function (h, on) {
+    var s = doc.createElement('div');
+    s.setAttribute('aria-hidden', 'true');
+    s.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:' + h + ';pointer-events:none;visibility:hidden';
+    body.appendChild(s);
+    new IntersectionObserver(function (e) { on(!e[e.length - 1].isIntersecting); }).observe(s);
+  };
+  if ('IntersectionObserver' in win) {
+    if (head) sentinel('9px', function (out) { head.classList.toggle('scrolled', out); });
+    if (wa) sentinel('100vh', function (out) { wa.classList.toggle('show', out); });
+  } else if (head) head.classList.add('scrolled');
 
   if (!reduce && 'IntersectionObserver' in win) {
     /* on the home page the section after the hero ([data-arrive], Services) is revealed by the hero push (hero.js),
