@@ -5,7 +5,8 @@
 (function () {
   'use strict';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* touch devices (phones, tablets): the light orbit and no exit blur (layoutFor) */
+  /* touch devices (phones, tablets): the light orbit and no exit blur (layoutFor), and the About content is held fixed
+     while it arrives, so it moves in the same frame as the flying card (see the arrival below) */
   var TOUCH = matchMedia('(hover: none) and (pointer: coarse)').matches;
 
   /* =====================================================================================
@@ -477,11 +478,51 @@
   var aboutTop = function () { return about.getBoundingClientRect().top + window.scrollY; };
   var holdEnd = function () { return aboutTop() - headH(); };
 
-  gsap.fromTo(inner, { y: function () { return (revealStart() - holdEnd()) * HOLD; } }, {
+  /* desktop: the half-speed arrival is a scrubbed tween on the content. Touch devices: the same positions, applied by
+     holdAt() below, with the content held fixed while it arrives */
+  if (!TOUCH) gsap.fromTo(inner, { y: function () { return (revealStart() - holdEnd()) * HOLD; } }, {
     y: 0,
     ease: 'none',
     scrollTrigger: { trigger: about, start: revealStart, end: holdEnd, scrub: true, invalidateOnRefresh: true }
   });
+
+  /* ---------- touch devices: About is held fixed while it arrives ----------
+     A touch scroll moves the page on the browser's own thread; anything moved from JavaScript follows a frame later.
+     So natively, the half-speed content (scroll + its transform) and the flying card (fixed, moved from JavaScript)
+     drift apart every frame and shake. Here, from the reveal to the landing, the content is taken out of the flow
+     (position: fixed, the section keeps its height so nothing below moves) and placed from JavaScript at exactly the
+     position it has on desktop at that scroll: its top in the page − scroll + the half-speed offset. The card, the
+     pinned hero and the content then move in the same frame; nothing visible scrolls natively under the card (the
+     hero behind it is plain white by then). It goes back into the flow, at the same place, when the card lands.
+     Same positions, timing and stacking as desktop: the fixed content paints above the pinned hero (later in the page)
+     and below the card (z-index 30), as the transformed content does. */
+  var held = null;   /* measured with the content in the flow: reveal and landing scroll, page top, left, width, section height */
+  var holdMode = -1; /* 0 in the flow before the reveal, 1 held, 2 in the flow after the landing */
+  var setFlow = function (fixed) {
+    inner.style.position = fixed ? 'fixed' : '';
+    inner.style.top = fixed ? '0px' : '';
+    inner.style.left = fixed ? held.left + 'px' : '';
+    inner.style.width = fixed ? held.width + 'px' : '';
+    about.style.height = fixed ? held.h + 'px' : '';
+  };
+  var releaseHold = function () {
+    if (!TOUCH) return;
+    inner.style.position = inner.style.top = inner.style.left = inner.style.width = inner.style.transform = about.style.height = '';
+    holdMode = -1;
+  };
+  var holdAt = function (s) {
+    if (!held) return;
+    var mode = s < held.rs ? 0 : s < held.he ? 1 : 2;
+    if (mode !== holdMode) { holdMode = mode; setFlow(mode === 1); }
+    if (mode === 1) {
+      var y = held.y0 * (1 - (s - held.rs) / (held.he - held.rs));
+      inner.style.transform = 'translate3d(0px, ' + (held.top - s + y).toFixed(4) + 'px, 0px)';
+    } else {
+      inner.style.transform = 'translate(0px, ' + (mode === 0 ? +held.y0.toFixed(4) : 0) + 'px)';
+    }
+  };
+  /* every re-measure (resize, load, fonts) starts from the content in the flow */
+  ScrollTrigger.addEventListener('refreshInit', releaseHold);
 
   /* reveal in order, scrubbed exactly: label, heading, intro, description and link (the portrait arrives with the journey below); all in by 70% of the arrival */
   var seq = gsap.timeline({
@@ -554,6 +595,7 @@
       (angle ? ' translate(' + hx.toFixed(2) + 'px,' + hy.toFixed(2) + 'px) perspective(' + (CAMERA * w0).toFixed(1) + 'px) rotateY(' + angle.toFixed(2) + 'deg) translate(' + (-hx).toFixed(2) + 'px,' + (-hy).toFixed(2) + 'px)' : '');
   };
   var measure = function () {
+    releaseHold(); /* touch: measure with the About content in the flow, untransformed */
     var prev = tl.progress(), turn = portrait.style.transform;
     portrait.style.transform = '';
     w0 = portrait.offsetWidth; h0 = portrait.offsetHeight;
@@ -571,7 +613,13 @@
     from = { x: r.left, y: r.top - h.top + pinTop, w: r.width, h: r.height };
     /* landing: the frame once About is in place (its top under the header, its content not shifted) */
     var f = edFrame.getBoundingClientRect(), a = about.getBoundingClientRect();
-    to = { x: f.left, y: f.top - a.top - (gsap.getProperty(inner, 'y') || 0) + headH(), w: edFrame.offsetWidth, h: edFrame.offsetHeight };
+    to = { x: f.left, y: f.top - a.top - (TOUCH ? 0 : gsap.getProperty(inner, 'y') || 0) + headH(), w: edFrame.offsetWidth, h: edFrame.offsetHeight };
+    if (TOUCH) {
+      /* the same numbers as the desktop tween: its start offset from the exact positions, its progress between
+         ScrollTrigger's start and end (which ScrollTrigger rounds to whole pixels) */
+      var ir = inner.getBoundingClientRect(), rsx = revealStart(), hex = holdEnd();
+      held = { rs: Math.round(rsx), he: Math.round(hex), top: ir.top + window.scrollY, left: ir.left, width: ir.width, h: about.getBoundingClientRect().height, y0: (rsx - hex) * HOLD };
+    }
   };
 
   var lerp = function (a, b, t) { return a + (b - a) * t; };
@@ -587,6 +635,7 @@
   var render = function (g) {
     if (!from || !spin) return;
     var span = spin.end - spin.start;
+    if (TOUCH) holdAt(spin.start + Math.min(1, Math.max(0, g)) * span);
     var gH = span > 0 ? Math.min(0.9, Math.max(0, (handoffAt() - spin.start) / span)) : 0;
     var gE = gH + EDGE * (1 - gH);
     g = Math.min(1, Math.max(0, g));
