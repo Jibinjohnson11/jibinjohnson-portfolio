@@ -51,7 +51,8 @@
       var rects = els.map(function (el) { return el.getBoundingClientRect(); });
       return els.filter(function (el, i) { return rects[i].top < fold && rects[i].bottom > 0; });
     };
-    var blocks = $$('section:not(.hero) > .wrap'), heads = $$('h2:not(.sr), .shout');
+    /* the footer (.end) has its own staggered entrance in footer.js */
+    var blocks = $$('section:not(.hero):not(.end) > .wrap'), heads = $$('h2:not(.sr), .shout');
     var shown = firstScreen(blocks.concat(heads));
     /* ---------- each section's content fades up once as it enters the viewport (not the hero) ---------- */
     var io = new IntersectionObserver(function (entries) {

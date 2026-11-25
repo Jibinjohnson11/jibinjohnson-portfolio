@@ -2,12 +2,14 @@
    Uses the palette, type and card styles of main.css; nothing here sets a new colour. */
 
 /* ---------- layout: sticky section index (desktop) + content column ---------- */
-.ab{max-width:calc(var(--wrap) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
-.ab .wrap{max-width:none;padding-inline:0}
+/* sections span the full viewport width; only their .wrap content is centred and capped (as on every other page) */
 .ab-index{display:none}
 @media (min-width:1024px){
-  .ab{display:grid;grid-template-columns:7.5rem minmax(0,1fr);column-gap:2.5rem}
-  .ab-index{display:block;position:sticky;top:6rem;align-self:start;margin-top:clamp(3rem,1.5rem + 4.5vw,6rem)}
+  /* index and content share one full-width cell; the index sits at the wrap's left edge, the wrap's content starts 10rem (7.5rem index + 2.5rem gap) further in */
+  .ab{display:grid;grid-template-columns:minmax(0,1fr)}
+  .ab-index,.ab-body{grid-area:1/1;min-width:0}
+  .ab-index{display:block;position:sticky;z-index:1;top:6rem;align-self:start;width:7.5rem;margin-top:clamp(3rem,1.5rem + 4.5vw,6rem);margin-left:max(var(--gut),calc((100% - var(--wrap)) / 2))}
+  .ab .wrap{padding-left:calc(var(--gut) + 10rem)}
 }
 .ab-index ol{border-left:1px solid var(--line)}
 .ab-index a{position:relative;display:flex;align-items:baseline;gap:.6rem;padding:.4rem 0 .4rem 1rem;font-size:var(--fs-xs);font-weight:var(--fw-semibold);line-height:var(--lh-title);color:var(--muted);white-space:nowrap;transition:color .25s}
