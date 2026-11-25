@@ -1,6 +1,6 @@
-/* jibinjohnson.in — tool chips that show what they work with (home Stack and About toolkit). Hover, focus or tap a
+/* jibinjohnson.in — tool chips that show what they work with (About toolkit; loaded on About only). Hover, focus or tap a
    chip: it fills sage, the tools it works with on this page turn tint, the rest fade back (styles in main.css).
-   A tap pins the highlight (aria-pressed); tapping it again clears it. One map for both pages: links to chips a page
+   A tap pins the highlight (aria-pressed); tapping it again clears it. Links to chips the page
    doesn't have are skipped. No libraries; without it the chips are plain buttons. */
 (function () {
   'use strict';

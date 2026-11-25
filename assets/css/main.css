@@ -42,7 +42,6 @@
   --fs-h2:clamp(2rem,1.3rem + 2.15vw,3.25rem);         /* 32 -> 52px */
   --fs-h1:clamp(2.25rem,.75rem + 3.45vw,4rem);         /* 36 -> 64px: inner-page H1 */
   --fs-display:clamp(3rem,5.1vw,4.875rem);             /* 48 -> 78px: home H1 and the statement line */
-  --fs-giant:calc(min(75rem,100vw - 2 * var(--gut)) * .285);  /* the home Work H2 "Projects" (~3.44em wide): spans ~98% of the content width (91 -> 342px) */
   --fw-regular:400; --fw-medium:500; --fw-semibold:600;
   --fw-brand:800;      /* the "Jibin" wordmark only (logo and footer name) */
   --lh-display:1; --lh-heading:1.1; --lh-title:1.25; --lh-snug:1.5; --lh-body:1.65;
@@ -101,9 +100,9 @@ h1 .it>span,h2 .it{font-style:italic;padding-right:.08em}
 /* H3 and every card title: Switzer semibold, one size. .card-title gives the same style to a title that is not an H3. */
 h3,.card-title{font-family:var(--font);font-size:var(--fs-md);font-weight:var(--fw-semibold);letter-spacing:var(--ls-title);line-height:var(--lh-title)}
 /* card descriptions: one size and colour for every card (.card-text for new cards) */
-.card-text,.svc p,.pcard p,.steps p,.incl p,.proof p,.ind p,.why p,.svc-card p,.pt-txt p{font-size:var(--fs-sm);color:var(--muted)}
+.card-text,.svc p,.pcard p,.steps p,.incl p,.proof p,.ind p,.why p,.pt-txt p{font-size:var(--fs-sm);color:var(--muted)}
 /* small uppercase labels: section labels, footer and tool-group headings, process step names (.label for new ones) */
-.label,.eyebrow,.foot h3,.tg-card h3,.pt-txt h3,.svc-get{font-family:var(--font);font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);line-height:var(--lh-title);text-transform:uppercase}
+.label,.eyebrow,.foot h3,.tg-card h3,.pt-txt h3{font-family:var(--font);font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);line-height:var(--lh-title);text-transform:uppercase}
 .lede{font-size:var(--fs-lede);color:var(--muted);max-width:36em}
 .note{font-size:var(--fs-sm);color:var(--muted)}
 .tag{display:inline-block;font-size:var(--fs-xs);font-weight:var(--fw-medium);line-height:var(--lh-snug);padding:.2rem .7rem;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
@@ -285,7 +284,7 @@ html:not(.is-signing) .sign{display:none}
 .go svg{width:1.25rem;height:1.25rem;transition:transform .25s var(--ease)}
 .svc a:hover .go svg{transform:translateX(4px)}
 
-/* work: filter tabs + project grid (home) */
+/* Projects page: filter tabs + project grid */
 .filters{display:none;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
 .js .filters{display:flex}
 .filters button{min-height:2.5rem;padding:.4rem 1.1rem;border-radius:99px;border:1px solid var(--line);background:var(--bg);font-weight:var(--fw-semibold);font-size:var(--fs-sm);cursor:pointer;transition:background-color .2s,border-color .2s,color .2s}
@@ -306,7 +305,6 @@ html:not(.is-signing) .sign{display:none}
 .case-meta{display:flex;flex-wrap:wrap;gap:.4rem}
 .proj dl{display:grid;grid-template-columns:5.5rem 1fr;gap:.5rem 1rem;font-size:var(--fs-sm)}
 .proj dt{color:var(--muted);font-weight:var(--fw-semibold)}
-.work-more{margin-top:2.5rem;display:flex;justify-content:center}
 
 /* why (dark band on home) */
 /* dark smoked glass cards, matching the hero cards */
@@ -430,20 +428,20 @@ html:not(.is-signing) .sign{display:none}
 .bio dt{margin-bottom:.25rem;font-size:var(--fs-sm);color:var(--muted)}
 .bio dd{font-weight:var(--fw-semibold);overflow-wrap:anywhere}
 .bio-links{display:flex;gap:1.5rem;margin-top:2rem}
-/* tool chips (home Stack, About toolkit): a 16px monochrome icon from the sprite assets/img/tools.svg: a Simple Icons
+/* tool chips (About toolkit): a 16px monochrome icon from the sprite assets/img/tools.svg: a Simple Icons
    logo (filled) or, for skills and tools without one, a Lucide icon (lu-*, stroked; its own fill="none" wins over the fill here) */
-.tk,.chip{display:inline-flex;align-items:center;gap:.45rem}
+.chip{display:inline-flex;align-items:center;gap:.45rem}
 .tk-i{flex:none;width:16px;height:16px;fill:currentColor}
 /* chips fade up in turn when their group enters view (main.js adds .st and each chip's --i; not under reduced motion) */
-.js .st .tk,.js .st .chip{opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease),background-color .2s,border-color .2s,color .2s;transition-delay:calc(var(--i,0)*40ms),calc(var(--i,0)*40ms),0s,0s,0s}
-.js .st.st-in .tk,.js .st.st-in .chip{opacity:1;transform:none}
+.js .st .chip{opacity:0;transform:translateY(8px);transition:opacity .4s var(--ease),transform .4s var(--ease),background-color .2s,border-color .2s,color .2s;transition-delay:calc(var(--i,0)*40ms),calc(var(--i,0)*40ms),0s,0s,0s}
+.js .st.st-in .chip{opacity:1;transform:none}
 .plain-page{padding-top:clamp(3rem,1.5rem + 4.5vw,6rem)}
 .plain{max-width:46rem}
 .plain h1{margin-bottom:1.5rem;font-size:var(--fs-h2)}
 .plain h2{margin:2.25rem 0 .75rem;font-size:var(--fs-xl)}
 .plain p{margin-bottom:1em;color:var(--muted)}
 
-/* ---------- home page (main.home): editorial section labels, bento services, process timeline ----------
+/* ---------- home page (main.home): editorial section labels, services list, process timeline ----------
    Scoped to .home: .svc and .steps are shared with the inner pages, which keep their own styles (.faq is styled once, for every page). */
 /* numbered section label above each H2 ("01 —— About") */
 .eyebrow{display:flex;align-items:center;margin-bottom:1.25rem;color:var(--accent)}
@@ -451,127 +449,135 @@ html:not(.is-signing) .sign{display:none}
 .eyebrow span::after{content:"";width:2rem;height:1px;background:var(--line-strong)}
 .home .sec-head{margin-bottom:clamp(2.5rem,2rem + 2.5vw,4rem)}
 .home .sec-head .lede{justify-self:end;max-width:26em}
-.sec-link{justify-self:end}
-/* ---------- home Services: editorial studio showcase ----------
-   Its own palette, set on #services only (the rest of the site keeps the white/sage system): the band is white like
-   About (the .alt --surface background; --sv-bg #F5F4EF is only the window bars), deep charcoal type #20221F, warm
-   grey secondary text #5C5F58 (6.4:1 on white), neutral borders #E3E4DE and a muted sage #718477 for non-text
-   accents only (4.0:1 on white: arrow fill, focus ring); text accents keep --accent. Type follows the site system: Switzer for labels, cards and buttons; Instrument
-   Serif for the H2 and the one-liners. Scoped to .home: About's "What I do" section also has id="services". */
-.home #services{--ink:#20221F;--muted:#5C5F58;--line:#E3E4DE;--line-strong:#CFD0C8;--sv-bg:#F5F4EF;--sv-accent:#718477;--accent-btn:var(--sv-accent);--sv-ease:cubic-bezier(.22,1,.36,1);color:var(--ink)}
-.home #services.sec{padding-block:var(--sec)}
-.home #services+.sec{padding-top:var(--sec)}
-.home #services .sec-link{background:transparent;transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
-.home #services .sec-link:hover{background:var(--ink);border-color:var(--ink);color:#fff}
-/* cards: image (a flat inline SVG illustration in a window frame on a sage tile, 800:447), H3, description, tool chips, then the footer: "01 / 06" and the round arrow link. The arrow is
-   the card's only link (aria-label names the service); its ::after stretches over the whole card as the click area. */
-.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1.5rem}
-.bento>li{grid-column:span 4}
-/* glass: 80% white with a top-left sheen, backdrop blur, the Stack cards' hairline border (the global --line value,
-   rgba(11,14,20,.10); #services redefines --line) so the edge shows on the white band, and an inner top highlight; opaque enough that
-   the muted text keeps 4.5:1 when a card or a dark photo sits behind it */
-.svc-card{position:relative;display:flex;flex-direction:column;height:100%;padding:10px;border:1px solid rgba(11,14,20,.10);border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%),rgba(255,255,255,.8);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 1px 2px rgba(32,34,31,.04),0 12px 32px -18px rgba(32,34,31,.16);transition:transform .7s var(--sv-ease),box-shadow .7s var(--sv-ease),border-color .7s var(--sv-ease)}
-.svc-card:hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 2px 4px rgba(32,34,31,.04),0 26px 50px -24px rgba(32,34,31,.24)}
-.shot{position:relative;display:block;flex:none;aspect-ratio:800/447;overflow:hidden;border-radius:12px;background:var(--tint)}
-.shot .win{position:absolute;left:7%;right:7%;top:9%;bottom:0;overflow:hidden;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;background:#fff;box-shadow:0 12px 26px -16px rgba(32,34,31,.28)}
-.shot .win::before{content:"";position:absolute;inset:0 0 auto;height:14px;border-bottom:1px solid var(--line);background-color:var(--sv-bg);background-image:radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px),radial-gradient(circle,#CFD0C8 2.5px,transparent 3px);background-size:10px 10px;background-repeat:no-repeat;background-position:3px 50%,13px 50%,23px 50%}
-.shot svg{position:absolute;left:0;top:14px;display:block;width:100%;height:calc(100% - 14px);transition:transform 1s var(--sv-ease);transform-origin:50% 0}
-.svc-card:hover .shot svg{transform:scale(1.03)}
-.svc-body{display:flex;flex-direction:column;flex:1 0 auto;padding:16px 8px 4px}
-.svc-card h3{color:var(--ink);text-wrap:balance}
-.svc-card p{margin-top:.5rem}
-.svc-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:.875rem}
-.svc-tools li{padding:.25rem .625rem;border:1px solid var(--line);border-radius:99px;background:rgba(245,244,239,.7);font-size:var(--fs-2xs);font-weight:var(--fw-medium);line-height:var(--lh-snug);color:var(--muted);white-space:nowrap}
-.svc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:1rem}
-.svc-no{font-size:var(--fs-2xs);font-weight:var(--fw-medium);letter-spacing:var(--ls-label);color:var(--muted);font-variant-numeric:tabular-nums}
-.svc-go{display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:50%;border:1px solid var(--line-strong);background:transparent;color:var(--ink);transition:background-color .5s var(--sv-ease),border-color .5s var(--sv-ease),color .5s var(--sv-ease)}
-.svc-go::after{content:"";position:absolute;inset:0;border-radius:20px}
-.svc-go svg{width:.8125rem;height:.8125rem;stroke-width:1.5;transition:transform .5s var(--sv-ease)}
-.svc-card:hover .svc-go{background:var(--sv-accent);border-color:var(--sv-accent);color:#fff}
-.svc-card:hover .svc-go svg{transform:translate(1.5px,-1.5px)}
-/* services rotation (services-rotate.js adds .svc-rot; without it, or under reduced motion, the grid above stays):
-   the section pins for one screen and the cards turn through three places: top right (next), centre (current),
-   bottom left (previous). services-rotate.js sets each card's transform, opacity, z-index and height, plus --f
-   (1 in the centre, 0 at the sides) and --t (the back-card text: 0 at the sides, fades in over the last 40% of the
-   way to the centre, after the card has grown to fit it, so no text is ever cut at a card edge). */
-#services.svc-rot{height:100vh;height:100svh;padding-block:clamp(2rem,7vh,4.5rem) clamp(1.25rem,4vh,2.5rem);overflow:clip}
-/* the section head becomes a grid item (display:contents). Left column (40%), centred as one group between two equal
-   free rows: label + H2, the active service's panel (counter, one-liner, description, checklist), the two buttons.
-   Right column (60%): the cards, full height. .svc-stage (panel + cards) is display:contents here.
-   Below 900px the section is not one screen: label + H2 scroll past, then .svc-stage (panel above the cards) is what
-   pins, at one screen, and the buttons follow the cards; so the panel never squeezes the cards. */
-#services.svc-rot>.wrap{position:relative;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);grid-template-rows:minmax(0,1fr) auto auto auto minmax(0,1fr);column-gap:clamp(2rem,4vw,4rem);height:100%}
-#services.svc-rot .sec-head,.svc-stage{display:contents}
-#services.svc-rot .sec-head>div{grid-column:1;grid-row:2;margin-bottom:clamp(1.25rem,3.5vh,2.25rem)}
-#services.svc-rot .bento{position:relative;display:block;grid-column:2;grid-row:1/-1;min-height:0}
-#services.svc-rot .svc-info{grid-column:1;grid-row:3}
-#services.svc-rot .svc-ctas{grid-column:1;grid-row:4;margin-top:clamp(1.25rem,3.5vh,2.25rem)}
-/* the active service's panel: all six panes stay in the HTML, stacked in one grid cell, so the panel is always as tall
-   as the tallest (the buttons never move); the inactive ones are only transparent (opacity 0), so search engines and
-   screen readers read all six. services-rotate.js moves .is-on when the centre card changes: the new pane fades in
-   and rises 8px over 300ms while the old one fades out (instant under reduced motion). The counter is one live
-   region whose text the script changes; it fades up with the pane. Without the rotation (no JS, reduced motion, short
-   screens) the panel is hidden visually but stays readable, and the buttons sit above the grid. */
-.svc-info{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
-#services.svc-rot .svc-info{position:static;width:auto;height:auto;overflow:visible;clip:auto;clip-path:none;white-space:normal}
-.svc-count{margin-bottom:.75rem;font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);line-height:var(--lh-title);color:var(--accent);font-variant-numeric:tabular-nums}
-.svc-count.is-new{animation:svc-in .3s ease-out}
-.svc-panes{display:grid}
-.svc-pane{grid-area:1/1;opacity:0;transform:translate3d(0,8px,0);pointer-events:none;transition:opacity .3s ease-out,transform .3s ease-out}
-.svc-pane.is-on{opacity:1;transform:none;pointer-events:auto}
-@keyframes svc-in{from{opacity:0;transform:translate3d(0,8px,0)}}
-@media (prefers-reduced-motion:reduce){.svc-pane{transition:none}.svc-count.is-new{animation:none}}
-.svc-line{max-width:17em;font-family:var(--display);font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-heading);letter-spacing:var(--ls-h1);color:var(--ink);text-wrap:balance}
-.svc-desc{max-width:34em;margin-top:clamp(.625rem,1.6vh,1rem);font-size:var(--fs-sm);color:var(--muted)}
-.svc-get{margin-top:clamp(1rem,2.6vh,1.5rem);color:var(--ink)}
-.svc-gets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem 1.25rem;max-width:34em;margin-top:.75rem;font-size:var(--fs-sm);line-height:var(--lh-snug);color:var(--ink)}
-.svc-gets li{position:relative;padding-left:1.5rem}
-.svc-gets li::before{content:"";position:absolute;left:0;top:.2em;width:1rem;height:1rem;background:var(--sv-accent);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 8.5 3 3 6-7' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3.5 8.5 3 3 6-7' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
-.svc-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem}
-/* the section's --accent-btn is the muted sage (3.6:1), too light under white text: the primary uses --accent */
-#services .svc-ctas .btn-fill{background:var(--accent);transition:background-color .5s var(--sv-ease)}
-#services .svc-ctas .btn-fill:hover{background:var(--accent-btn-hover)}
-#services:not(.svc-rot) .sec-head{margin-bottom:1.75rem}
-#services:not(.svc-rot) .svc-ctas{margin-bottom:clamp(2.5rem,2rem + 2.5vw,4rem)}
-@media (max-width:899px){
-  #services.svc-rot{height:auto;padding-block:var(--sec)}
-  #services.svc-rot>.wrap{display:block;height:auto}
-  #services.svc-rot .sec-head>div{margin-bottom:0}
-  #services.svc-rot .svc-stage{display:grid;grid-template-rows:auto minmax(0,1fr);row-gap:clamp(.5rem,2vh,1.25rem);height:100vh;height:100svh;padding-block:clamp(1rem,3vh,2rem) clamp(.75rem,2vh,1.25rem)}
-  #services.svc-rot .svc-info,#services.svc-rot .bento{grid-column:1;grid-row:auto}
-  #services.svc-rot .svc-ctas{margin-top:0}
-  .svc-line{max-width:22em;font-size:var(--fs-lg)}
+/* ---------- home Services (#services): what I do + my toolkit, one section ----------
+   Header (label left, the H2 "What I do." screen-reader only; "Explore services" right), then the services carousel
+   (.sx), then the toolkit. Carousel: a tab widget (role=tablist of six thumbnail <button role=tab>s in the standard
+   order, six role=tabpanels with the large image, number, H3, one-liner and "Explore" link; every panel is in the
+   HTML). Desktop (1100px+, with JS): one fixed composition in container units (.sx is an inline-size container) on a
+   7-column grid of thumbnail width t=13cqi, gap 1.5cqi; thumbnails 3:4. Column 1: the decorative word "Services"
+   (vertical, bottom to top, aria-hidden) over a small thumbnail; columns 2-3: the featured image (2t+g wide, 3:4);
+   columns 4-7: the details on top, four thumbnails in a row below, bottom-aligned with the featured image.
+   The tabs rotate through slots (data-slot, set by home-services.js; static in the HTML so nothing shifts):
+   0 = the featured image (the selected tab sits over it, scaled 2.1154x = (2t+g)/t, its own picture faded out),
+   1-4 = the row, 5 = left of the featured image (the previous service). They move by transform only (no layout
+   shift); a tab that would cross the composition fades in at its new slot instead (.sx-jump). Panels crossfade
+   (400ms; the incoming image fades in over the outgoing one, the details fade out and in). Below 1100px: image and
+   details side by side, the six tabs as a row below (700-1099px) / image full width, details below, the tabs as a
+   swipe row (below 700px). Without JS every panel shows, as a grid of cards, and the tabs are hidden. The selected
+   tab in a row has a 2px --accent-btn ring. The play/pause button (.sx-play, progress ring) appears only when the
+   slideshow runs (home-services.js: every 5s, paused on hover, focus in the section, off screen or a hidden tab;
+   stopped for good once a service is chosen; never under reduced motion). Photos: assets/img/svc-*-{480,800}.webp (3:4, lazy;
+   see CLAUDE.md). Scoped to .home: About's "What I do" also has
+   id="services". */
+.home #services{overflow-x:clip}
+.sv-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:1.5rem 4rem;align-items:end;margin-bottom:clamp(2rem,1.5rem + 2vw,3rem)}
+.sv-aside{justify-self:end}
+.sv-more:hover svg,.kit-link:hover svg,.sx-go:hover svg{transform:translateX(3px)}
+.sx{position:relative;container-type:inline-size}
+.sx-stage{position:relative}
+.sx-label{display:none}
+.sx-pic{display:block;overflow:hidden;background:var(--tint)}
+.sx-pic img{display:block;width:100%;height:100%;object-fit:cover}
+.sx-big{aspect-ratio:3/4;border-radius:20px}
+.sx-n{font-family:var(--display);font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-display);color:var(--accent);font-variant-numeric:tabular-nums}
+.sx-info h3{margin-top:.75rem;font-size:var(--fs-xl);line-height:var(--lh-title)}
+.sx-desc{margin-top:.5rem;max-width:32em;color:var(--muted);text-wrap:pretty}
+.sx-info .sx-go{margin-top:1.25rem}
+/* without JS: every service as a card (image, then details) */
+html:not(.js) .sx-tabs{display:none}
+html:not(.js) .sx-panels{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));gap:2.5rem 1.25rem}
+html:not(.js) .sx-info{margin-top:1.25rem}
+/* with JS: the tab widget (tablet layout by default) */
+.js .sx-stage{display:flex;flex-direction:column;gap:1.5rem}
+.js .sx-panels{display:grid}
+.js .sx-panel{grid-area:1/1;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:1.5rem clamp(1.5rem,3vw,2.5rem);align-items:start;visibility:hidden;transition:visibility 0s .4s}
+.js .sx-panel.is-on{z-index:1;visibility:visible;transition:none}
+.js .sx-panel:not(.is-on) .sx-info{opacity:0;transition:opacity .15s var(--ease)}
+.js .sx-panel.is-on .sx-big{animation:sx-in .4s var(--ease) both}
+.js .sx-panel.is-on .sx-info{animation:sx-in .35s .1s var(--ease) both}
+.js .sx-info{padding-right:3.5rem}
+@keyframes sx-in{from{opacity:0}}
+.js .sx-tabs{order:2;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(.625rem,1.5vw,1rem)}
+.sx-tab{position:relative;display:block;aspect-ratio:3/4;padding:0;border:0;border-radius:12px;overflow:hidden;background:var(--tint);color:inherit;font:inherit;cursor:pointer;transition:translate .3s var(--ease)}
+.sx-tab .sx-pic{width:100%;height:100%;transition:opacity .4s var(--ease)}
+.sx-tab::after{content:"";position:absolute;inset:0;border:2px solid transparent;border-radius:inherit;pointer-events:none;transition:border-color .3s var(--ease)}
+.sx-tab[aria-selected="true"]::after{border-color:var(--accent-btn)}
+.sx-tab[aria-selected="true"]{cursor:default}
+.sx-tab:focus-visible{outline:2px solid var(--accent-btn);outline-offset:3px}
+.sx-tn{position:absolute;left:.5rem;bottom:.5rem;padding:.25rem .5rem;border-radius:999px;background:rgba(255,255,255,.88);font-size:var(--fs-2xs);font-weight:var(--fw-semibold);line-height:var(--lh-title);letter-spacing:var(--ls-label);color:var(--accent);font-variant-numeric:tabular-nums;transition:opacity .4s var(--ease)}
+@media (hover:hover){
+  .sx-tab:not([aria-selected="true"]):hover{translate:0 -4px}
+  .sx-tab:not([aria-selected="true"]):hover::after{border-color:rgba(99,118,101,.45)}
 }
+/* play/pause: a round button with a 5s progress ring (--p, 0-1, from home-services.js) */
+.sx-play{position:absolute;top:0;right:0;z-index:3;display:grid;place-items:center;width:2.5rem;height:2.5rem;padding:0;border:0;border-radius:50%;background:var(--surface);color:var(--ink);cursor:pointer}
+.sx-play[hidden]{display:none}
+.sx-ring{position:absolute;inset:0;width:100%;height:100%;rotate:-90deg}
+.sx-ring circle{fill:none;stroke-width:1.5}
+.sx-ring .tr{stroke:var(--line)}
+.sx-ring .pr{stroke:var(--accent-btn);stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--p,0))}
+.sx-ic{width:14px;height:14px}
+.sx-play .sx-resume,.sx-play.is-stopped .sx-pause{display:none}
+.sx-play.is-stopped .sx-resume{display:block}
+.sx-play:focus-visible{outline:2px solid var(--accent-btn);outline-offset:3px}
+/* desktop: the fixed composition (numbers in cqi of .sx; see the comment above) */
+@media (min-width:1100px){
+  .js .sx-stage{display:block;height:36.6667cqi}                    /* featured image height: (2t+g) x 4/3 */
+  .js .sx-label{position:absolute;left:0;top:0;display:block;width:13cqi;height:17.8333cqi;margin:0;
+    writing-mode:vertical-rl;rotate:180deg;font-size:4.2cqi;font-weight:var(--fw-semibold);line-height:var(--lh-display);letter-spacing:var(--ls-title);color:var(--ink);white-space:nowrap}
+  .js .sx-panels,.js .sx-panel{position:absolute;inset:0;display:block}
+  .js .sx-big{position:absolute;left:14.5cqi;top:0;width:27.5cqi;height:36.6667cqi;aspect-ratio:auto}
+  .js .sx-info{position:absolute;left:43.5cqi;top:0;width:56.5cqi;height:17.8333cqi;padding-right:0}   /* above the row: featured height - thumbnail - gap; the play button sits beside the number only */
+  .js .sx-tabs{position:absolute;inset:0;z-index:2;display:block;pointer-events:none}
+  .js .sx-tab{--x:0cqi;--y:19.3333cqi;--s:1;position:absolute;left:0;top:0;width:13cqi;height:17.3333cqi;aspect-ratio:auto;pointer-events:auto;
+    transform-origin:0 0;transform:translate(var(--x),var(--y)) scale(var(--s));transition:transform .55s var(--ease),border-radius .55s var(--ease),translate .3s var(--ease),background-color .4s var(--ease)}
+  .js .sx-tab[data-slot="0"]{--x:14.5cqi;--y:0cqi;--s:2.1154;border-radius:9.45px}   /* 20px once scaled */
+  .js .sx-tab[data-slot="1"]{--x:43.5cqi}
+  .js .sx-tab[data-slot="2"]{--x:58cqi}
+  .js .sx-tab[data-slot="3"]{--x:72.5cqi}
+  .js .sx-tab[data-slot="4"]{--x:87cqi}
+  .js .sx-tab[data-slot="0"]:focus-visible{outline-width:.95px;outline-offset:1.42px}   /* 2px / 3px once scaled */
+  .js .sx-tab[aria-selected="true"]{background-color:transparent}
+  .js .sx-tab[aria-selected="true"] :is(.sx-pic,.sx-tn){opacity:0}
+  .js .sx-tab[aria-selected="true"]::after{border-color:transparent}
+  .js .sx-tab.sx-jump{transition:none;animation:sx-in .45s var(--ease) both}
+}
+@media (min-width:1100px) and (max-width:1279px){.js .sx-info h3{font-size:var(--fs-lg)}}   /* the longest name stays on one line */
+@media (max-width:899px){.sv-top{grid-template-columns:minmax(0,1fr)}.sv-aside{justify-self:start}}
+/* phone: image full width, details below, the tabs as a swipe row (edge to edge) */
+@media (max-width:699px){
+  .js .sx-panel{display:block}
+  .js .sx-big{aspect-ratio:4/5}
+  .js .sx-info{margin-top:1.5rem;padding-right:0}
+  .js .sx-tabs{display:flex;gap:.75rem;margin-inline:calc(-1 * var(--gut));padding:6px var(--gut);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);scrollbar-width:none;overscroll-behavior-x:contain}
+  .js .sx-tabs::-webkit-scrollbar{display:none}
+  .js .sx-tab{flex:0 0 6.5rem;scroll-snap-align:start}
+  .sx-play{top:.75rem;right:.75rem;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+}
+/* toolkit row */
+.kit-box{margin-top:clamp(3rem,2rem + 3vw,4.5rem)}
+.kit-label{display:flex;align-items:baseline;gap:.75rem;color:var(--accent)}
+.kit-n{font-family:var(--display);font-style:italic;font-size:var(--fs-base);font-weight:var(--fw-regular);letter-spacing:normal;text-transform:none;color:var(--muted)}
+.kit{display:flex;flex-wrap:wrap;gap:.625rem;margin-top:1.25rem}
+.kit>li{display:inline-flex;align-items:center;gap:.75rem;max-width:100%;padding:4px 1rem 4px 4px;border:1px solid var(--line);border-radius:14px;background:var(--surface);font-size:var(--fs-sm);font-weight:var(--fw-medium);line-height:var(--lh-title);color:var(--ink)}
+.kit-i{--c:var(--accent);display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:10px;color:var(--c);background:rgba(11,14,20,.04);background:color-mix(in srgb,var(--c) 9%,var(--surface))}
+.kit-i svg{width:20px;height:20px;fill:currentColor}
+.kit-js svg{background:var(--ink)}   /* the JS logo is a square with the letters cut out: dark letters, as in the real logo */
+.kit-link{margin-top:1.75rem}
 @media (max-width:599px){
-  .svc-desc{margin-top:.5rem}
-  .svc-get{margin-top:.875rem}
-  .svc-gets{grid-template-columns:minmax(0,1fr);gap:.375rem;margin-top:.5rem}
-  .svc-gets li::before{top:.15em}
+  .kit{gap:.5rem}
+  .kit>li{gap:.625rem;padding-right:.875rem}
 }
-/* phones (below 768px): a tighter gap between the panel and the cards; on narrow (under 400px) or short (under 760px)
-   phones the checklist is visually hidden inside the pinned view (still in the HTML for search and screen readers) */
-@media (max-width:767px){
-  #services.svc-rot .svc-stage{row-gap:16px}
+@media (prefers-reduced-motion:reduce){
+  .home #services *{transition:none!important;animation:none!important}
+  .home #services :is(a:hover,a:focus-visible) svg{transform:none}
+  .home #services .sx-tab:hover{translate:none}
 }
-@media (max-width:399px),(max-width:767px) and (max-height:759px){
-  #services.svc-rot .svc-get,#services.svc-rot .svc-gets{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
-}
-@media (max-width:479px){
-  #services .svc-ctas .btn{min-height:2.5rem;padding:.5rem 1rem}
-}
-/* will-change: transform only; will-change: opacity would make each card its own backdrop root and the glass blur
-   would see nothing behind it */
-#services.svc-rot .bento>li{position:absolute;left:50%;top:50%;width:var(--cw,25rem);will-change:transform;backface-visibility:hidden}
-/* a soft sage glow behind the stack, for the glass to blur */
-#services.svc-rot .bento::before{content:"";position:absolute;inset:6% 4%;background:radial-gradient(42% 40% at 72% 28%,rgba(169,196,171,.5),rgba(169,196,171,0) 70%),radial-gradient(40% 42% at 28% 74%,rgba(99,118,101,.2),rgba(99,118,101,0) 70%),radial-gradient(30% 30% at 50% 50%,rgba(234,240,234,.9),rgba(234,240,234,0) 70%);pointer-events:none}
-#services.svc-rot .bento>li::before{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:0 44px 80px -44px rgba(32,34,31,.3);opacity:var(--f,0);pointer-events:none}
-#services.svc-rot .svc-card{overflow:hidden}
-#services.svc-rot .svc-card p,#services.svc-rot .svc-tools,#services.svc-rot .svc-foot{opacity:var(--t,1)}
 /* FAQ: heading column on the left (held in view on desktop), content on the right */
 .split-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .home .split-head{position:sticky;top:6.5rem}
 .home .faq-grid h2{position:static}
-/* tool groups (home Stack, About toolkit): a full-width header (label + H2 left, note right, on the H2's baseline line),
+/* tool groups (About toolkit): a full-width header (label + H2 left, note right, on the H2's baseline line),
    then six cards in an even grid: 1 column, 2 from 640px, 3 from 1100px; the cards in a row share its height */
 .tg-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:1.5rem 4rem;align-items:end;margin-bottom:clamp(2.5rem,2rem + 2vw,3.5rem)}
 .tg-aside>p{max-width:30em;color:var(--muted)}
@@ -585,12 +591,7 @@ html:not(.is-signing) .sign{display:none}
 @media (min-width:1100px){.tg-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:899px){.tg-head{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:639px){.tg-card{padding:1.25rem 1rem}}
-.stk-link{margin-top:1.25rem}
-.stk-link:hover svg{transform:translateX(3px)}
-.stk-tools{display:flex;margin-top:1.25rem;flex-wrap:wrap;gap:.5rem}
-.stk-tools .tag{padding:.35rem .85rem;color:var(--ink)}
-.stk-tools .tk{cursor:pointer;transition:background-color .2s,border-color .2s,color .2s}
-/* tool chips that link (home Stack, About toolkit; stack-links.js): the active tool fills sage, the tools it works
+/* tool chips that link (About toolkit; stack-links.js): the active tool fills sage, the tools it works
    with turn tint, the rest fade back to muted text (still 6:1) */
 .tg-grid.linking [data-t]{border-color:rgba(11,14,20,.06);color:var(--muted)}
 .tg-grid.linking [data-t].rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
@@ -665,69 +666,10 @@ html:not(.is-signing) .sign{display:none}
   .pt-pic{display:none}
 }
 @media (prefers-reduced-motion:reduce){.pt-txt h3,.pt-stem,.pt-dot{transition:none}}
-/* selected work (#work, home): four tilted project cards (dark, the real screenshot on top) float over the giant H2
-   "Projects" (Switzer at --fs-giant, its "o" Instrument Serif Italic). The H2 comes first in the HTML (heading order
-   H2 -> H3s) and is placed under the cards by the grid (.wk-stage: cards row 1, word row 2, pulled up so the cards
-   overlap its top on desktop). Each card's transform = its tilt (--rot) x scroll straightening (--k, work.js) x hover
-   straightening (--hk), plus the scroll drift (--dy, work.js) and the hover lift (--lift). 640-1023px: two per row, a
-   lighter tilt, the word below. Below 640px: upright cards in a swipeable scroll-snap row (80% wide), the word below. */
-@property --hk{syntax:"<number>";inherits:false;initial-value:1}
-@property --lift{syntax:"<length>";inherits:false;initial-value:0px}
-#work{overflow-x:clip}
-.wk-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem 2rem;margin-bottom:clamp(2.5rem,2rem + 2vw,3.5rem)}
-.wk-head .eyebrow{margin-bottom:0}
-.wk-note{font-size:var(--fs-sm);line-height:var(--lh-snug);color:var(--muted)}
-.wk-stage{display:grid;grid-template-columns:minmax(0,1fr)}
-.wk-word{grid-row:2;position:relative;z-index:0;margin-top:-.3em;font-family:var(--font);font-size:var(--fs-giant);font-weight:var(--fw-regular);letter-spacing:var(--ls-display);line-height:var(--lh-display);text-align:center;white-space:nowrap;text-wrap:nowrap;color:var(--ink)}
-.wk-word .it{font-family:var(--display);padding-right:0}
-.wk-cards{grid-row:1;position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:clamp(1.25rem,2.2vw,2rem);margin-inline:calc(50% - min(50vw - 2rem,42.5rem))}
-.wk-c{--rot:0deg;--dy:0px;--k:1}
-.wk-c:nth-child(1){--rot:-6deg;margin-top:3.5rem}
-.wk-c:nth-child(2){--rot:4.5deg;margin-top:0}
-.wk-c:nth-child(3){--rot:-2.5deg;margin-top:5rem}
-.wk-c:nth-child(4){--rot:7deg;margin-top:1.5rem}
-/* desktop: card 2's foot is tied to the word (not to its own height) so it always covers the j's dot (~.28-.38em below
-   the word's top) and stops above the tops of "r" and "o" (~.45em): its foot sits .41em down (.3em pull + .11em) */
-@media (min-width:1024px){.wk-c:nth-child(2){align-self:end;position:relative;top:calc(var(--fs-giant) * .11)}}
-.wk-card{display:block;padding:.5rem;border-radius:var(--r);background:var(--ink);color:var(--bg);text-decoration:none;box-shadow:0 1.5rem 3rem -1.75rem rgba(11,14,20,.5);transform:translate3d(0,calc(var(--dy) + var(--lift)),0) rotate(calc(var(--rot) * var(--k) * var(--hk)));transition:--hk .45s var(--ease),--lift .45s var(--ease),box-shadow .45s var(--ease)}
-.wk-card img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top;border-radius:calc(var(--r) - .5rem);background:rgba(255,255,255,.06)}
-.wk-body{padding:1.25rem .75rem .75rem}
-.wk-card h3{font-size:var(--fs-xl);font-weight:var(--fw-medium);letter-spacing:var(--ls-title);line-height:var(--lh-heading);text-transform:uppercase;color:var(--bg)}
-.wk-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.16)}
-.wk-desc{font-size:var(--fs-xs);line-height:var(--lh-snug);color:rgba(255,255,255,.72)}
-.wk-go{flex:none;display:grid;place-items:center;width:1.75rem;height:1.75rem;border:1px solid rgba(255,255,255,.24);border-radius:6px;transition:background-color .3s var(--ease),color .3s var(--ease)}
-.wk-go svg{width:.875rem;height:.875rem}
-.wk-card:focus-visible{outline:2px solid var(--accent-btn);outline-offset:4px;--hk:0}
-.wk-card:hover .wk-go,.wk-card:focus-visible .wk-go{background:var(--bg);color:var(--ink)}
-@media (hover:hover){.wk-card:hover{--lift:-10px;--hk:0;box-shadow:0 2rem 3.5rem -1.75rem rgba(11,14,20,.55)}}
-.wk-all{display:flex;width:fit-content;margin:clamp(1.5rem,1rem + 1.5vw,2.5rem) auto 0}
-.wk-all:hover svg{transform:translateX(3px)}
-@media (max-width:1023px){
-  .wk-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem clamp(1.5rem,4vw,2.5rem);margin-inline:0}
-  .wk-c:nth-child(1){--rot:-3deg;margin-top:0}
-  .wk-c:nth-child(2){--rot:2.5deg;margin-top:3rem}
-  .wk-c:nth-child(3){--rot:2deg;margin-top:0}
-  .wk-c:nth-child(4){--rot:-3.5deg;margin-top:3rem}
-  .wk-word{margin-top:clamp(2rem,1rem + 3vw,3rem)}
-}
-@media (max-width:639px){
-  .wk-cards{display:flex;gap:1rem;margin-inline:calc(-1 * var(--gut));padding:.5rem var(--gut) 2rem;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);scrollbar-width:none}
-  .wk-cards::-webkit-scrollbar{display:none}
-  .wk-c:nth-child(n){flex:0 0 80%;margin-top:0;--rot:0deg;scroll-snap-align:start}
-  .wk-card{height:100%;box-shadow:0 1rem 1.5rem -1rem rgba(11,14,20,.4)}
-  .wk-word{margin-top:.5rem}
-}
-@media (prefers-reduced-motion:reduce){
-  .wk-card,.wk-go{transition:none}
-  .wk-card:hover,.wk-card:focus-visible{--lift:0px;--hk:1}
-}
-@media (max-width:1000px){
-  .bento>li{grid-column:span 6}
-}
 @media (max-width:900px){
   .split-sec{grid-template-columns:minmax(0,1fr)}
   .home .split-head{position:static}
-  .home .sec-head .lede,.sec-link{justify-self:start}
+  .home .sec-head .lede{justify-self:start}
 }
 @media (max-width:1000px){
   .ed{grid-template-columns:minmax(0,1fr) minmax(0,.85fr);grid-template-rows:auto auto 1fr;grid-template-areas:"head photo" "intro photo" "side photo";row-gap:2rem}
@@ -740,11 +682,9 @@ html:not(.is-signing) .sign{display:none}
   .ed-frame{max-width:min(100%,24rem);max-height:none;margin-inline:0}
   .ed-side,.ed-intro,.ed-desc{max-width:none}
   .ed-cta{margin-top:1.5rem}
-  .bento>li{grid-column:1/-1}
 }
 @media (prefers-reduced-motion:reduce){
   .ed-cta:hover svg{transform:none}
-  .svc-card:hover,.svc-card:hover .shot svg,.svc-card:hover .svc-go svg{transform:none}
 }
 
 /* ---------- floating WhatsApp button (phones and tablets) ---------- */

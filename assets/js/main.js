@@ -197,16 +197,16 @@
     });
   }
 
-  /* ---------- tool chips (home Stack, About toolkit): each group's chips fade up in turn as the group comes into view ---------- */
+  /* ---------- tool chips (About toolkit): each group's chips fade up in turn as the group comes into view ---------- */
   if (!reduce && 'IntersectionObserver' in win) {
     var tio = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add('st-in'); tio.unobserve(e.target); }
       });
     }, { rootMargin: '0px 0px -10% 0px' });
-    $$('.stk-card, .ab-group').forEach(function (g) {
+    $$('.ab-group').forEach(function (g) {
       g.classList.add('st');
-      $$('.tk, .chip', g).forEach(function (c, i) { c.style.setProperty('--i', Math.min(i, 12)); });
+      $$('.chip', g).forEach(function (c, i) { c.style.setProperty('--i', Math.min(i, 12)); });
       tio.observe(g);
     });
   }

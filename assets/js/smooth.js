@@ -6,7 +6,7 @@
    - With GSAP on the page, Lenis runs on GSAP's ticker and feeds ScrollTrigger, so the scroll position, the pinned
      hero and every scrubbed tween are updated in the same frame (one animation loop instead of two), and
      ScrollTrigger updates once per frame (see below).
-   - In-page links (#work, …) glide with the same offset as the CSS scroll-padding under the sticky header.
+   - In-page links (#faq, …) glide with the same offset as the CSS scroll-padding under the sticky header.
      The skip link keeps the browser's own jump so keyboard focus moves with it. */
 (function () {
   'use strict';
