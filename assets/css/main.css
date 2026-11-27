@@ -384,7 +384,7 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .end .btn-line:hover{background:rgba(255,255,255,.08);border-color:var(--bg)}
 .foot h3{margin-bottom:1rem;font-size:var(--fs-2xs);color:var(--end-muted)}   /* label style from .label (shared rule) */
 .foot li{margin-bottom:.25rem}
-.foot-nav a{position:relative;display:inline-block;font-size:var(--fs-base);line-height:var(--lh-body);color:var(--bg);text-decoration:none;transition:color .3s ease}
+.foot-nav a{position:relative;display:inline-block;white-space:nowrap;font-size:var(--fs-base);line-height:var(--lh-body);color:var(--bg);text-decoration:none;transition:color .3s ease}
 /* underline sweep: draws in from the left on hover/focus, leaves to the right */
 .foot-nav a::after{content:"";position:absolute;left:0;bottom:-2px;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s cubic-bezier(.65,0,.35,1)}
 .foot-nav a:focus-visible::after{transform:scaleX(1);transform-origin:left}   /* keyboard, every device (the focus outline stays too) */
@@ -427,7 +427,8 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
   .foot-cta .cta-row{flex-wrap:wrap}
 }
 @media (max-width:1023px){
-  .foot-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* 2 × 2: equal columns while they fit; on phones the first (Services, Connect) grows to its longest link and Site/Legal take the rest, so every link stays on one line down to 320px */
+  .foot-nav{grid-template-columns:minmax(max-content,1fr) minmax(0,1fr)}
 }
 /* compact on desktop and laptop: natural height (no forced full screen, so no empty band), tighter vertical spacing */
 @media (min-width:1024px){
