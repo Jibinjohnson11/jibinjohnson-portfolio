@@ -52,7 +52,7 @@
       return els.filter(function (el, i) { return rects[i].top < fold && rects[i].bottom > 0; });
     };
     /* the footer (.end) has its own staggered entrance in footer.js */
-    var blocks = $$('section:not(.hero):not(.end) > .wrap'), heads = $$('h2:not(.sr), .shout');
+    var blocks = $$('section:not(.hero):not(.end) > .wrap'), heads = $$('h2:not(.sr):not([data-motion]), .shout');   /* [data-motion]: animated by its own script (home Contact) */
     var shown = firstScreen(blocks.concat(heads));
     /* ---------- each section's content fades up once as it enters the viewport (not the hero) ---------- */
     var io = new IntersectionObserver(function (entries) {
@@ -193,7 +193,7 @@
         status.textContent = 'Message sent. I reply within one working day.';
       }).catch(function () {
         status.className = 'form-status';
-        status.textContent = 'Sorry, your message could not be sent. Please email me at jibinjohnsoninfo@gmail.com or WhatsApp +91 77362 08172.';
+        status.textContent = 'Sorry, your message could not be sent. Please email me at jibinjohnsoninfo@gmail.com or message me on WhatsApp.';
       }).then(function () { send.disabled = false; });
     });
   }

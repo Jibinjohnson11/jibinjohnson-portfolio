@@ -37,7 +37,6 @@
     /* fit to width: the word's ink runs exactly from the left to the right end of the divider line.
        Measured on the masks (never transformed), so the hidden slide-in state doesn't affect it. */
     var masks = wm.children, ctx = doc.createElement('canvas').getContext('2d');
-    var oneScreen = win.matchMedia('(min-width: 1024px) and (min-height: 700px)');   /* same query as the CSS */
     var fitWordmark = function () {
       var first = masks[0], last = masks[masks.length - 1];
       if (!first) return;
@@ -53,13 +52,6 @@
       var ink = natural - lsb - rsb;
       if (!(ink > 0) || !(box > 0)) { wm.style.fontSize = ''; return; }
       var size = 100 * box / ink;                                    /* a) fits the width */
-      if (oneScreen.matches) {
-        /* b) fits the height left for the wordmark (the band is one screen tall here). A letter box is .8em of
-           line-height plus the masks' padding, so measure that ratio rather than assume .8 */
-        var avail = wm.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-        var perPx = first.getBoundingClientRect().height / 100;
-        if (avail > 0 && perPx > 0) size = Math.min(size, avail / perPx);
-      }
       wm.style.fontSize = Math.floor(size * 100) / 100 + 'px';
       first.style.marginLeft = (-lsb / 100) + 'em';                  /* pull the J's ink onto the left edge */
     };
