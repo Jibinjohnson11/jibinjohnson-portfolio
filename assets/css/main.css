@@ -71,6 +71,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .skip{position:absolute;left:1rem;top:-4rem;z-index:100;background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:8px}
 .skip:focus{top:1rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+html:not(.js) img[data-defer-src]{display:none} /* held pictures: without JS their <noscript> copy shows */
 .wrap{width:100%;max-width:calc(var(--wrap) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
 .sec{padding-block:var(--sec)}
 .alt{background:var(--surface)}
@@ -102,8 +103,8 @@ h1 .it>span,h2 .it{font-style:italic;padding-right:.08em}
 h3,.card-title{font-family:var(--font);font-size:var(--fs-md);font-weight:var(--fw-semibold);letter-spacing:var(--ls-title);line-height:var(--lh-title)}
 /* card descriptions: one size and colour for every card (.card-text for new cards) */
 .card-text,.svc p,.pcard p,.steps p,.incl p,.proof p,.ind p,.why p,.pt-txt p{font-size:var(--fs-sm);color:var(--muted)}
-/* small uppercase labels: section labels, footer and tool-group headings, process step names (.label for new ones) */
-.label,.eyebrow,.foot h3,.tg-card h3,.pt-txt h3{font-family:var(--font);font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);line-height:var(--lh-title);text-transform:uppercase}
+/* small uppercase labels: section labels, footer and tool-group headings (.label for new ones) */
+.label,.eyebrow,.foot h3,.tg-card h3{font-family:var(--font);font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);line-height:var(--lh-title);text-transform:uppercase}
 .lede{font-size:var(--fs-lede);color:var(--muted);max-width:36em}
 .note{font-size:var(--fs-sm);color:var(--muted)}
 .tag{display:inline-block;font-size:var(--fs-xs);font-weight:var(--fw-medium);line-height:var(--lh-snug);padding:.2rem .7rem;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
@@ -161,6 +162,8 @@ h1 .ln>span{display:block}
    The portrait and the cards share one 3D scene (built by hero.js). On scroll the hero pins and the camera pushes
    into the face: the cards fly past, the portrait flies into the About frame and the About screen arrives (hero.js, GSAP).
    Every scroll state is set in JS, so without JS or with reduced motion everything shows statically. */
+/* the hero's own pin spacer (index.html, hero.js pinSpacer): ScrollTrigger copies the hero's display:flex onto it and measures the hero inside it, so as a flex row it would shrink the hero to its content width */
+#hero-pin{flex-direction:column}
 .hero.glass{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;min-height:100vh;min-height:100svh;margin-top:calc(-1 * var(--head));padding:0;background:var(--bg)}
 .hero-copy{position:relative;z-index:40;flex:none;padding:calc(var(--head) + clamp(.25rem,1.5vh,1.25rem)) var(--gut) 0;text-align:center}
 .hero.glass h1{max-width:var(--wrap);margin:clamp(.625rem,1.6vh,1.125rem) auto clamp(.5rem,1.4vh,1rem)}
@@ -187,7 +190,7 @@ h1 .ln>span{display:block}
 /* the portrait (the LCP image) fades in by CSS from the first paint, not after a script runs: waiting for the
    script held the largest paint back until every deferred file had run */
 .js .hero-portrait{animation:portrait-in 1.1s var(--ease) .2s backwards}
-@keyframes portrait-in{from{opacity:0}}
+@keyframes portrait-in{from{opacity:.01}} /* not 0: an invisible (opacity 0) image is not an LCP candidate, so 0 held the largest paint back to the end of the .2s delay; 1% on white is invisible */
 /* signature intro (home page, once per session): index.html puts .is-signing on <html> before the first paint
    (with JS; not under reduced motion or Save-Data; not again in the same session); sign.js draws the signature
    (~1s) and fades the veil. It is a light veil, not a cover: the hero renders and animates underneath from the
@@ -364,7 +367,7 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .contact-grid .cta-row+.reach{margin-top:2.5rem}
 
 /* top row: the four link columns on the left, the CTA on the right (stacked below 1100px) */
-.foot-top{display:grid;grid-template-columns:minmax(0,1fr) clamp(22rem,30vw,26rem);gap:2.5rem clamp(2.5rem,5vw,6rem);align-items:start}
+.foot-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2.5rem clamp(2.5rem,5vw,6rem);align-items:start}
 .foot-top>*{min-width:0}
 /* link columns: each as wide as its longest link, the free space shared evenly between them */
 .foot-nav{display:grid;grid-template-columns:repeat(4,max-content);justify-content:space-between;gap:2.5rem 2rem;overflow-wrap:anywhere}
@@ -372,7 +375,13 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .foot-cta-title{font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-title);letter-spacing:var(--ls-lead);color:var(--bg)}
 .foot-cta-title .muted{color:var(--end-muted)}
 .foot-cta .cta-row{margin-top:1.5rem;gap:.6rem}
-.foot-cta .btn{padding-inline:1.1rem}   /* both buttons on one row from 1280px */
+/* the CTA is as wide as its two buttons (on one row), so its right edge sits on the container edge like the divider and "Scroll top"; the title wraps inside that width */
+.foot-cta{width:min-content}
+.foot-cta .cta-row{flex-wrap:nowrap}
+.foot-cta .btn{padding-inline:1.1rem;white-space:nowrap}
+/* secondary button on the dark band: an outline, quieter than the sage primary (as .btn-line is on light pages) */
+.end .btn-line{background:transparent;border-color:var(--line-strong);color:var(--bg)}
+.end .btn-line:hover{background:rgba(255,255,255,.08);border-color:var(--bg)}
 .foot h3{margin-bottom:1rem;font-size:var(--fs-2xs);color:var(--end-muted)}   /* label style from .label (shared rule) */
 .foot li{margin-bottom:.25rem}
 .foot-nav a{position:relative;display:inline-block;font-size:var(--fs-base);line-height:var(--lh-body);color:var(--bg);text-decoration:none;transition:color .3s ease}
@@ -389,7 +398,7 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .wm{--wm-gap:.04em;display:flex;justify-content:flex-start;gap:var(--wm-gap);width:100%;margin-top:1.5rem;padding:1.5rem 0 0;border-top:1px solid var(--end-line);
   font-size:20vw;   /* fallback only: footer.js sets the fitted size in px */
   font-weight:var(--fw-brand);line-height:.8;letter-spacing:0;white-space:nowrap;color:var(--bg);user-select:none}
-.wm__mask{display:block;overflow:hidden;padding:.06em 0;margin-block:-.06em}   /* the padding keeps letter tops and bottoms inside the clip; the negative margin takes that band back out of the layout, so the letters sit close to the divider and the bar below */
+.wm__mask{display:block;flex:none;overflow:hidden;padding:.06em 0;margin-block:-.06em}   /* the padding keeps letter tops and bottoms inside the clip; the negative margin takes that band back out of the layout, so the letters sit close to the divider and the bar below */
 /* hidden to the left of its mask; footer.js sets each letter's translate3d from the scroll position
    (pure horizontal slide: no fade, scale or rise; no CSS transition, the scroll is the timeline) */
 .wm__char{display:block;transform:translateX(-101%);will-change:transform}
@@ -397,12 +406,12 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 /* bottom bar */
 .legal{display:flex;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:.75rem 0 1.25rem;font-size:var(--fs-2xs);color:var(--end-muted);overflow-wrap:anywhere}
 .legal-copy{display:flex;flex-wrap:wrap;justify-content:center;gap:.25rem 1.5rem;text-align:center}
-.social{display:flex;gap:.25rem;margin-left:-.75rem}
+.social{display:flex;gap:.25rem;margin-left:calc(-.875rem - .137rem)}   /* (16px icon - 44px tap area) / 2, plus the LinkedIn glyph's own inset (ink starts at x 3.28 of its 24 viewBox = .137rem): its ink sits on the wrap edge, mirroring the Scroll top circle on the right */
 .social li{margin:0}
 .social a{display:grid;place-items:center;width:2.75rem;height:2.75rem;color:var(--end-muted);transition:color .2s}   /* 16px icon, 44px tap area */
 .social a:hover{color:var(--bg)}
 .social svg{width:1rem;height:1rem}
-.to-top{display:inline-flex;align-items:center;gap:.75rem;min-height:2.75rem;padding:0;background:none;border:0;   /* no browser button box */
+.to-top{flex:none;white-space:nowrap;display:inline-flex;align-items:center;gap:.75rem;min-height:2.75rem;padding:0;background:none;border:0;   /* no browser button box */
   font-size:var(--fs-2xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--bg);cursor:pointer}
 .to-top svg{box-sizing:content-box;width:.875rem;height:.875rem;padding:.5rem;border:1px solid rgba(255,255,255,.28);border-radius:50%;transition:border-color .2s,transform .3s var(--roll)}
 .to-top:hover svg{border-color:var(--bg);transform:translateY(-2px)}
@@ -414,7 +423,8 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 @media (max-width:1099px){
   .foot-top{grid-template-columns:minmax(0,1fr)}
   .foot-nav{grid-template-columns:repeat(4,minmax(0,1fr));justify-content:stretch}
-  .foot-cta{max-width:34rem}
+  .foot-cta{width:auto;max-width:34rem}
+  .foot-cta .cta-row{flex-wrap:wrap}
 }
 @media (max-width:1023px){
   .foot-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -424,16 +434,15 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
   .end{padding-bottom:clamp(.5rem,1vh,.75rem)}
   /* link columns + CTA */
   .foot-cta .cta-row{margin-top:clamp(.9rem,2vh,1.5rem)}
-  .foot-cta .btn{min-height:0;padding:clamp(.55rem,1.2vh,.75rem) 1.1rem}
   .foot h3{margin-bottom:clamp(.4rem,1.2vh,1rem)}
   .foot li{margin-bottom:0}
-  .foot-nav a{font-size:clamp(.9rem,1.9vh,1.1rem);line-height:var(--lh-body)}
   /* wordmark: fitted to the width by footer.js */
   .wm{margin-top:clamp(.5rem,1vh,1rem);padding:clamp(.75rem,2vh,1.25rem) 0 0}
   /* bottom bar: one row */
   .legal{flex-wrap:nowrap;padding:0;font-size:var(--fs-xs)}
   .social a,.to-top{min-height:0;height:2.25rem}
   .social a{width:2.25rem}
+  .social{margin-left:calc(-.625rem - .137rem)}   /* (16px - 36px) / 2 + the glyph inset */
 }
 @media (min-width:641px) and (max-width:900px){body:has(> .wa) .legal{padding-right:4rem}}   /* clear the floating WhatsApp button */
 @media (max-width:640px){
@@ -526,7 +535,7 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
    slowly, the title lifts, the arrow circle fills white. services-home.js (GSAP + ScrollTrigger) brings the cards in
    on scroll and reverses when scrolling back up. The band ends at the cards; Process below has full --sec padding. */
 #services.sx{--sx-ease:cubic-bezier(.2,.7,.1,1);overflow-x:clip;padding-bottom:0}
-#services+.sec{padding-top:var(--sec)}
+#services.sx+.sec{padding-top:var(--sec)}   /* home only (.sx): About also has a #services */
 .sx-head{display:flex;flex-direction:column;align-items:center;text-align:center}
 .sx-pill{display:inline-block;padding:.55rem 1.2rem;border-radius:999px;background:var(--tint);font-size:var(--fs-sm);font-weight:var(--fw-semibold);line-height:var(--lh-title);color:var(--accent)}
 .sx-head h2{margin-top:1.5rem;font-size:var(--fs-display);line-height:var(--lh-heading);letter-spacing:var(--ls-display);text-wrap:balance}
@@ -537,7 +546,7 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .sx-card{position:relative;min-width:0;height:clamp(19rem,48vh,26rem);overflow:hidden;background:var(--ink)}
 .sx-link{position:absolute;inset:0;display:flex;align-items:flex-end;color:#FFFFFF;isolation:isolate}
 .sx-link img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;transform:scale(1.001);transition:transform 1.2s var(--sx-ease)}
-.sx-link::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(11,14,20,.88) 0%,rgba(11,14,20,.62) 28%,rgba(11,14,20,.18) 55%,rgba(11,14,20,0) 72%)}
+.sx-link::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(11,14,20,.9) 0%,rgba(11,14,20,.82) 30%,rgba(11,14,20,.62) 48%,rgba(11,14,20,.28) 66%,rgba(11,14,20,0) 82%)}   /* deep enough behind the text for 4.5:1 on the brightest photos */
 .sx-body{width:100%;padding:clamp(1.25rem,.75rem + 1vw,1.75rem)}
 .sx-title{max-width:12em;color:#FFFFFF;font-size:var(--fs-md);transition:transform .5s var(--sx-ease)}
 .sx-hl{color:var(--glow)}
@@ -569,10 +578,34 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 @media (max-width:639px){
   .sx-grid{grid-template-columns:minmax(0,1fr)}
   .sx-card,.sx-card:nth-child(n+4),.sx-card:last-child{grid-column:auto;height:clamp(18rem,82vw,22rem)}
+  /* stacked, the text fills most of the card's height, so the scrim reaches higher to keep the title readable */
+  .sx-link::before{background:linear-gradient(to top,rgba(11,14,20,.9) 0%,rgba(11,14,20,.84) 45%,rgba(11,14,20,.7) 66%,rgba(11,14,20,.32) 84%,rgba(11,14,20,.08) 100%)}
 }
 @media (prefers-reduced-motion:reduce){
   .sx-link img,.sx-title,.sx-desc,.sx-arrow,.sx-arrow svg{transition:none}
 }
+
+/* ---------- home Stack (#stack): the tools behind the work, logo tiles in each tool's brand colour (the only place brand colours appear) ---------- */
+.stk-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.75rem;margin:0;padding:0;list-style:none}
+.stk-tile{display:flex;flex-direction:column;align-items:flex-start;gap:.875rem;min-width:0;padding:1rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.stk-ic{display:grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:10px;background:color-mix(in srgb,var(--c) 9%,#FFFFFF)}
+.stk-ic svg{width:1.25rem;height:1.25rem;fill:var(--c)}
+.stk-txt{display:flex;flex-direction:column;gap:.2rem;min-width:0}
+.stk-name{font-size:var(--fs-sm);font-weight:var(--fw-semibold);line-height:var(--lh-title);color:var(--ink);overflow-wrap:anywhere}
+.stk-cat{font-size:var(--fs-xs);line-height:var(--lh-snug);color:var(--muted)}
+.stk-more{margin-top:clamp(2rem,1.5rem + 1.5vw,3rem)}
+@media (hover:hover){
+  .stk-tile:hover{transform:translateY(-4px);border-color:var(--line-strong);box-shadow:0 12px 28px -18px rgba(86,104,90,.45)}
+}
+@media (max-width:1099px){.stk-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:559px){
+  .stk-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.625rem}
+  .stk-tile{flex-direction:row;align-items:center;gap:.625rem;padding:.75rem}
+  .stk-ic{flex:none;width:2.25rem;height:2.25rem;border-radius:9px}
+  .stk-ic svg{width:1.125rem;height:1.125rem}
+}
+@media (max-width:374px){.stk-tile{flex-direction:column;align-items:flex-start}}   /* small phones: icon above the name again, so names like "PostgreSQL" never break mid-word */
+@media (prefers-reduced-motion:reduce){.stk-tile{transition:none}}
 /* FAQ: heading column on the left (held in view on desktop), content on the right */
 .split-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .home .split-head{position:sticky;top:6.5rem}
@@ -596,76 +629,58 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .tg-grid.linking [data-t]{border-color:rgba(11,14,20,.06);color:var(--muted)}
 .tg-grid.linking [data-t].rel{background:var(--tint);border-color:rgba(86,104,90,.45);color:var(--accent)}
 .tg-grid.linking [data-t].on{background:var(--accent-btn);border-color:var(--accent-btn);color:var(--surface)}
-/* process (#process): an editorial alternating timeline on the white page background like About and Services (no band
-   background; the markers are filled with --bg so the line stops at them). Its own palette (exception to the site
-   palette): ink #252827, a process accent --pt-accent #086B5B (6.4:1 on white: the H2's .it, step numbers, hover; the
-   eyebrow label keeps the site --accent like every other section label), secondary text #5C625D (6.3:1 on white;
-   #777D78, used only for the outlined markers, 4.2:1), timeline and stems #C9CEC7. Desktop (1024px+): five columns, one line across, steps above (01, 03, 05) and below
-   (02, 04) joined to it by thin stems with outlined markers; three photos sit opposite their step (subgrid rows).
-   700-1023px: a vertical line down the middle, steps alternating left and right. Below 700px: the line on the left.
-   process.js (GSAP) draws the line (--draw), then each marker, stem (--s), text and photo (clip-path) in turn. */
-#process{--ink:#252827;--muted:#5C625D;--pt-accent:#086B5B;--line:#D9DED8;--line-strong:#C9CEC7;--pt-line:#C9CEC7;--pt-mark:#777D78;color:var(--ink)}
-#process.sec{padding-block:var(--sec)}
-#process+.sec{padding-top:var(--sec)}
-#process .sec-head{margin-bottom:clamp(3.5rem,2rem + 4vw,6rem)}
-#process h2{max-width:9.75em}
-#process h2 .it{background:none;color:var(--pt-accent)}   /* solid accent here, not the gradient */
-.pt{--tw:min(100%,16rem);--stem:clamp(3.5rem,1rem + 4.5vw,6rem)}
-.pt-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto 0 auto;column-gap:clamp(1.25rem,2.4vw,2.5rem)}
-.pt-steps::before{content:"";grid-column:1/-1;grid-row:2;align-self:start;height:1px;background:var(--pt-line);transform:scaleX(var(--draw,1));transform-origin:left}
+/* process (#process): a wave timeline on the white page background. Its own palette (exception, scoped to #process):
+   ink #252827, secondary text #5C625D (6.3:1), the process accent --pt-accent #086B5B (6.4:1 on white: the H2's .it, the
+   wave, the icons and the hover state; #process does not redefine --accent, so the eyebrow is the usual sage).
+   Desktop (1024px+): .pt-box is a three-row grid (top text, the wave band --band, bottom text); the SVG wave fills the
+   band (one path, peaks under 01, 03, 05 and valleys over 02, 04 at the column centres: the five columns have no gap,
+   so each centre is at (2i+1)/10 of the width) and .pt-steps spans all three rows as a subgrid, each li another subgrid.
+   A flat dot marker (.pt-dot, 2px --pt-accent ring, white fill; no icons, shadows or glow) sits on the wave, the step's text beside the band (01, 03, 05 above, 02, 04 below) with a large faint serif number (.pt-n) behind the
+   title. Below 1024px: one column, the dots on a vertical line on the left (segments per step), text beside them.
+   process.js (GSAP) reveals the wave left to right (--draw), then each dot, number and text in turn. */
+.home #process{--ink:#252827;--muted:#5C625D;--pt-accent:#086B5B;--line:#D9DED8;--line-strong:#C9CEC7;color:var(--ink)}
+.home #process.sec{padding-top:var(--sec)}   /* full gap after Stack; FAQ below follows the usual white-after-white rule */
+.home #process .sec-head{margin-bottom:clamp(2.5rem,1rem + 4vw,5rem)}
+.home #process h2{max-width:9.75em}
+.home #process h2 .it{background:none;color:var(--pt-accent)}   /* solid accent here, not the gradient */
+.pt-box{--band:clamp(9rem,3rem + 10vw,13rem);--dot:.875rem;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto var(--band) auto}
+/* the wave: 1.4 × the band tall (viewBox 0 0 1000 140, the band is y 20–120), so its shadow is not cut off */
+.pt-wave{grid-area:2/1;align-self:start;width:100%;height:calc(var(--band) * 1.4);margin-top:calc(var(--band) * -.2);overflow:visible;pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  clip-path:inset(-20% calc((1 - var(--draw,1)) * 100%) -20% 0)}
+.pt-wave path{fill:none;stroke:var(--pt-accent);stroke-width:2;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.pt-steps{grid-area:1/1/4/2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:subgrid}
 .pt-s{grid-row:1/4;display:grid;grid-template-rows:subgrid;min-width:0}
 .pt-s:nth-child(1){grid-column:1}.pt-s:nth-child(2){grid-column:2}.pt-s:nth-child(3){grid-column:3}.pt-s:nth-child(4){grid-column:4}.pt-s:nth-child(5){grid-column:5}
 .pt-s>*{grid-column:1}   /* explicit, or auto-placement moves an item sharing a row into a new column */
-/* each text block is a column: heading, description, then its stem (above the line the block fills the top row, so
-   the 01/03/05 tops line up and each stem stretches down to the line; below the line the stem comes first) */
-.pt-txt{display:flex;flex-direction:column;width:var(--tw)}
-.up .pt-txt{grid-row:1;align-self:stretch}
-.down .pt-txt{grid-row:3;align-self:start}
-.pt-txt h3{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.8rem;white-space:nowrap;color:var(--ink);transition:color .3s var(--ease)}
-.pt-n{flex:none;font-family:var(--display);font-size:var(--fs-lg);font-weight:var(--fw-regular);letter-spacing:0;line-height:var(--lh-display);color:var(--pt-accent);font-variant-numeric:lining-nums}
-.pt-stem{display:block;flex:1 0 var(--stem);width:1px;margin-left:calc(50% - .5px);background:var(--pt-line);transform:scaleY(var(--s,1));transition:background-color .3s var(--ease)}
-.up .pt-stem{margin-top:1rem;transform-origin:bottom}
-.down .pt-stem{order:-1;flex:none;height:var(--stem);margin-bottom:1rem;transform-origin:top}
-.pt-dot{grid-row:2;align-self:start;justify-self:start;width:11px;height:11px;margin:-5px 0 0 calc(var(--tw) / 2 - 5px);border:1px solid var(--pt-mark);border-radius:50%;background:var(--bg);transition:background-color .3s var(--ease),border-color .3s var(--ease)}
-/* photos: inset 1rem inside their column on both sides, so every photo keeps the same gap to the text beside it */
-.pt-pic{justify-self:center;width:calc(100% - 2rem);max-width:15rem;margin:0;overflow:hidden}
-.pt-pic img{display:block;width:100%;height:auto;filter:saturate(.8) sepia(.06) contrast(.97)}
-.up .pt-pic{grid-row:3;align-self:start;margin-top:calc(var(--stem) * .6)}
-.down .pt-pic{grid-row:1;align-self:start;margin-bottom:calc(var(--stem) * .6)}
+/* the marker: a flat dot on the wave (no icon, shadow or glow); peaks are at 15% of the band, valleys at 85% */
+.pt-dot{position:relative;z-index:1;grid-row:2;justify-self:center;width:var(--dot);height:var(--dot);border:2px solid var(--pt-accent);border-radius:50%;background:var(--bg);transition:background-color .3s var(--ease)}
+.up .pt-dot{align-self:start;margin-top:calc(var(--band) * .15 - var(--dot) / 2)}
+.down .pt-dot{align-self:end;margin-bottom:calc(var(--band) * .15 - var(--dot) / 2)}
+.pt-txt{position:relative;isolation:isolate;justify-self:center;width:min(100%,16rem);padding-inline:.75rem}
+.up .pt-txt{grid-row:1;align-self:end;padding-bottom:2.25rem}
+.down .pt-txt{grid-row:3;align-self:start;padding-top:2.25rem}
+.pt-n{position:absolute;z-index:-1;right:.25rem;top:calc(var(--pad,0rem) - .45em);font-family:var(--display);font-size:var(--fs-display);font-weight:var(--fw-regular);line-height:var(--lh-display);letter-spacing:0;font-variant-numeric:lining-nums;
+  background:linear-gradient(180deg,rgba(8,107,91,.3),rgba(8,107,91,0) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none}
+.down .pt-txt{--pad:2.25rem}
+.pt-txt h3{margin-bottom:.6rem;color:var(--ink);transition:color .3s var(--ease)}
 @media (hover:hover){
-  .pt-txt:hover h3{color:var(--pt-accent)}
-  .pt-s:has(.pt-txt:hover) .pt-dot{background:var(--pt-accent);border-color:var(--pt-accent)}
-  .pt-s:has(.pt-txt:hover) .pt-stem{background:var(--pt-mark)}
+  .pt-s:hover .pt-dot{background:var(--pt-accent)}
+  .pt-s:hover h3{color:var(--pt-accent)}
 }
 @media (max-width:1023px){
-  .pt-steps{display:block;position:relative}
-  .pt-steps::before{position:absolute;top:.5rem;bottom:0;left:50%;align-self:auto;width:1px;height:auto;transform:scaleY(var(--draw,1));transform-origin:top}
-  .pt-s{display:grid;grid-template-columns:minmax(0,1fr) 4rem minmax(0,1fr);grid-template-rows:auto;align-items:start;padding-bottom:clamp(2.75rem,6vw,4rem)}
+  .pt-box{display:block}
+  .pt-wave{display:none}
+  .pt-steps{display:block;max-width:36rem}
+  .pt-s{position:relative;display:grid;grid-template-columns:var(--dot) minmax(0,1fr);grid-template-rows:auto;column-gap:1.25rem;align-items:start;padding-bottom:2.5rem}
   .pt-s:last-child{padding-bottom:0}
-  .pt-txt,.up .pt-txt,.down .pt-txt{position:relative;grid-row:1;align-self:start;width:auto;max-width:20rem;margin:0}
-  .up .pt-txt{grid-column:1;justify-self:end;text-align:right}
-  .up .pt-txt h3{justify-content:flex-end}
-  .down .pt-txt{grid-column:3;justify-self:start}
-  .pt-dot{grid-column:2;grid-row:1;justify-self:center;margin:7px 0 0}
-  /* the stem becomes a short horizontal tick from the text to its marker */
-  .pt-stem,.up .pt-stem,.down .pt-stem{position:absolute;top:12px;flex:none;width:calc(1.5rem - 5.5px);height:1px;margin:0;transform:scaleX(var(--s,1))}
-  .up .pt-stem{left:calc(100% + .5rem);transform-origin:right}
-  .down .pt-stem{right:calc(100% + .5rem);transform-origin:left}
-  .pt-pic,.up .pt-pic,.down .pt-pic{grid-row:1;align-self:start;width:min(100%,18rem);max-width:none;margin:0}
-  .up .pt-pic{grid-column:3;justify-self:start}
-  .down .pt-pic{grid-column:1;justify-self:end}
+  /* the line: one segment from each marker to the next */
+  .pt-s:not(:last-child)::before{content:"";position:absolute;left:calc(var(--dot) / 2 - 1px);top:calc(.3rem + var(--dot));bottom:0;width:2px;border-radius:1px;background:var(--pt-accent);opacity:.55;transform:scaleY(var(--s,1));transform-origin:top}
+  .pt-dot,.up .pt-dot,.down .pt-dot{grid-column:1;grid-row:1;align-self:start;margin:.3rem 0 0}
+  .pt-txt,.up .pt-txt,.down .pt-txt{grid-column:2;grid-row:1;justify-self:start;width:100%;padding:0;--pad:0rem}
+  .pt-n{right:0}
 }
-@media (max-width:699px){
-  /* phones: one line on the left, steps 01-05 in order, no photos (decorative; they doubled the column's length) */
-  .pt-steps::before{left:calc(var(--gut) + 5px)}
-  .pt-s{grid-template-columns:2.25rem minmax(0,1fr);padding-bottom:2.5rem}
-  .up .pt-txt,.down .pt-txt{grid-column:2;justify-self:start;max-width:32rem;text-align:left}
-  .up .pt-txt h3{justify-content:flex-start}
-  .pt-dot{grid-column:1;justify-self:start}
-  .up .pt-stem,.down .pt-stem{left:auto;right:calc(100% + 6px);width:14px;transform-origin:left}
-  .pt-pic{display:none}
-}
-@media (prefers-reduced-motion:reduce){.pt-txt h3,.pt-stem,.pt-dot{transition:none}}
+@media (prefers-reduced-motion:reduce){.pt-txt h3,.pt-dot{transition:none}}
 @media (max-width:900px){
   .split-sec{grid-template-columns:minmax(0,1fr)}
   .home .split-head{position:static}

@@ -32,6 +32,8 @@
 .ss-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
 .ss-tools li{padding:.25rem .75rem;border:1px solid var(--line);border-radius:99px;font-size:var(--fs-xs);font-weight:var(--fw-medium);line-height:var(--lh-snug);color:var(--muted)}
 .ss-links{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;margin-top:1.75rem}
+/* below 360px the longest labels ("Explore e-commerce development") are wider than the column: drop the decorative arrow and a little side padding so every label stays on one line */
+@media (max-width:359px){.ss-links .btn{padding-inline:1rem}.ss-links .btn .arrow{display:none}}
 .ss-more{margin-top:clamp(1.5rem,1rem + 1.5vw,2.5rem);padding-top:1.5rem;border-top:1px solid var(--line)}
 @media (min-width:600px){.ss-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
@@ -60,7 +62,7 @@
 }
 /* the screen shows one scene at a time; the change is a cross-fade (instant under reduced motion) */
 .ss-screen .scene em,.scene i{font-style:normal}
-.scene{opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}
+.ss-screen .scene{opacity:0;visibility:hidden;transition:opacity .5s var(--ease),visibility 0s .5s}   /* only the sticky screen hides its inactive scenes; each block's own illustration (below 1024px, no JS) is always shown */
 .ss-screen .scene.on{opacity:1;visibility:visible;transition:opacity .5s var(--ease)}
 /* the active scene assembles: its parts fade up in order (services.js sets .motion and each part's --d) */
 .ss-screen.motion .as{transition:opacity .5s var(--ease),transform .5s var(--ease)}

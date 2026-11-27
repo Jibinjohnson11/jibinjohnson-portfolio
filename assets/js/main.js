@@ -9,6 +9,19 @@
   var $ = function (s, c) { return (c || doc).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || doc).querySelectorAll(s)); };
 
+  /* ---------- held pictures: below-the-fold images whose src is in data-defer-src(set) (a <noscript> copy
+     covers no JS), so they don't share the first paint's bandwidth; set after the load event, still lazy ---------- */
+  var release = function () {
+    $$('img[data-defer-src]').forEach(function (im) {
+      var set = im.getAttribute('data-defer-srcset');
+      if (set) im.srcset = set;
+      im.src = im.getAttribute('data-defer-src');
+      im.removeAttribute('data-defer-srcset');
+      im.removeAttribute('data-defer-src');
+    });
+  };
+  if (doc.readyState === 'complete') release(); else win.addEventListener('load', release, { once: true });
+
   /* ---------- mobile menu ---------- */
   var burger = $('.burger');
   if (burger) {

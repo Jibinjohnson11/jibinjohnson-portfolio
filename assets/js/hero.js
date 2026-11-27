@@ -445,9 +445,11 @@
      scrub: true ties the zoom to the scroll position directly. The scroll itself is already smoothed (Lenis on
      wheel/trackpad, the browser's own momentum on touch); a scrub lag on top of that made the zoom trail the page.
      No anticipatePin: it nudges the pin early, which shows as a jump when the scroll is smoothed.
-     Pinning moves the hero into a .pin-spacer, and moving an element restarts its CSS animations: the load-in of
-     the intro, buttons and portrait (main.css) would play a second time. Their progress is saved first and put
-     back after the move (finished ones are finished again). */
+     The hero's .pin-spacer (#hero-pin) is in the HTML and passed as pinSpacer, so pinning never moves the hero
+     (a moved hero is repainted as a new LCP element, after all the scripts). Without it, pinning moves the hero
+     into a new .pin-spacer, and moving an element restarts its CSS animations: the load-in of the intro, buttons
+     and portrait (main.css) would play a second time. Their progress is saved first and put back after the move
+     (finished ones are finished again). */
   var loadIn = [].map.call(hero.querySelectorAll('.lede,.cta-row,.hero-portrait'), function (el) {
     var a = el.getAnimations ? el.getAnimations()[0] : null;
     return { el: el, t: a ? a.currentTime : 'done' };
@@ -458,6 +460,7 @@
     start: function () { return hero.offsetHeight > window.innerHeight + 1 ? 'bottom bottom' : 'top top'; },
     end: function () { return '+=' + Math.round(window.innerHeight * UNIT * tl.duration()); },
     pin: true,
+    pinSpacer: hero.parentNode.id === 'hero-pin' ? hero.parentNode : undefined, /* the spacer in the HTML: the hero is never moved */
     pinSpacing: true,
     scrub: true,
     invalidateOnRefresh: true,
@@ -598,6 +601,13 @@
   tHero.removeAttribute('class'); tHero.removeAttribute('fetchpriority'); tHero.alt = '';
   var tAbout = frameImg.cloneNode(false);
   tAbout.loading = 'eager'; tAbout.alt = '';
+  /* the frame's photo is held until the load event (main.js, data-defer-src): the card's copy follows it */
+  var aboutSrc = tAbout.getAttribute('data-defer-src');
+  if (aboutSrc) {
+    tAbout.removeAttribute('data-defer-src');
+    var giveAbout = function () { tAbout.src = aboutSrc; };
+    if (document.readyState === 'complete') giveAbout(); else window.addEventListener('load', giveAbout, { once: true });
+  }
   front.appendChild(tHero); back.appendChild(tAbout);
   travel.appendChild(front); travel.appendChild(back);
   document.body.appendChild(travel);
