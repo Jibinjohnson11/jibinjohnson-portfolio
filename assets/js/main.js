@@ -191,13 +191,13 @@
     }, { passive: true });
   }
 
-  /* ---------- contact form (Web3Forms): sent with fetch, no page reload; the button stays disabled while sending ---------- */
-  var form = $('form[action*="api.web3forms.com"]');
-  if (form) {
-    var status = $('.form-status', form), send = $('button[type=submit]', form);
+  /* ---------- Web3Forms forms (contact form, footer quote form): sent with fetch, no page reload; the button stays disabled while sending.
+     A form may set its own messages with data-sending / data-ok. ---------- */
+  Array.prototype.forEach.call(doc.querySelectorAll('form[action*="api.web3forms.com"]'), function (form) {
+    var status = form.querySelector('.form-status'), send = form.querySelector('button[type=submit]');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      status.className = 'form-status'; status.textContent = 'Sending your message…';
+      status.className = 'form-status'; status.textContent = form.getAttribute('data-sending') || 'Sending your message…';
       send.disabled = true;
       fetch(form.action, {
         method: 'POST',
@@ -210,13 +210,13 @@
       }).then(function () {
         form.reset();
         status.className = 'form-status ok';
-        status.textContent = 'Message sent. I reply within one working day.';
+        status.textContent = form.getAttribute('data-ok') || 'Message sent. I reply within one working day.';
       }).catch(function () {
         status.className = 'form-status';
         status.textContent = 'Sorry, your message could not be sent. Please email me at jibinjohnsoninfo@gmail.com or message me on WhatsApp.';
       }).then(function () { send.disabled = false; });
     });
-  }
+  });
 
   /* ---------- tool chips (About toolkit): each group's chips fade up in turn as the group comes into view ---------- */
   if (!reduce && 'IntersectionObserver' in win) {

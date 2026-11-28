@@ -348,7 +348,7 @@ html:not(.is-signing) .sign{display:none}
    One dark band: link columns + CTA, divider, the giant "JIBIN" wordmark sliding in letter by letter, bottom bar. Motion classes are added by footer.js only, so without JS
    (and under reduced motion) everything is visible and static. */
 .end{
-  --wrap:1400px;--gut:clamp(1.5rem,3vw,2.5rem);   /* the footer's own, wider container */
+  --wrap:1200px;--gut:clamp(1.5rem,8vw,8rem);   /* the footer's own container, roomier side margins (user request) */
   --end-muted:rgba(255,255,255,.5);                /* muted footer text: 5.2:1 on --ink */
   --end-line:rgba(255,255,255,.15);                /* dividers */
   --roll:cubic-bezier(.2,.7,.2,1);                 /* scroll-top arrow */
@@ -367,19 +367,28 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 .hero .contact-grid{align-items:start}
 .contact-grid .cta-row+.reach{margin-top:2.5rem}
 
-/* top row: the four link columns on the left, the CTA on the right (stacked below 1100px) */
-.foot-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2.5rem clamp(2.5rem,5vw,6rem);align-items:start}
+/* top row: the CTA on the left, the four link columns on the right (stacked below 1100px, CTA first) */
+.foot-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2.5rem clamp(2.5rem,5vw,6rem);align-items:start}
 .foot-top>*{min-width:0}
 /* link columns: each as wide as its longest link, the free space shared evenly between them */
 .foot-nav{display:grid;grid-template-columns:repeat(4,max-content);justify-content:space-between;gap:2.5rem 2rem;overflow-wrap:anywhere}
-/* CTA on the right: plain text and buttons on the dark band, no card */
-.foot-cta-title{font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-title);letter-spacing:var(--ls-lead);color:var(--bg)}
-.foot-cta-title .muted{color:var(--end-muted)}
-.foot-cta .cta-row{margin-top:1.5rem;gap:.6rem}
-/* the CTA is as wide as its two buttons (on one row), so its right edge sits on the container edge like the divider and "Scroll top"; the title wraps inside that width */
-.foot-cta{width:min-content}
-.foot-cta .cta-row{flex-wrap:nowrap}
-.foot-cta .btn{padding-inline:1.1rem;white-space:nowrap}
+/* CTA on the left (user reference, Nov 2026): a serif line, a sage label and an email field with a square sage arrow button (Web3Forms, sent by main.js) */
+.foot-cta{width:min(27rem,100%)}
+@media (min-width:1100px) and (max-width:1279px){.foot-cta{width:min(22rem,100%)}}   /* room for the four columns beside it with the wide side margins */
+.foot-cta-title{font-family:var(--display);font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:var(--lh-title);letter-spacing:var(--ls-lead);color:var(--bg)}
+.foot-cta-label{display:block;margin-top:1.75rem;font-size:var(--fs-xs);font-weight:var(--fw-semibold);letter-spacing:var(--ls-label);line-height:var(--lh-title);text-transform:uppercase;color:var(--accent)}
+.foot-form-row{display:flex;gap:.6rem;margin-top:.875rem}
+.foot-form-row input{flex:1;min-width:0;height:3.25rem;padding:0 1.1rem;border:1px solid var(--line-strong);border-radius:12px;background:rgba(255,255,255,.06);
+  font:inherit;font-size:var(--fs-base);color:var(--bg);transition:border-color .2s,background-color .2s}
+.foot-form-row input::placeholder{color:var(--end-muted)}
+.foot-form-row input:focus{border-color:var(--accent);background:rgba(255,255,255,.09)}
+.foot-send{flex:none;display:grid;place-items:center;width:3.75rem;height:3.25rem;padding:0;border:0;border-radius:12px;background:var(--accent-btn);color:var(--bg);cursor:pointer;transition:background-color .2s}
+.foot-send:hover{background:var(--accent-btn-hover)}
+.foot-send:disabled{opacity:.6;cursor:progress}
+.foot-send svg{width:1.25rem;height:1.25rem}
+.foot-form .form-status{margin-top:.6rem;color:var(--end-muted)}
+.foot-form .form-status:empty{display:none}
+.foot-form .form-status.ok{color:var(--accent)}
 /* secondary button on the dark band: an outline, quieter than the sage primary (as .btn-line is on light pages) */
 .end .btn-line{background:transparent;border-color:var(--line-strong);color:var(--bg)}
 .end .btn-line:hover{background:rgba(255,255,255,.08);border-color:var(--bg)}
@@ -425,7 +434,6 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
   .foot-top{grid-template-columns:minmax(0,1fr)}
   .foot-nav{grid-template-columns:repeat(4,minmax(0,1fr));justify-content:stretch}
   .foot-cta{width:auto;max-width:34rem}
-  .foot-cta .cta-row{flex-wrap:wrap}
 }
 @media (max-width:1023px){
   /* 2 × 2: equal columns while they fit; on phones the first (Services, Connect) grows to its longest link and Site/Legal take the rest, so every link stays on one line down to 320px */
@@ -435,7 +443,6 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 @media (min-width:1024px){
   .end{padding-bottom:clamp(.5rem,1vh,.75rem)}
   /* link columns + CTA */
-  .foot-cta .cta-row{margin-top:clamp(.9rem,2vh,1.5rem)}
   .foot h3{margin-bottom:clamp(.4rem,1.2vh,1rem)}
   .foot li{margin-bottom:0}
   /* wordmark: fitted to the width by footer.js */
@@ -455,7 +462,7 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
   .legal-copy{flex-direction:column}
 }
 @media (prefers-reduced-motion:reduce){
-  .foot-nav a,.foot-nav a::after,.to-top svg{transition:none}   /* underline shows instantly */
+  .foot-nav a,.foot-nav a::after,.foot-form-row input,.foot-send,.to-top svg{transition:none}   /* underline shows instantly */
   .wm__char{transform:none;will-change:auto}   /* letters always shown, never move (footer.js doesn't drive them) */
 }
 
