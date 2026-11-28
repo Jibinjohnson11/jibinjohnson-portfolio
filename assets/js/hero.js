@@ -619,6 +619,16 @@
     var giveAbout = function () { tAbout.src = aboutSrc; };
     if (document.readyState === 'complete') giveAbout(); else window.addEventListener('load', giveAbout, { once: true });
   }
+  /* Decode the card's two pictures and the frame's photo ahead of time. The card and the back face are hidden until
+     the handoff and edge-on, so the browser would otherwise decode each picture on the very frame it first shows
+     (measured: decodes at those two scroll positions), which costs a phone a dropped or blank frame mid-flight. */
+  var prime = function (img) {
+    return new Promise(function (done) {
+      var go = function () { (img.decode ? img.decode() : Promise.resolve()).then(done, done); };
+      if (img.complete && img.naturalWidth) go(); else { img.addEventListener('load', go, { once: true }); img.addEventListener('error', done, { once: true }); }
+    });
+  };
+  var primed = Promise.all([tHero, tAbout, frameImg].map(prime));
   front.appendChild(tHero); back.appendChild(tAbout);
   travel.appendChild(front); travel.appendChild(back);
   document.body.appendChild(travel);
@@ -645,13 +655,17 @@
       var st = f.el.style;
       st.width = f.w + 'px'; st.height = f.h + 'px';
       st.left = -f.w / 2 + 'px'; st.top = -f.h / 2 + 'px';
-      f.img.style.width = f.w + 'px';
-      f.img.style.height = f.w / f.a + 'px';
+      /* the picture's own box is its cover size at the face's own size, so at that size (the front at the
+         handoff, the back on landing) it is drawn at scale 1: a promoted layer is drawn once and then scaled,
+         and the back would otherwise reach the landing enlarged 1.12x and look softer than the frame's photo */
+      f.s0 = Math.max(f.w, f.h * f.a);
+      f.img.style.width = f.s0 + 'px';
+      f.img.style.height = f.s0 / f.a + 'px';
     });
   };
   var fitFace = function (f, w, h) {
     var S = Math.max(w, h * f.a); /* the picture's width on screen when it covers w × h */
-    var kx = S / w, ky = (S * f.h) / (h * f.w);
+    var kx = (S * f.w) / (w * f.s0), ky = (S * f.h) / (h * f.s0);
     var tx = f.w * (1 - S / w) * f.px, ty = f.h * (1 - S / (f.a * h)) * f.py;
     f.el.style.transform = f.pre + 'scale(' + (w / f.w).toFixed(5) + ',' + (h / f.h).toFixed(5) + ')';
     f.img.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + kx.toFixed(5) + ',' + ky.toFixed(5) + ')';
@@ -730,9 +744,10 @@
     }
     if (next === 2) return;
     var p = (g - gH) / (1 - gH), e = ease(p);
-    var w = lerp(from.w, to.w, e), ht = lerp(from.h, to.h, e);
-    var cx = lerp(from.x + from.w / 2, to.x + to.w / 2, e), cy = lerp(from.y + from.h / 2, to.y + to.h / 2, e);
-    /* the card's centre is its origin (a 0 × 0 box), as the faces are centred on it */
+    place(lerp(from.x + from.w / 2, to.x + to.w / 2, e), lerp(from.y + from.h / 2, to.y + to.h / 2, e), lerp(from.w, to.w, e), lerp(from.h, to.h, e), angle);
+  };
+  /* the card's centre is its origin (a 0 × 0 box), as the faces are centred on it */
+  var place = function (cx, cy, w, ht, angle) {
     travel.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0) perspective(' + (CAMERA * w).toFixed(1) + 'px) rotateY(' + angle.toFixed(2) + 'deg)';
     fitFace(tFaces[0], w, ht);
     fitFace(tFaces[1], w, ht);
@@ -747,6 +762,26 @@
   });
   var remeasure = function () { measure(); state = -1; render(spin.progress); };
   remeasure();
+  /* Warm-up: once the pictures are decoded, draw the card for one frame on each side (back at its landing box, then
+     front at its handoff box) at 0.1% opacity (invisible) so each face is decoded at the scale it is drawn at and
+     rasterised before the flight: the hidden back face otherwise did that work on the edge-on frame (measured).
+     Skipped while the card is in flight (it is drawn for real then). */
+  var nextFrame = function () { return new Promise(function (r) { requestAnimationFrame(function () { r(); }); }); };
+  primed.then(function () {
+    if (state === 1 || !from) return;
+    /* the opacity goes on the faces: on the card itself it would flatten its 3D and hide the back face */
+    var st = travel.style, fade = function (v) { front.style.opacity = back.style.opacity = v; };
+    fade('0.001'); st.visibility = 'visible';
+    place(to.x + to.w / 2, to.y + to.h / 2, to.w, to.h, 180);
+    return nextFrame().then(nextFrame).then(function () {
+      if (state === 1) return;
+      place(from.x + from.w / 2, from.y + from.h / 2, from.w, from.h, 0);
+      return nextFrame().then(nextFrame);
+    }).then(function () {
+      fade('');
+      if (state !== 1) st.visibility = '';
+    });
+  });
   /* the portrait's load-in (main.css portrait-in) moves it: measure again once it has settled */
   var hp = hero.querySelector('.hero-portrait');
   if (hp) hp.addEventListener('animationend', remeasure);

@@ -171,6 +171,10 @@ h1 .ln>span{display:block}
 .hero.glass .cta-row{justify-content:center;gap:.875rem;margin-top:clamp(.875rem,2vh,1.5rem)}
 .hero.glass .btn{min-height:3.375rem;padding:0 1.625rem;font-size:var(--fs-base);gap:.625rem;transition:background-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
 .hero.glass .btn svg{width:18px;height:18px}
+/* one line of proof under the buttons (the only stats on the home page); each part stays whole, so a narrow screen breaks at the dot */
+.hero-proof{margin:clamp(.75rem,1.8vh,1.25rem) auto 0;font-size:var(--fs-sm);font-weight:var(--fw-medium);line-height:var(--lh-snug);color:var(--muted)}
+.hero-proof>span{white-space:nowrap}
+.hero-proof>span[aria-hidden]{margin-inline:.35em;color:var(--accent)}
 .hero.glass .btn-fill{box-shadow:0 10px 30px -10px rgba(99,118,101,.6),inset 0 1px 0 rgba(255,255,255,.25)}
 .hero.glass .btn:hover{transform:translateY(-2px)}
 .hero.glass .btn-line{background:rgba(255,255,255,.55);border-color:var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 24px -14px rgba(30,45,33,.35)}
@@ -186,6 +190,7 @@ h1 .ln>span{display:block}
 /* load-in, by CSS from the first paint, in step with the H1 lines */
 .js .hero.glass .lede,.js .hero.glass .cta-row{animation:hero-in .9s var(--ease) .3s backwards}
 .js .hero.glass .cta-row{animation-delay:.4s}
+.js .hero.glass .hero-proof{animation:hero-in .9s var(--ease) .5s backwards}
 @keyframes hero-in{from{opacity:0;transform:translateY(18px)}}
 /* the portrait (the LCP image) fades in by CSS from the first paint, not after a script runs: waiting for the
    script held the largest paint back until every deferred file had run */
@@ -702,8 +707,10 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
   .ed-cta:hover svg{transform:none}
 }
 
-/* ---------- floating WhatsApp button (phones and tablets) ---------- */
-.wa{display:none}
+/* ---------- floating WhatsApp button (every width; after the first screen, hidden while the footer bottom bar is in view: main.js) ---------- */
+.wa{display:grid;place-items:center;position:fixed;right:1rem;bottom:1rem;z-index:45;width:3.25rem;height:3.25rem;border-radius:50%;background:var(--accent-btn);color:var(--bg);box-shadow:0 8px 24px -8px rgba(11,14,20,.35);transition:opacity .25s,transform .25s,visibility .25s}
+.js .wa:not(.show){opacity:0;visibility:hidden;transform:translateY(.75rem)}
+.wa svg{width:1.5rem;height:1.5rem}
 
 /* ---------- headings slide up line by line (main.js wraps the rendered lines, then restores the heading) ---------- */
 .rise-wait{opacity:0}
@@ -739,9 +746,6 @@ html.lenis,html.lenis body{height:auto}
   /* single-column hero: home H1 (and the statement line) sized so each of the three H1 lines stays on one line from 360px up */
   :root{--fs-display:clamp(2.125rem,min(calc(12.2vw - .3rem),11.1vw),4.25rem)}
   .portrait{max-width:22rem}
-  .wa{display:grid;place-items:center;position:fixed;right:1rem;bottom:1rem;z-index:45;width:3.25rem;height:3.25rem;border-radius:50%;background:var(--accent-btn);color:var(--bg);box-shadow:0 8px 24px -8px rgba(11,14,20,.35);transition:opacity .25s,transform .25s,visibility .25s}
-  .js .wa:not(.show){opacity:0;visibility:hidden;transform:translateY(.75rem)}
-  .wa svg{width:1.5rem;height:1.5rem}
 }
 @media (max-width:767px){
   /* mobile: the hero fits the viewport width. The portrait is 80% of the screen wide, on the bottom of the hero, with

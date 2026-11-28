@@ -49,7 +49,14 @@
   };
   if ('IntersectionObserver' in win) {
     if (head) sentinel('9px', function (out) { head.classList.toggle('scrolled', out); });
-    if (wa) sentinel('100vh', function (out) { wa.classList.toggle('show', out); });
+    if (wa) {
+      /* shown after the first screen; hidden while the footer's bottom bar is in view, where it would cover
+         "Scroll top" (the footer has its own WhatsApp button) */
+      var waPast = false, waFoot = false, legal = $('.legal');
+      var waSet = function () { wa.classList.toggle('show', waPast && !waFoot); };
+      sentinel('100vh', function (out) { waPast = out; waSet(); });
+      if (legal) new IntersectionObserver(function (e) { waFoot = e[e.length - 1].isIntersecting; waSet(); }).observe(legal);
+    }
   } else if (head) head.classList.add('scrolled');
 
   if (!reduce && 'IntersectionObserver' in win) {
