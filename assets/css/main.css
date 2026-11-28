@@ -327,17 +327,22 @@ html:not(.is-signing) .sign{display:none}
 .steps li::before{content:counter(s);margin-bottom:.75rem;font-family:var(--display);font-size:var(--fs-2xl);font-weight:var(--fw-regular);line-height:var(--lh-display);color:var(--accent)}
 
 
-/* faq (every page): a simple list: questions in the display serif, a hairline above, between and below the rows,
-   a thin plus that turns 45° into a cross. main.js animates the height (instant under reduced motion and without JS) */
+/* faq (every page): a clean list from a user reference (28 Nov 2026): hairlines above, between and below the rows,
+   questions in sans semibold (sage on hover), a 40px white circle with a 1px border and an ink plus on the right;
+   open: the circle fills --ink, the plus turns into a white cross. main.js animates the height (instant under
+   reduced motion and without JS) */
 .faq-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .faq-grid h2{position:sticky;top:6.5rem}
+.faq{--faq-ic:2.5rem;--faq-line:calc(var(--fs-md) * var(--lh-title))}
 .faq details{border-top:1px solid var(--line)}
 .faq details:last-child{border-bottom:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem;padding:1.5rem 0;font-family:var(--display);font-weight:var(--fw-regular);font-size:var(--fs-lg);line-height:var(--lh-title);letter-spacing:var(--ls-h2);color:var(--ink)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem;padding:clamp(1.25rem,1rem + .9vw,1.75rem) 0;font-size:var(--fs-md);font-weight:var(--fw-semibold);line-height:var(--lh-title);letter-spacing:var(--ls-title);color:var(--ink);transition:color .25s var(--ease)}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"";flex:none;width:1rem;height:1rem;margin-top:calc(.65em - .5rem);color:var(--accent);background:linear-gradient(currentColor,currentColor) 50%/100% 1.5px no-repeat,linear-gradient(currentColor,currentColor) 50%/1.5px 100% no-repeat;transition:transform .35s var(--ease)}
-.faq details[open]:not(.is-closing) summary::after{transform:rotate(45deg)}
-.faq details p{padding:0 2.5rem 1.5rem 0;color:var(--muted);max-width:60ch}
+.faq summary::after{content:"";flex:none;width:var(--faq-ic);height:var(--faq-ic);margin-top:calc((var(--faq-line) - var(--faq-ic)) / 2);border-radius:50%;border:1px solid var(--line-strong);color:var(--ink);background:linear-gradient(currentColor,currentColor) 50%/.8125rem 1.75px no-repeat,linear-gradient(currentColor,currentColor) 50%/1.75px .8125rem no-repeat,var(--surface);transition:transform .35s var(--ease),background-color .35s var(--ease),border-color .35s var(--ease),color .35s var(--ease)}
+@media (hover:hover){.faq summary:hover{color:var(--accent)}.faq summary:hover::after{border-color:var(--accent-btn)}}
+.faq details[open]:not(.is-closing) summary::after{transform:rotate(45deg);background-color:var(--ink);border-color:var(--ink);color:var(--bg)}
+.faq details p{padding:0 calc(var(--faq-ic) + 1.5rem) clamp(1.25rem,1rem + .9vw,1.75rem) 0;margin-top:-.25rem;color:var(--muted);max-width:60ch}
+@media (max-width:600px){.faq{--faq-ic:2.25rem}.faq summary{gap:1rem}.faq details p{padding-right:0}}
 /* home: a short contact prompt under the FAQ heading (sticky with it on desktop) */
 .faq-ask{margin-top:clamp(1.75rem,1.25rem + 1.5vw,2.5rem)}
 .faq-ask p{color:var(--muted);margin-bottom:.875rem}
@@ -821,7 +826,6 @@ html.lenis,html.lenis body{height:auto}
   .bio{grid-template-columns:repeat(2,minmax(0,1fr))}
   .proj dl{grid-template-columns:minmax(0,1fr);gap:.15rem}
   .proj dd{margin-bottom:.6rem}
-  .faq details p{padding-right:0}
   /* inner-page H1: lines flow and balance so none leaves a word alone; fluid so "Website&nbsp;development" fits at 360px */
   .hero.sub .ln,.hero.sub .ln>span{display:inline}
   :root{--fs-h1:clamp(1.875rem,calc(10.5vw - .25rem),2.25rem)}
