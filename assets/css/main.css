@@ -255,11 +255,10 @@ html:not(.is-signing) .sign{display:none}
 /* hero → About image flip (hero.js): one fixed two-sided card carries the portrait from the zoom into the About frame,
    turning on its vertical axis with perspective; the hero cut-out is the front, the About photo in its frame the back,
    so the image changes at the edge-on moment (90°). The frame's own photo shows only once the card has landed. */
-.travel{position:fixed;left:0;top:0;z-index:30;pointer-events:none;visibility:hidden;transform-style:preserve-3d;will-change:transform}
-.t-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
-.t-face img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
-.t-front img{object-position:50% 100%}
-.t-back{transform:rotateY(180deg);border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 70% 15%,var(--surface) 0%,var(--tint) 75%);border:1px solid rgba(99,118,101,.18);box-shadow:0 40px 80px -48px rgba(36,46,38,.45)}
+.travel{position:fixed;left:0;top:0;width:0;height:0;z-index:30;pointer-events:none;visibility:hidden;transform-style:preserve-3d;will-change:transform}
+.t-face{position:absolute;left:0;top:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform}
+.t-face img{position:absolute;left:0;top:0;display:block;max-width:none;transform-origin:0 0;will-change:transform}
+.t-back{border-radius:20px;background:radial-gradient(120% 90% at 70% 15%,var(--surface) 0%,var(--tint) 75%);border:1px solid rgba(99,118,101,.18);box-shadow:0 40px 80px -48px rgba(36,46,38,.45)}
 .t-back img{object-position:50% 20%;filter:grayscale(1)}
 /* the two About paragraphs share one style: body size, regular weight, body line-height, muted, 24em wide (full width from 680px) */
 .ed-intro,.ed-desc{max-width:24em;font-size:var(--fs-base);font-weight:var(--fw-regular);line-height:var(--lh-body);color:var(--muted)}

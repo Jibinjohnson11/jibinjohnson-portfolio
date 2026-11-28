@@ -289,15 +289,16 @@
       for (var i = BLUR_AT.length - 1; i >= 0; i--) if (exit >= BLUR_AT[i]) return 'blur(' + BLUR_PX[i] + 'px)';
       return '';
     };
-    var frame = function (now) {
-      if (!visible && !reduce) { running = false; return; } /* off screen: stop; the observer restarts it */
+    /* draw(now) returns false when the loop should stop (off screen, ring gone, or a still reduced-motion frame) */
+    var draw = function (now) {
+      if (!visible && !reduce) return false; /* off screen: stop; the observer restarts it */
       if (start === null) start = now;
       var t = now - start, W = size.w, H = size.h;
       /* full exit (set by the push below): hide the ring outright; visibility doesn't flatten 3D */
       var exit = box._exit || 0, gone = exit >= 0.999;
       if (gone !== ringGone) { ringGone = gone; ring.style.visibility = gone ? 'hidden' : ''; }
       /* gone: stop drawing; the push wakes the loop (box._wake) as soon as the ring comes back */
-      if (gone && W && !reduce) { running = false; return; }
+      if (gone && W && !reduce) return false;
       if (W && !gone) {
         var L = layout;
         var cx = W * L.cx, cy = H * 0.31; /* ring centre ≈ eye level of the head in the portrait */
@@ -346,9 +347,19 @@
         }
       }
       /* under reduced motion the ring is drawn once per change and then left still */
-      if (!reduce || !W) requestAnimationFrame(frame); else running = false;
+      return !reduce || !W;
     };
-    var kick = function () { if (!running) { running = true; requestAnimationFrame(frame); } };
+    /* With GSAP on the page the loop runs on GSAP's ticker, after Lenis has moved the page and ScrollTrigger has set
+       the zoom in the same tick (smooth.js adds its tick first), so the ring always reads this frame's exit value: the
+       cards and the zoom never drift a frame apart. Without GSAP: its own requestAnimationFrame. */
+    var ticker = window.gsap && window.gsap.ticker;
+    var tick = function () { if (!draw(performance.now())) { running = false; ticker.remove(tick); } };
+    var step = function (now) { if (draw(now)) requestAnimationFrame(step); else running = false; };
+    var kick = function () {
+      if (running) return;
+      running = true;
+      if (ticker) ticker.add(tick); else requestAnimationFrame(step);
+    };
 
     /* The ring is built as soon as this script runs (deferred: right after the HTML is parsed), not after the load
        event, the signature intro or an idle callback, and it spins from its first frame. It stays invisible until
@@ -613,6 +624,38 @@
   document.body.appendChild(travel);
 
   var from = null, to = null; /* viewport boxes at the handoff and at the landing */
+  /* The card moves by transforms only, so the browser never lays out or repaints it during the flight (resizing it
+     every frame repainted the grayscale photo, its border and its 80px shadow each frame). Each face keeps a fixed
+     box, set once per measure: the front at the handoff size, the back at the landing size, so each is drawn
+     sharp where it is seen up close and lands pixel-exact on the frame. Per frame a face is scaled to the card's
+     current size, and its picture is counter-scaled inside it to fill it like object-fit: cover (px/py: the
+     object-position), so the picture never stretches while the card changes shape. */
+  var aspect = function (img, fallback) {
+    var w = +img.getAttribute('width'), h = +img.getAttribute('height');
+    return w && h ? w / h : fallback;
+  };
+  var tFaces = [
+    { el: front, img: tHero, a: aspect(tHero, 1), px: 0.5, py: 1, pre: '' },
+    { el: back, img: tAbout, a: aspect(tAbout, 0.8), px: 0.5, py: 0.2, pre: 'rotateY(180deg) ' }
+  ];
+  var placeFaces = function () {
+    tFaces[0].w = from.w; tFaces[0].h = from.h;
+    tFaces[1].w = to.w; tFaces[1].h = to.h;
+    tFaces.forEach(function (f) {
+      var st = f.el.style;
+      st.width = f.w + 'px'; st.height = f.h + 'px';
+      st.left = -f.w / 2 + 'px'; st.top = -f.h / 2 + 'px';
+      f.img.style.width = f.w + 'px';
+      f.img.style.height = f.w / f.a + 'px';
+    });
+  };
+  var fitFace = function (f, w, h) {
+    var S = Math.max(w, h * f.a); /* the picture's width on screen when it covers w × h */
+    var kx = S / w, ky = (S * f.h) / (h * f.w);
+    var tx = f.w * (1 - S / w) * f.px, ty = f.h * (1 - S / (f.a * h)) * f.py;
+    f.el.style.transform = f.pre + 'scale(' + (w / f.w).toFixed(5) + ',' + (h / f.h).toFixed(5) + ')';
+    f.img.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + ty.toFixed(2) + 'px,0) scale(' + kx.toFixed(5) + ',' + ky.toFixed(5) + ')';
+  };
   var w0 = 0, h0 = 0, ox = 0, oy = 0; /* unzoomed portrait size; the stage's zoom origin in the portrait's own box */
   portrait.style.transformOrigin = '0 0';
   /* the portrait's transform: undo the stage zoom s down to T about the stage's zoom origin, then turn it about its
@@ -642,6 +685,7 @@
     /* landing: the frame once About is in place (its top under the header, its content not shifted) */
     var f = edFrame.getBoundingClientRect(), a = about.getBoundingClientRect();
     to = { x: f.left, y: f.top - a.top - (TOUCH ? 0 : gsap.getProperty(inner, 'y') || 0) + headH(), w: edFrame.offsetWidth, h: edFrame.offsetHeight };
+    placeFaces();
     if (TOUCH) {
       /* the same numbers as the desktop tween: its start offset from the exact positions, its progress between
          ScrollTrigger's start and end (which ScrollTrigger rounds to whole pixels) */
@@ -688,9 +732,10 @@
     var p = (g - gH) / (1 - gH), e = ease(p);
     var w = lerp(from.w, to.w, e), ht = lerp(from.h, to.h, e);
     var cx = lerp(from.x + from.w / 2, to.x + to.w / 2, e), cy = lerp(from.y + from.h / 2, to.y + to.h / 2, e);
-    travel.style.width = w + 'px';
-    travel.style.height = ht + 'px';
-    travel.style.transform = 'translate3d(' + (cx - w / 2).toFixed(2) + 'px,' + (cy - ht / 2).toFixed(2) + 'px,0) perspective(' + (CAMERA * w).toFixed(1) + 'px) rotateY(' + angle.toFixed(2) + 'deg)';
+    /* the card's centre is its origin (a 0 × 0 box), as the faces are centred on it */
+    travel.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0) perspective(' + (CAMERA * w).toFixed(1) + 'px) rotateY(' + angle.toFixed(2) + 'deg)';
+    fitFace(tFaces[0], w, ht);
+    fitFace(tFaces[1], w, ht);
   };
 
   spin = ScrollTrigger.create({
