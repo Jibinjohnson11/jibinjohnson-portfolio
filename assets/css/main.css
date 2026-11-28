@@ -42,6 +42,7 @@
   --fs-h2:clamp(2rem,1.3rem + 2.15vw,3.25rem);         /* 32 -> 52px */
   --fs-h1:clamp(2.25rem,.75rem + 3.45vw,4rem);         /* 36 -> 64px: inner-page H1 */
   --fs-display:clamp(3rem,5.1vw,4.875rem);             /* 48 -> 78px: home H1 and the statement line */
+  --fs-ghost:clamp(4.5rem,16vw,15rem);                 /* 72 -> 240px: the faded background word in the home Contact band (decorative) */
   --fw-regular:400; --fw-medium:500; --fw-semibold:600;
   --fw-brand:800;      /* the "Jibin" wordmark only (logo and footer name) */
   --lh-display:1; --lh-heading:1.1; --lh-title:1.25; --lh-snug:1.5; --lh-body:1.65;
@@ -172,9 +173,6 @@ h1 .ln>span{display:block}
 .hero.glass .btn{min-height:3.375rem;padding:0 1.625rem;font-size:var(--fs-base);gap:.625rem;transition:background-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
 .hero.glass .btn svg{width:18px;height:18px}
 /* one line of proof under the buttons (the only stats on the home page); each part stays whole, so a narrow screen breaks at the dot */
-.hero-proof{margin:clamp(.75rem,1.8vh,1.25rem) auto 0;font-size:var(--fs-sm);font-weight:var(--fw-medium);line-height:var(--lh-snug);color:var(--muted)}
-.hero-proof>span{white-space:nowrap}
-.hero-proof>span[aria-hidden]{margin-inline:.35em;color:var(--accent)}
 .hero.glass .btn-fill{box-shadow:0 10px 30px -10px rgba(99,118,101,.6),inset 0 1px 0 rgba(255,255,255,.25)}
 .hero.glass .btn:hover{transform:translateY(-2px)}
 .hero.glass .btn-line{background:rgba(255,255,255,.55);border-color:var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 24px -14px rgba(30,45,33,.35)}
@@ -190,7 +188,6 @@ h1 .ln>span{display:block}
 /* load-in, by CSS from the first paint, in step with the H1 lines */
 .js .hero.glass .lede,.js .hero.glass .cta-row{animation:hero-in .9s var(--ease) .3s backwards}
 .js .hero.glass .cta-row{animation-delay:.4s}
-.js .hero.glass .hero-proof{animation:hero-in .9s var(--ease) .5s backwards}
 @keyframes hero-in{from{opacity:0;transform:translateY(18px)}}
 /* the portrait (the LCP image) fades in by CSS from the first paint, not after a script runs: waiting for the
    script held the largest paint back until every deferred file had run */
@@ -611,6 +608,52 @@ main>.sec:last-child{padding-bottom:calc(var(--sec) * .7)}   /* less white space
 }
 @media (max-width:374px){.stk-tile{flex-direction:column;align-items:flex-start}}   /* small phones: icon above the name again, so names like "PostgreSQL" never break mid-word */
 @media (prefers-reduced-motion:reduce){.stk-tile{transition:none}}
+/* ---------- home Contact (#contact, .sec.ct): from a user reference (Nov 2026): white background, premium sage glass ----------
+   A faint ink dot grid (fading out from the centre) and a giant faded "CONTACT" behind, for the frosted glass to blur;
+   left: H2, lede and three link cards (email, WhatsApp, location) at the foot; right: a glass form panel with filled
+   fields and the sage submit button. Glass (.ct-glass look on the cards and the form): two background layers (a white
+   sheen from the top left over a --tint → --glow wash), backdrop blur 24px + saturate, a 1px gradient edge drawn by
+   ::before (white at the top left → sage → white), a white inner highlight and a soft neutral shadow (no glow). */
+.home .ct.sec{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding-block:calc(var(--sec) * 1.15) calc(var(--sec) * .85)}   /* one full screen on every device, content centred (taller content just grows it) */
+.home .ct.sec::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background-image:radial-gradient(rgba(11,14,20,.11) 1px,transparent 1.3px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 75% 65% at 50% 55%,#000 25%,transparent 78%);mask-image:radial-gradient(ellipse 75% 65% at 50% 55%,#000 25%,transparent 78%)}
+.ct-word{position:absolute;z-index:-1;pointer-events:none;left:50%;top:calc(var(--sec) * -1.15 + clamp(.25rem,1vw,.75rem));transform:translateX(-50%);font-size:var(--fs-ghost);font-weight:var(--fw-semibold);line-height:var(--lh-display);letter-spacing:var(--ls-title);text-transform:uppercase;white-space:nowrap;user-select:none;background:linear-gradient(180deg,rgba(99,118,101,.26),rgba(99,118,101,.07) 70%,rgba(99,118,101,0));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ct-grid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.25rem;align-items:stretch}
+.ct-main{display:flex;flex-direction:column;min-width:0}
+.ct-lede{color:var(--muted);max-width:26em;margin-top:1rem}
+.ct-ways{display:grid;gap:.875rem;margin:auto 0 0;padding:clamp(2.5rem,6vw,5rem) 0 0;list-style:none}
+/* the glass */
+.ct-ways a,.ct-form{position:relative;background:linear-gradient(118deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 42%),linear-gradient(150deg,rgba(234,240,234,.78),rgba(234,240,234,.42) 55%,rgba(169,196,171,.3));-webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(99,118,101,.1),0 1px 2px rgba(11,14,20,.04),0 10px 28px -16px rgba(11,14,20,.16)}
+.ct-ways a::before,.ct-form::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,1),rgba(99,118,101,.32) 55%,rgba(255,255,255,.75));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:opacity .3s}
+.ct-ways a{display:flex;align-items:center;gap:1.25rem;padding:1.15rem 1.35rem;border-radius:22px;color:var(--ink);transition:box-shadow .3s,transform .4s var(--ease)}
+.ct-ic{flex:none;display:grid;place-items:center;width:3.25rem;height:3.25rem;border-radius:14px;background:linear-gradient(160deg,var(--accent-btn),var(--accent-btn-hover));color:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(11,14,20,.15),0 6px 14px -8px rgba(71,87,74,.75)}
+.ct-ic svg{width:1.375rem;height:1.375rem}
+.ct-txt{display:grid;gap:.2rem;flex:1;min-width:0}
+.ct-txt b{font-size:var(--fs-base);line-height:var(--lh-title)}
+.ct-txt span{font-size:var(--fs-sm);color:var(--muted);overflow-wrap:anywhere}
+.ct-go{flex:none;display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:50%;background:rgba(255,255,255,.7);color:var(--accent);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(99,118,101,.18),0 2px 6px -2px rgba(11,14,20,.1);transition:background-color .3s,color .3s}
+.ct-go svg{width:1.1rem;height:1.1rem;transition:transform .35s var(--ease)}
+@media (hover:hover){
+  .ct-ways a:hover{transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(99,118,101,.1),0 2px 4px rgba(11,14,20,.04),0 18px 36px -18px rgba(11,14,20,.22)}
+  .ct-ways a:hover .ct-go{background:var(--accent-btn);color:var(--surface)}
+  .ct-ways a:hover .ct-go svg{transform:translate(2px,-2px)}
+}
+/* form panel: the same glass; fields are lighter frosted wells with the label inside, sage submit */
+.ct-form{display:flex;flex-direction:column;gap:.75rem;min-width:0;padding:.875rem;border-radius:28px}
+.ct-field{display:flex;flex-direction:column;gap:.4rem;padding:1rem 1.25rem;border-radius:18px;border:1px solid rgba(255,255,255,.8);background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.44));box-shadow:inset 0 1px 2px rgba(11,14,20,.04);font-size:var(--fs-sm);font-weight:var(--fw-medium);line-height:var(--lh-title);color:var(--muted);cursor:text;transition:border-color .2s,background-color .2s,box-shadow .2s}
+.ct-field:hover{border-color:rgba(99,118,101,.3)}
+.ct-field:focus-within{border-color:var(--accent-btn);background:rgba(255,255,255,.9);box-shadow:inset 0 1px 2px rgba(11,14,20,.04),0 0 0 4px rgba(169,196,171,.3)}
+.ct-field:has(:focus-visible){outline:2px solid var(--accent-btn);outline-offset:2px}
+.ct-field input,.ct-field textarea{width:100%;padding:0;background:transparent;border:0;border-radius:0;color:var(--ink);font-size:var(--fs-base);font-weight:var(--fw-regular);line-height:var(--lh-snug);outline:none}
+.ct-msg{flex:1}
+.ct-field textarea{flex:1;min-height:8rem;resize:vertical}
+.ct-submit{min-height:3.5rem;border-radius:18px;background:linear-gradient(160deg,var(--accent-btn),var(--accent-btn-hover));color:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(11,14,20,.15),0 8px 18px -10px rgba(71,87,74,.6)}
+.ct-submit:hover{background:var(--accent-btn-hover)}
+.ct-form .form-status{min-height:0;padding-inline:.5rem;color:var(--muted)}
+.ct-form .form-status:empty{display:none}
+.ct-form .form-status.ok{color:var(--accent)}
+@media (max-width:900px){.ct-grid{grid-template-columns:minmax(0,1fr)}.ct-ways{padding-top:2rem}.ct-form{margin-top:.25rem}}
+@media (prefers-reduced-motion:reduce){.ct-ways a{transition:none}.ct-ways a:hover{transform:none}}
+@media (max-width:639px){.ct-ways a{gap:1rem;padding:1rem}.ct-ic{width:2.75rem;height:2.75rem}.ct-go{width:2.25rem;height:2.25rem}}
 /* FAQ: heading column on the left (held in view on desktop), content on the right */
 .split-sec{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:2rem 4rem;align-items:start}
 .home .split-head{position:sticky;top:6.5rem}
